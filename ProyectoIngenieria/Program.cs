@@ -13,6 +13,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//Proyecto base, no tiene ningun cambio
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
