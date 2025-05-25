@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo List</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- DataTables CSS (versión compatible con estilos básicos) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.tailwindcss.min.css" />
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Empresas</h1>
+            <a asp-controller="Empresa" asp-action="Upsert" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                 Agregar Sucursal
+            </a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table id="taskTable" class="min-w-full text-sm text-left text-gray-700 border border-gray-300">
+                <thead class="bg-gray-200 text-xs uppercase font-semibold text-gray-600">
+                    <tr>
+                        <th class="px-4 py-2 border">ID</th>
+                        <th class="px-4 py-2 border">Nombre de la Empresa</th>
+                       
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <!-- Los datos se cargan vía JavaScript (AJAX o fetch) -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JS de jQuery y DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.tailwindcss.min.js"></script>
+
+    <!-- Tu JS personalizado -->
+    <script src="/js/Empresa.js"></script>
+</body>
+</html>
