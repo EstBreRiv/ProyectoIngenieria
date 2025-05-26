@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ProyectoIngenieria.Models;
+using ProyectoIngenieria.Repository;
+using ProyectoIngenieria.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ProyectoIngenieriaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 var app = builder.Build();
 
