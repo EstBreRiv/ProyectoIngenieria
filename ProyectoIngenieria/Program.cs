@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ProyectoIngenieriaContext>(options =>
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ProyectoIngenieriaContext>().AddDefaultTokenProviders();
 
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

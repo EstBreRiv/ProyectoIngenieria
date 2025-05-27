@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ProyectoIngenieria.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProyectoIngenieria.Repository;
 
@@ -41,7 +42,14 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CatalogoMantenimiento>(entity =>
+
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
+        modelBuilder.Entity<IdentityUserRole<string>>().HasKey(r => new { r.UserId, r.RoleId });
+        modelBuilder.Entity<IdentityUserToken<string>>().HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
+
+    modelBuilder.Entity<CatalogoMantenimiento>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("CATALOGO_MANTENIMIENTO_pk");
 
