@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ProyectoIngenieria.Models;
 
 namespace ProyectoIngenieria.Repository;
 
-public partial class ProyectoIngenieriaContext : DbContext
+public partial class ProyectoIngenieriaContext : IdentityDbContext
 {
-    public ProyectoIngenieriaContext()
-    {
-    }
-
+  
     public ProyectoIngenieriaContext(DbContextOptions<ProyectoIngenieriaContext> options)
         : base(options)
     {
