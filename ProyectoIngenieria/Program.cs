@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoIngenieria.Repository;
 using ProyectoIngenieria.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ProyectoIngenieria.Utilities;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
