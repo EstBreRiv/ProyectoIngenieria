@@ -17,12 +17,12 @@ function loadDataTable() {
             {
                 "render": function (data) {
                     return `
-                            <a href="/Admin/Vehicle/upsert/${data}" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i> Edit
+                            <a href="/Empresa/Upsert/${data}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mx-1 text-xs">
+                                <i class="bi bi-pencil-square"></i> Editar
                             </a>
 
-                            <a onClick=Delete(${data}) class="btn btn-danger mx-2">
-                                <i class="bi bi-trash"></i> Delete
+                            <a onClick=Delete(${data}) class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mx-1 text-xs">
+                                <i class="bi bi-trash"></i> Eliminar
                             </a>
                           `
                 }
