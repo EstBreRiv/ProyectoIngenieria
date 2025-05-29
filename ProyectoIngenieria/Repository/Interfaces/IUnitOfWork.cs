@@ -3,6 +3,7 @@
     public interface IUnitOfWork
     {
         IEmpresaRepository Empresa { get; }
+        IVehiculosRepository Vehiculo { get; }
 
         void Save();
     }
