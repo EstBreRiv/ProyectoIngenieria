@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Repository.Interfaces;
+using System.Linq;
 
 namespace ProyectoIngenieria.Controllers
 {
@@ -23,33 +25,52 @@ namespace ProyectoIngenieria.Controllers
         {
             var vehiculos = _unitOfWork.Vehiculo.GetAll();
             Console.WriteLine("Vehiculos retrieved: " + vehiculos.Count());
-            //Se necesita un viewModel para mostrar la empresa
             return Json(new { data = vehiculos });
         }
 
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
-            Models.Vehiculo vehiculo = new Models.Vehiculo();
+            // Cargar empresas para el dropdown
+            var empresas = _unitOfWork.Empresa.GetAll();
+            ViewBag.EmpresaList = new SelectList(empresas, "Id", "Nombre");
+
+            Models.Vehiculo vehiculo = new();
 
             if (id == null || id == 0)
             {
-                // Create
+                // Crear nuevo - estado Activo por defecto
+                vehiculo.Estado = "Activo";
                 return View(vehiculo);
             }
             else
             {
-                // Update
+                // Editar existente
                 vehiculo = _unitOfWork.Vehiculo.Get(u => u.Id == id);
+                if (vehiculo == null)
+                {
+                    return NotFound();
+                }
                 return View(vehiculo);
             }
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Upsert(Models.Vehiculo vehiculo)
         {
             if (ModelState.IsValid)
             {
+                // Forzar estado como Activo
+                vehiculo.Estado = "Activo";
+
+                // Manejar campo de placa
+                var tienePlaca = Request.Form["mostrarPlaca"].Count > 0;
+                if (!tienePlaca)
+                {
+                    vehiculo.Placa = null;
+                }
+
                 if (vehiculo.Id == 0)
                 {
                     _unitOfWork.Vehiculo.Add(vehiculo);
@@ -61,6 +82,10 @@ namespace ProyectoIngenieria.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
+
+            // Recargar empresas si hay error de validación
+            var empresas = _unitOfWork.Empresa.GetAll();
+            ViewBag.EmpresaList = new SelectList(empresas, "Id", "Nombre");
             return View(vehiculo);
         }
     }

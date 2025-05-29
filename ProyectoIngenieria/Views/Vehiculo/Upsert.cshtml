@@ -1,0 +1,83 @@
+﻿@model ProyectoIngenieria.Models.Vehiculo
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Crear Vehículo" : "Editar Vehículo";
+}
+
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <form method="post" asp-action="Upsert" class="w-100" style="max-width: 600px;">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Estado" />
+
+        <div class="card shadow rounded p-4 bg-light">
+            <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
+
+            <div class="mb-3">
+                <label asp-for="Modelo" class="form-label fw-semibold"></label>
+                <input asp-for="Modelo" class="form-control rounded" />
+                <span asp-validation-for="Modelo" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+            <label asp-for="Tipo" class="form-label fw-semibold"></label>
+            <select asp-for="Tipo" class="form-select rounded">
+                <option value="">Seleccione Tipo</option>
+                <option value="Maquinaria">Maquinaria</option>
+                <option value="Vehículo">Vehículo</option>
+            </select>
+            <span asp-validation-for="Tipo" class="text-danger small"></span>
+        </div>
+
+
+            <div class="mb-3">
+                <label asp-for="Descripcion" class="form-label fw-semibold"></label>
+                <textarea asp-for="Descripcion" class="form-control rounded" rows="3"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger small"></span>
+            </div>
+
+            <div class="form-check form-switch mb-3">
+                <input type="checkbox" class="form-check-input" id="mostrarPlacaCheck"
+                       name="mostrarPlaca"
+                @(string.IsNullOrEmpty(Model.Placa) ? "" : "checked") />
+                <label class="form-check-label fw-semibold" for="mostrarPlacaCheck">¿Tiene placa?</label>
+            </div>
+
+            <div id="placaContainer" class="mb-3" style="display:@(string.IsNullOrEmpty(Model.Placa) ? "none" : "block")">
+                <label asp-for="Placa" class="form-label fw-semibold"></label>
+                <input asp-for="Placa" class="form-control rounded" />
+                <span asp-validation-for="Placa" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="EmpresaId" class="form-label fw-semibold"></label>
+                <select asp-for="EmpresaId" class="form-select rounded" asp-items="@ViewBag.EmpresaList">
+                    <option value="">Seleccione Empresa</option>
+                </select>
+                <span asp-validation-for="EmpresaId" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">
+                    @(Model.Id == 0 ? "Crear" : "Actualizar")
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Volver</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#mostrarPlacaCheck').change(function () {
+                if (this.checked) {
+                    $('#placaContainer').slideDown();
+                } else {
+                    $('#placaContainer').slideUp();
+                    $('#Placa').val('');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,103 @@
+﻿@model Vehiculo
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Agregar Vehículo" : "Editar Vehículo";
+    var empresas = ViewBag.Empresas as List<SelectListItem>;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">@ViewData["Title"]</h2>
+
+        <form asp-action="Upsert" method="post" class="space-y-6">
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Modelo -->
+            <div>
+                <label asp-for="Modelo" class="block text-sm font-medium text-gray-700">Modelo</label>
+                <input asp-for="Modelo" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+                <span asp-validation-for="Modelo" class="text-red-600 text-sm"></span>
+            </div>
+
+            <!-- Estado -->
+            <div>
+                <label asp-for="Estado" class="block text-sm font-medium text-gray-700">Estado</label>
+                <input asp-for="Estado" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+                <span asp-validation-for="Estado" class="text-red-600 text-sm"></span>
+            </div>
+
+            <!-- Descripción -->
+            <div>
+                <label asp-for="Descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+                <textarea asp-for="Descripcion" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+                <span asp-validation-for="Descripcion" class="text-red-600 text-sm"></span>
+            </div>
+
+            <!-- Placa con checkbox -->
+            <div>
+                <label class="flex items-center gap-2 mb-1 text-sm font-medium text-gray-700">
+                    <input type="checkbox" id="togglePlaca" class="rounded border-gray-300" />
+                    ¿Asignar Placa?
+                </label>
+                <input asp-for="Placa" id="placaInput" disabled class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100" />
+                <span asp-validation-for="Placa" class="text-red-600 text-sm"></span>
+            </div>
+
+            <!-- Tipo -->
+            <div>
+                <label asp-for="Tipo" class="block text-sm font-medium text-gray-700">Tipo</label>
+                <input asp-for="Tipo" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+                <span asp-validation-for="Tipo" class="text-red-600 text-sm"></span>
+            </div>
+
+            <!-- Empresa -->
+            <div>
+                <label asp-for="EmpresaId" class="block text-sm font-medium text-gray-700">Empresa</label>
+                <select asp-for="EmpresaId" asp-items="empresas" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <option value="">-- Seleccione una Empresa --</option>
+                </select>
+                <span asp-validation-for="EmpresaId" class="text-red-600 text-sm"></span>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-end gap-4">
+                <a asp-controller="Vehiculo" asp-action="Index" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">Cancelar</a>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Guardar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const togglePlaca = document.getElementById("togglePlaca");
+        const placaInput = document.getElementById("placaInput");
+
+        togglePlaca.addEventListener("change", function () {
+            if (this.checked) {
+                placaInput.disabled = false;
+                placaInput.classList.remove("bg-gray-100");
+            } else {
+                placaInput.disabled = true;
+                placaInput.value = "";
+                placaInput.classList.add("bg-gray-100");
+            }
+        });
+
+        // Activar el checkbox automáticamente si el modelo ya tiene placa
+        window.onload = function () {
+            if (placaInput.value) {
+                togglePlaca.checked = true;
+                placaInput.disabled = false;
+                placaInput.classList.remove("bg-gray-100");
+            }
+        };
+    </script>
+
+</body>
+</html>

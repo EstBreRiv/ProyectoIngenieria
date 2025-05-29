@@ -9,6 +9,8 @@ namespace ProyectoIngenieria.Repository
         public IEmpresaRepository Empresa { get; private set; }
         public IVehiculosRepository Vehiculo { get; private set; }
 
+        public object EmpresaRepository => throw new NotImplementedException();
+
         public UnitOfWork(ProyectoIngenieriaContext db)
         {
             _db = db;
