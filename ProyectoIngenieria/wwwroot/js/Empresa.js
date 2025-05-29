@@ -15,15 +15,15 @@ function loadDataTable() {
             { "data": "nombre", "width": "30%" },
             
             {
+                "data": "id",
                 "render": function (data) {
                     return `
-                            <a href="/Empresa/Upsert/${data}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mx-1 text-xs">
-                                <i class="bi bi-pencil-square"></i> Editar
-                            </a>
+                            <div class="text-center">
+                                <a href="/Empresa/Upsert/${data}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mx-1 text-xs">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+                            </div>
 
-                            <a onClick=Delete(${data}) class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mx-1 text-xs">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </a>
                           `
                 }
             }
