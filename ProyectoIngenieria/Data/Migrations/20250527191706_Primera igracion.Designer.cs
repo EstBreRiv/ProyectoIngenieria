@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoIngenieria.Repository;
 
@@ -11,9 +12,11 @@ using ProyectoIngenieria.Repository;
 namespace ProyectoIngenieria.Data.Migrations
 {
     [DbContext(typeof(ProyectoIngenieriaContext))]
-    partial class ProyectoIngenieriaContextModelSnapshot : ModelSnapshot
+    [Migration("20250527191706_Primera igracion")]
+    partial class Primeraigracion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +24,6 @@ namespace ProyectoIngenieria.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
 
             modelBuilder.Entity("ProyectoIngenieria.Models.CatalogoMantenimiento", b =>
                 {
@@ -344,7 +346,6 @@ namespace ProyectoIngenieria.Data.Migrations
 
                     b.ToTable("VEHICULO", (string)null);
                 });
-
 
             modelBuilder.Entity("ProyectoIngenieria.Models.DocumentoOperador", b =>
                 {

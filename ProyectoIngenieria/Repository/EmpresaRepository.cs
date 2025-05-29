@@ -1,4 +1,6 @@
-﻿namespace ProyectoIngenieria.Repository.Interfaces
+﻿using ProyectoIngenieria.Repository.Interfaces;
+
+namespace ProyectoIngenieria.Repository
 {
     public class EmpresaRepository : Repository<Models.Empresa>, IEmpresaRepository
     {
@@ -13,6 +15,6 @@
         {
             _db.Empresas.Update(empresa);
         }
-    
+
     }
 }

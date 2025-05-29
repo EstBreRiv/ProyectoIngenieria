@@ -3,16 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Empresa</title>
+    <title>Vehiculos</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <style>
-        .dt-search-0 {
-            color: black;
-        }
-    </style>
 
     <!-- DataTables CSS (versión compatible con estilos básicos) -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.tailwindcss.min.css" />
@@ -21,19 +15,25 @@
 
     <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">Empresas</h1>
+            <h1 class="text-3xl font-bold text-gray-800">Vehiculos en Flota</h1>
             <a asp-controller="Empresa" asp-action="Upsert" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                 Agregar Sucursal
+                Agregar Vehiculo
             </a>
         </div>
 
         <div class="overflow-x-auto">
-            <table id="taskTable" class="min-w-full text-sm text-left text-gray-700 border border-gray300">
-                <thead class="bg-blue-200 text-xs uppercase font-semibold text-gray-600">
+            <table id="taskTable" class="min-w-full text-sm text-left text-gray-700 border border-gray-300">
+                <thead class="bg-gray-200 text-xs uppercase font-semibold text-gray-600">
                     <tr>
-                        <th class="px-6 py-3 border text-left">ID</th>
-                        <th class="px-6 py-3 border text-left">Nombre de la Empresa</th>
-                        <th class="px-6 py-3 border text-left">Acciones</th>
+                        <th class="px-4 py-2 border">ID</th>
+                        <th class="px-4 py-2 border">Modelo del Vehiculo</th>
+                        <th class="px-4 py-2 border">Estado</th>
+                        <th class="px-4 py-2 border">Descripcion</th>
+                        <th class="px-4 py-2 border">Placa</th>
+                        <th class="px-4 py-2 border">Tipo</th>
+                        <th class="px-4 py-2 border">Empresa ID</th>
+
+
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -49,6 +49,6 @@
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.tailwindcss.min.js"></script>
 
     <!-- Tu JS personalizado -->
-    <script src="/js/Empresa.js"></script>
+    <script src="/js/Vehiculo.js"></script>
 </body>
 </html>
