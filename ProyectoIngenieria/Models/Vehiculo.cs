@@ -7,7 +7,7 @@ public partial class Vehiculo
 {
     public int Id { get; set; }
 
-    public string Modelo { get; set; } = null!;
+    public string? Modelo { get; set; }
 
     public string Estado { get; set; } = null!;
 
@@ -15,13 +15,13 @@ public partial class Vehiculo
 
     public string? Placa { get; set; }
 
-    public string Tipo { get; set; } = null!;
+    public string? Tipo { get; set; }
 
-    public int EmpresaId { get; set; }
+    public int? EmpresaId { get; set; }
 
     public virtual ICollection<DocumentoVehiculo> DocumentoVehiculos { get; set; } = new List<DocumentoVehiculo>();
 
-    public virtual Empresa Empresa { get; set; } = null!;
+    public virtual Empresa? Empresa { get; set; }
 
     public virtual ICollection<HorasTrabajo> HorasTrabajos { get; set; } = new List<HorasTrabajo>();
 
