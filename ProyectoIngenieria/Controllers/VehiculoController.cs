@@ -88,5 +88,24 @@ namespace ProyectoIngenieria.Controllers
             ViewBag.EmpresaList = new SelectList(empresas, "Id", "Nombre");
             return View(vehiculo);
         }
+
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var vehiculo = _unitOfWork.Vehiculo.Get(u => u.Id == id);
+            if (vehiculo == null)
+            {
+                return NotFound();
+            }
+            //soft delete
+            vehiculo.Estado = "Inactivo"; // Cambiar estado a Inactivo
+            _unitOfWork.Vehiculo.Update(vehiculo);
+            return View(vehiculo);
+        }
     }
 }
