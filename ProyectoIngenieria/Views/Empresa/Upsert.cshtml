@@ -1,14 +1,29 @@
+@using ProyectoIngenieria.Models.ViewModels
+@model EmpresaVM
 
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 bg-white p-4 rounded shadow-sm">
             <form method="post">
+                <input hidden asp-for="Empresa.Id" />
 
 
                 <!-- Header -->
                 <div class="border-bottom pb-3 mb-4">
                     <h2 class="h4 text-success">
+                        @(Model.Empresa.Id == 0 ? "Agregar" : "Actualizar") Empresa
+                    </h2>
+                </div>
+
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label asp-for="Empresa.Nombre" class="form-label text-muted"></label>
+                    <input asp-for="Empresa.Nombre" type="text" class="form-control" placeholder="Ingrese el nombre de la empresa" />
+                    <span asp-validation-for="Empresa.Nombre" class="form-text text-danger"></span>
+                </div>
+
+                <!-- Botones -->
 
                 <div class="d-flex gap-3 pt-3">
                     <button type="submit" class="btn btn-success w-50">
