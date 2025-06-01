@@ -43,6 +43,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
+                               asp-area="" asp-controller="Operador" asp-action="Index">
+                                <i class="bi bi-truck-front me-1"></i>Operadores
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Privacy">
                                 <i class="bi bi-shield-lock me-1"></i>Privacidad
                             </a>

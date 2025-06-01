@@ -29,8 +29,12 @@ namespace ProyectoIngenieria.Controllers
         }
 
         [HttpGet]
-        public IActionResult Upsert(int? cedula)
+        public IActionResult Upsert(int? id)
         {
+            // Cargar vehiculos para el dropdown
+            var vehiculos = _unitOfWork.Vehiculo.GetAll();
+            ViewBag.VehiculosList = new SelectList(vehiculos, "Id", "Modelo");
+
             OperadorVM operadorVM = new()
             {
                 Operador = new Operador(),
@@ -41,7 +45,7 @@ namespace ProyectoIngenieria.Controllers
                 }).ToList()
             };
 
-            if (cedula == null || cedula == 0)
+            if (id == null || id == 0)
             {
                 // Create
                 return View(operadorVM);
@@ -49,7 +53,7 @@ namespace ProyectoIngenieria.Controllers
             else
             {
                 // Update
-                operadorVM.Operador = _unitOfWork.Operador.Get(u => u.Cedula == cedula);
+                operadorVM.Operador = _unitOfWork.Operador.Get(u => u.Cedula == id);
                 if (operadorVM.Operador == null)
                 {
                     return NotFound();
@@ -61,6 +65,7 @@ namespace ProyectoIngenieria.Controllers
         [HttpPost]
         public IActionResult Upsert(OperadorVM operadorVM)
         {
+
             if (ModelState.IsValid)
             {
                 if (operadorVM.Operador.Cedula == 0)
