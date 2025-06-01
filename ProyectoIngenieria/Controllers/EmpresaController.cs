@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ProyectoIngenieria.Models;
+using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 
 namespace ProyectoIngenieria.Controllers
@@ -27,39 +30,50 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
-            Models.Empresa empresa = new Models.Empresa();
+            EmpresaVM empresaVM = new()
+            {
+                Empresa = new Models.Empresa(),
+                EmpresasList = _unitOfWork.Empresa.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Nombre,
+                    Value = i.Id.ToString()
+                }).ToList()
+            };
 
             if (id == null || id == 0)
             {
                 // Create
-                return View(empresa);
+                return View(empresaVM);
             }
             else
             {
                 // Update
-                empresa = _unitOfWork.Empresa.Get(u => u.Id == id);
-                return View(empresa);
+                empresaVM.Empresa = _unitOfWork.Empresa.Get(u => u.Id == id);
+                if (empresaVM.Empresa == null)
+                {
+                    return NotFound();
+                }
+                return View(empresaVM);
             }
-
         }
 
         [HttpPost]
-        public IActionResult Upsert(Models.Empresa empresa)
+        public IActionResult Upsert(EmpresaVM empresaVM)
         {
             if (ModelState.IsValid)
             {
-                if (empresa.Id == 0)
+                if (empresaVM.Empresa.Id == 0)
                 {
-                    _unitOfWork.Empresa.Add(empresa);
+                    _unitOfWork.Empresa.Add(empresaVM.Empresa);
                 }
                 else
                 {
-                    _unitOfWork.Empresa.update(empresa);
+                    _unitOfWork.Empresa.update(empresaVM.Empresa);
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            return View(empresa);
+            return View(empresaVM);
         }
 
     }

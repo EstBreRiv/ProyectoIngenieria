@@ -23,11 +23,11 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                             <a href="/Vehiculo/Upsert/${data}" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i> Edit
+                                <i class="bi bi-pencil-square"></i> Editar
                             </a>
 
-                            <a onClick=Delete(${data})>
-                                Borrar
+                            <a onClick=Delete(${data}) class="btn btn-danger mx-2">
+                                <i class="bi bi-trash"></i> Eliminar
                             </a>
                           `
                 }
@@ -41,7 +41,7 @@ function loadDataTable() {
 }
 
 
-function Delete(_id) {
+function Delete(id) {
     Swal.fire({
         title: "Esta seguro de querer eliminar?",
         text: "Los datos no seran eliminados de la base de datos, pero seran invisibles para el usuario",
@@ -55,7 +55,7 @@ function Delete(_id) {
 
             //metodo que permite hacer el delete sin tener que hacer un httpget
             $.ajax({
-                url: "/Admin/Vehicle/delete/" + _id,
+                url: "/Controllers/VehiculoController/Delete/" + id,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
