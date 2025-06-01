@@ -1,7 +1,8 @@
-﻿@model ProyectoIngenieria.Models.Vehiculo
+﻿@using ProyectoIngenieria.Models.ViewModels
+@model VehiculoVM
 
 @{
-    ViewData["Title"] = Model.Id == 0 ? "Crear Vehículo" : "Editar Vehículo";
+    ViewData["Title"] = Model.Vehiculo.Id == 0 ? "Crear Vehículo" : "Editar Vehículo";
 }
 
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -11,70 +12,70 @@
         </div>
 
         <form method="post" asp-action="Upsert" class="mt-8 space-y-6">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Estado" />
+            <input type="hidden" asp-for="Vehiculo.Id" />
+            <input type="hidden" asp-for="Vehiculo.Estado" />
 
             <div class="rounded-md shadow-sm bg-white p-6 space-y-4 border border-gray-200">
                 <!-- Modelo -->
                 <div>
-                    <label asp-for="Modelo" class="block text-sm font-medium text-gray-700 mb-1"></label>
-                    <input asp-for="Modelo" class="appearance-none relative block w-full px-3 py-2 border 
+                    <label asp-for="Vehiculo.Modelo" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <input asp-for="Vehiculo.Modelo" class="appearance-none relative block w-full px-3 py-2 border
 border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 
 focus:border-green-500" placeholder="Ingrese el modelo del vehiculo">
-                    <span asp-validation-for="Modelo" class="mt-1 text-sm text-red-600"></span>
+                    <span asp-validation-for="Vehiculo.Modelo" class="mt-1 text-sm text-red-600"></span>
                 </div>
 
                 <!-- Tipo -->
                 <div>
-                    <label asp-for="Tipo" class="block text-sm font-medium text-gray-700 mb-1"></label>
-                    <select asp-for="Tipo" class="appearance-none relative block w-full px-3 py-2 border border-gray-300 
+                    <label asp-for="Vehiculo.Tipo" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <select asp-for="Vehiculo.Tipo" class="appearance-none relative block w-full px-3 py-2 border border-gray-300
 placeholder-gray-500 text-gray-900 rounded-md 
 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         <option value="">Seleccione Tipo</option>
                         <option value="Maquinaria">Maquinaria</option>
                         <option value="Vehículo">Vehículo</option>
                     </select>
-                    <span asp-validation-for="Tipo" class="mt-1 text-sm text-red-600"></span>
+                    <span asp-validation-for="Vehiculo.Tipo" class="mt-1 text-sm text-red-600"></span>
                 </div>
 
                 <!-- Descripción -->
                 <div>
-                    <label asp-for="Descripcion" class="block text-sm font-medium text-gray-700 mb-1"></label>
-                    <textarea asp-for="Descripcion" rows="3" class="appearance-none relative block w-full 
+                    <label asp-for="Vehiculo.Descripcion" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <textarea asp-for="Vehiculo.Descripcion" rows="3" class="appearance-none relative block w-full
 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 
 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="Descripcion del vehiculo: Color, Caracteristica"></textarea>
-                    <span asp-validation-for="Descripcion" class="mt-1 text-sm text-red-600"></span>
+                    <span asp-validation-for="Vehiculo.Descripcion" class="mt-1 text-sm text-red-600"></span>
                 </div>
 
                 <!-- Checkbox Placa -->
                 <div class="flex items-center">
-                    <input type="checkbox" id="mostrarPlacaCheck" name="mostrarPlaca" @(string.IsNullOrEmpty(Model.Placa) ? "" : "checked")
+                    <input type="checkbox" id="mostrarPlacaCheck" name="mostrarPlaca" @(string.IsNullOrEmpty(Model.Vehiculo.Placa) ? "" : "checked")
                            class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
                     <label for="mostrarPlacaCheck" class="ml-2 block text-sm text-gray-700">¿Tiene placa?</label>
                 </div>
 
                 <!-- Placa (condicional) -->
-                <div id="placaContainer" class="@(string.IsNullOrEmpty(Model.Placa) ? "hidden" : "")">
-                    <label asp-for="Placa" class="block text-sm font-medium text-gray-700 mb-1"></label>
-                    <input asp-for="Placa" class="appearance-none relative block w-full px-3 py-2 border 
+                <div id="placaContainer" class="@(string.IsNullOrEmpty(Model.Vehiculo.Placa) ? "hidden" : "")">
+                    <label asp-for="Vehiculo.Placa" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <input asp-for="Vehiculo.Placa" class="appearance-none relative block w-full px-3 py-2 border
 border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 
 focus:ring-green-500 focus:border-green-500" placeholder="Numero de placa del vehiculo">
-                    <span asp-validation-for="Placa" class="mt-1 text-sm text-red-600"></span>
+                    <span asp-validation-for="Vehiculo.Placa" class="mt-1 text-sm text-red-600"></span>
                 </div>
 
                 <!-- Empresa -->
                 <div>
-                    <label asp-for="EmpresaId" class="block text-sm font-medium text-gray-700 mb-1">Seleccione la empresa asociada</label>
-                    <select asp-for="EmpresaId" asp-items="@ViewBag.EmpresaList" class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                    <label asp-for="Vehiculo.EmpresaId" class="block text-sm font-medium text-gray-700 mb-1">Seleccione la empresa asociada</label>
+                    <select asp-for="Vehiculo.EmpresaId" asp-items="@ViewBag.EmpresaList" class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         <option value="">Seleccione Empresa</option>
                     </select>
-                    <span asp-validation-for="EmpresaId" class="mt-1 text-sm text-red-600"></span>
+                    <span asp-validation-for="Vehiculo.EmpresaId" class="mt-1 text-sm text-red-600"></span>
                 </div>
 
                 <!-- Botones -->
                 <div class="flex justify-end space-x-3 pt-4">
                     <button type="submit" class="group relative w-32 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                        @(Model.Id == 0 ? "Crear" : "Actualizar")
+                        @(Model.Vehiculo.Id == 0 ? "Crear" : "Actualizar")
                     </button>
                     <a asp-action="Index" class="group relative w-32 flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                         Volver
