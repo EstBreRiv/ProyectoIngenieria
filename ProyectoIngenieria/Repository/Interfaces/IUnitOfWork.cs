@@ -4,6 +4,7 @@
     {
         IEmpresaRepository Empresa { get; }
         IVehiculosRepository Vehiculo { get; }
+        object EmpresaRepository { get; }
 
         void Save();
     }
