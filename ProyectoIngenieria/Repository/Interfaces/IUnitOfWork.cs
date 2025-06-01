@@ -4,6 +4,15 @@
     {
         IEmpresaRepository Empresa { get; }
         IVehiculosRepository Vehiculo { get; }
+        IOperadoresRepository Operador { get; }
+        ICatalogoMantenimientoRepository CatalogoMantenimiento { get; }
+        IDocumentoOperadorRepository DocumentoOperador { get; }
+        IDocumentoVehiculoRepository DocumentoVehiculo { get; }
+        IHorasTrabajoRepository HorasTrabajo { get; }
+        INotificacionRepository Notificacion { get; }
+        IRegistroCombustibleRepository RegistroCombustible { get; }
+        IRegistroMantenimientoRepository RegistroMantenimiento { get; }
+
         object EmpresaRepository { get; }
 
         void Save();

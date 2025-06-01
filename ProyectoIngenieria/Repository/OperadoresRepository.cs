@@ -3,18 +3,18 @@ using ProyectoIngenieria.Repository.Interfaces;
 
 namespace ProyectoIngenieria.Repository
 {
-    public class VehiculosRepository : Repository<Vehiculo>, IVehiculosRepository
+    public class OperadoresRepository : Repository<Operador>, IOperadoresRepository
     {
         private readonly ProyectoIngenieriaContext _db;
 
-        public VehiculosRepository(ProyectoIngenieriaContext db) : base(db)
+        public OperadoresRepository(ProyectoIngenieriaContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(Vehiculo vehiculo)
+        public void Update(Operador operador)
         {
-           _db.Vehiculos.Update(vehiculo);
+            _db.Operadors.Update(operador);
         }
     }
 }

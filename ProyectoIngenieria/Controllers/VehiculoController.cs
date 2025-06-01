@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProyectoIngenieria.Models;
+using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using System.Linq;
 
@@ -23,8 +25,9 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var vehiculos = _unitOfWork.Vehiculo.GetAll();
-            Console.WriteLine("Vehiculos retrieved: " + vehiculos.Count());
+            var vehiculos = _unitOfWork.Vehiculo.GetAll()
+            .Where(v => v.Estado == "Activo")
+            .ToList();
             return Json(new { data = vehiculos });
         }
 
@@ -35,49 +38,57 @@ namespace ProyectoIngenieria.Controllers
             var empresas = _unitOfWork.Empresa.GetAll();
             ViewBag.EmpresaList = new SelectList(empresas, "Id", "Nombre");
 
-            Models.Vehiculo vehiculo = new();
+            VehiculoVM vehiculoVM = new()
+            {
+                Vehiculo = new Vehiculo(),
+                VehiculosList = _unitOfWork.Vehiculo.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Modelo,
+                    Value = i.Id.ToString()
+                }).ToList()
+            };
 
             if (id == null || id == 0)
             {
                 // Crear nuevo - estado Activo por defecto
-                vehiculo.Estado = "Activo";
-                return View(vehiculo);
+                vehiculoVM.Vehiculo.Estado = "Activo";
+                return View(vehiculoVM);
             }
             else
             {
                 // Editar existente
-                vehiculo = _unitOfWork.Vehiculo.Get(u => u.Id == id);
-                if (vehiculo == null)
+                vehiculoVM.Vehiculo = _unitOfWork.Vehiculo.Get(u => u.Id == id);
+                if (vehiculoVM.Vehiculo == null)
                 {
                     return NotFound();
                 }
-                return View(vehiculo);
+                return View(vehiculoVM);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Models.Vehiculo vehiculo)
+        public IActionResult Upsert(VehiculoVM vehiculoVM)
         {
             if (ModelState.IsValid)
             {
                 // Forzar estado como Activo
-                vehiculo.Estado = "Activo";
+                vehiculoVM.Vehiculo.Estado = "Activo";
 
                 // Manejar campo de placa
                 var tienePlaca = Request.Form["mostrarPlaca"].Count > 0;
                 if (!tienePlaca)
                 {
-                    vehiculo.Placa = null;
+                    vehiculoVM.Vehiculo.Placa = null;
                 }
 
-                if (vehiculo.Id == 0)
+                if (vehiculoVM.Vehiculo.Id == 0)
                 {
-                    _unitOfWork.Vehiculo.Add(vehiculo);
+                    _unitOfWork.Vehiculo.Add(vehiculoVM.Vehiculo);
                 }
                 else
                 {
-                    _unitOfWork.Vehiculo.Update(vehiculo);
+                    _unitOfWork.Vehiculo.Update(vehiculoVM.Vehiculo);
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
@@ -86,26 +97,35 @@ namespace ProyectoIngenieria.Controllers
             // Recargar empresas si hay error de validación
             var empresas = _unitOfWork.Empresa.GetAll();
             ViewBag.EmpresaList = new SelectList(empresas, "Id", "Nombre");
-            return View(vehiculo);
+            return View(vehiculoVM);
         }
 
         [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            if (id == null || id == 0)
+            try
             {
-                return NotFound();
-            }
+                if (id == null || id == 0)
+                {
+                    return NotFound();
+                }
 
-            var vehiculo = _unitOfWork.Vehiculo.Get(u => u.Id == id);
-            if (vehiculo == null)
-            {
-                return NotFound();
+                var vehiculo = _unitOfWork.Vehiculo.Get(u => u.Id == id);
+                if (vehiculo == null)
+                {
+                    return NotFound();
+                }
+                //soft delete
+                vehiculo.Estado = "Inactivo"; // Cambiar estado a Inactivo
+                _unitOfWork.Vehiculo.Update(vehiculo);
+                _unitOfWork.Save();
+                //return View(vehiculo);
+                return Json(new { success = true, message = "Eliminado exitosamente" });
             }
-            //soft delete
-            vehiculo.Estado = "Inactivo"; // Cambiar estado a Inactivo
-            _unitOfWork.Vehiculo.Update(vehiculo);
-            return View(vehiculo);
+            catch
+            {
+                return Json(new { success = false, message = "No se pudo eliminar" });
+            }
         }
     }
 }

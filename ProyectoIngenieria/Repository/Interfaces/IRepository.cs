@@ -9,6 +9,7 @@ namespace ProyectoIngenieria.Repository.Interfaces
 
         IEnumerable<T> GetAll(string? includeProperties = null);
 
+
         void Add(T entity);
 
         void Remove(T entity);

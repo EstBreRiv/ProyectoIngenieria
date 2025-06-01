@@ -7,48 +7,39 @@ namespace ProyectoIngenieria.Models;
 
 public partial class Vehiculo
 {
-    [ValidateNever]
+    [Key]
     public int Id { get; set; }
-    [ValidateNever]
+
+    [Required(ErrorMessage = "El campo modelo es obligatorio")]
     [StringLength(100)]
     [RegularExpression(@"^[a-zA-Z0-9\sáéíóúñÑ.,-]+$",
-     ErrorMessage = "Caracteres no permitidos")]
+     ErrorMessage = "Caracteres especiales no permitidos")]
     public string Modelo { get; set; } = null!;
-    [ValidateNever]
+
+    [Required]
     public string Estado { get; set; } = null!;
 
-    [ValidateNever]
     public string? Descripcion { get; set; }
 
-    [ValidateNever]
     public string? Placa { get; set; }
 
-
-    [ValidateNever]
-
+    [Required(ErrorMessage = "Se debe seleccionar un tipo")]
     public string Tipo { get; set; } = null!;
-    [ValidateNever]
 
+    [Required(ErrorMessage = "Se debe seleccionar una empresa")]
     public int EmpresaId { get; set; }
-    [ValidateNever]
 
     public virtual ICollection<DocumentoVehiculo> DocumentoVehiculos { get; set; } = new List<DocumentoVehiculo>();
-    [ValidateNever]
 
     public virtual Empresa Empresa { get; set; } = null!;
-    [ValidateNever]
 
     public virtual ICollection<HorasTrabajo> HorasTrabajos { get; set; } = new List<HorasTrabajo>();
-    [ValidateNever]
 
     public virtual ICollection<Notificacion> Notificacions { get; set; } = new List<Notificacion>();
-    [ValidateNever]
 
     public virtual ICollection<Operador> Operadors { get; set; } = new List<Operador>();
-    [ValidateNever]
 
     public virtual ICollection<RegistroCombustible> RegistroCombustibles { get; set; } = new List<RegistroCombustible>();
-    [ValidateNever]
 
     public virtual ICollection<RegistroMantenimiento> RegistroMantenimientos { get; set; } = new List<RegistroMantenimiento>();
 }
