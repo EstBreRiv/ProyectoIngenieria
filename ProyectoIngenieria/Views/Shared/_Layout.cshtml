@@ -15,6 +15,46 @@
     <link rel="stylesheet" href="~/ProyectoIngenieria.styles.css" asp-append-version="true" />
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-success" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-tools me-1"></i> ProyectoIngenieria
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-success fw-semibold" : "text-muted")"
+                               asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door-fill me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Empresa" ? "active text-success fw-semibold" : "text-muted")"
+                               asp-area="" asp-controller="Empresa" asp-action="Index">
+                                <i class="bi bi-building me-1"></i>Empresas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Vehiculo" ? "active text-success fw-semibold" : "text-muted")"
+                               asp-area="" asp-controller="Vehiculo" asp-action="Index">
+                                <i class="bi bi-truck-front me-1"></i>Vehículos
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="ms-auto">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <!-- Contenido principal -->
     <main class="flex-grow-1 py-4">
