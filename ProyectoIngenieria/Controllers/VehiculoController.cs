@@ -26,8 +26,19 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult GetAll()
         {
             var vehiculos = _unitOfWork.Vehiculo.GetAll()
-            .Where(v => v.Estado == "Activo")
-            .ToList();
+                .Where(v => v.Estado == "Activo")
+                .Select(v => new
+                {
+                    v.Id,
+                    v.Modelo,
+                    v.Estado,
+                    v.Descripcion,
+                    v.Placa,
+                    v.Tipo,
+                    EmpresaNombre = _unitOfWork.Empresa.Get(x => x.Id == v.EmpresaId).Nombre
+
+                })
+                .ToList();
             return Json(new { data = vehiculos });
         }
 
