@@ -32,7 +32,8 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult Upsert(int? id)
         {
             // Cargar vehiculos para el dropdown
-            var vehiculos = _unitOfWork.Vehiculo.GetAll();
+            var vehiculos = _unitOfWork.Vehiculo.GetAll()
+                .Where(v => v.Estado != "Inactivo");
             ViewBag.VehiculosList = new SelectList(vehiculos, "Id", "Modelo");
 
             OperadorVM operadorVM = new()
@@ -65,20 +66,32 @@ namespace ProyectoIngenieria.Controllers
         [HttpPost]
         public IActionResult Upsert(OperadorVM operadorVM)
         {
-
             if (ModelState.IsValid)
             {
-                if (operadorVM.Operador.Cedula == 0)
+                var operadorExistente = _unitOfWork.Operador.Get(u => u.Cedula == operadorVM.Operador.Cedula);
+
+                if (operadorExistente == null)
                 {
+                    // Nuevo operador
                     _unitOfWork.Operador.Add(operadorVM.Operador);
                 }
                 else
                 {
-                    _unitOfWork.Operador.Update(operadorVM.Operador);
+                    // Actualizar campos manualmente sobre la instancia ya trackeada
+                    operadorExistente.Nombre = operadorVM.Operador.Nombre;
+                    operadorExistente.VehiculoId = operadorVM.Operador.VehiculoId;
+
+                    // Ya está siendo trackeado, así que no uses Update()
                 }
+
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
+
+            // Recargar lista de vehículos en caso de error
+            var vehiculos = _unitOfWork.Vehiculo.GetAll().Where(v => v.Estado != "Inactivo");
+            ViewBag.VehiculosList = new SelectList(vehiculos, "Id", "Modelo");
+
             return View(operadorVM);
         }
 

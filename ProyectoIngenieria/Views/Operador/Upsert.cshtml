@@ -5,8 +5,6 @@
     <div class="row justify-content-center">
         <div class="col-md-6 bg-white p-4 rounded shadow-sm">
             <form method="post">
-                <input hidden asp-for="Operador.Cedula" />
-
 
                 <!-- Header -->
                 <div class="border-bottom pb-3 mb-4">
@@ -15,12 +13,21 @@
                     </h2>
                 </div>
 
-                <!-- Cédula -->
-                <div class="mb-3">
-                    <label asp-for="Operador.Cedula" class="form-label text-muted"></label>
-                    <input asp-for="Operador.Cedula" type="number" class="form-control" placeholder="Ingrese la cédula del operador" />
-                    <span asp-validation-for="Operador.Cedula" class="form-text text-danger"></span>
-                </div>
+                @if (Model.Operador.Cedula == 0)
+                {
+                    <!-- Mostrar campo para ingresar la cédula -->
+                    <div class="mb-3">
+                        <label asp-for="Operador.Cedula" class="form-label text-muted"></label>
+                        <input asp-for="Operador.Cedula" type="number" class="form-control" placeholder="Ingrese la cédula del operador" />
+                        <span asp-validation-for="Operador.Cedula" class="form-text text-danger"></span>
+                    </div>
+                }
+                else
+                {
+                    <!-- Ocultar el campo cédula si es una edición -->
+                    <input type="hidden" asp-for="Operador.Cedula" />
+                }
+
 
                 <!-- Nombre -->
                 <div class="mb-3">

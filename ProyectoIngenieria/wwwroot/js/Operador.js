@@ -20,15 +20,20 @@ function loadDataTable() {
                 "data": "cedula",
                 "render": function (data) {
                     return `
-                            <a href="/Operador/Upsert/${data}" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i> Editar
-                            </a>
+                    <a href="/Operador/Documentos/${data}" class="btn btn-secondary btn-sm mx-1" title="Documentos">
+                        <i class="bi bi-folder2-open"></i>
+                    </a>
 
-                            <a onClick=Delete(${data}) class="btn btn-danger mx-2">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </a>
-                          `
-                }
+                    <a href="/Operador/Upsert/${data}" class="btn btn-primary btn-sm mx-1" title="Editar">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+
+                    <a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-1" title="Eliminar">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    `
+                },
+                "width": "25%"
             }
         ],
         language: {
