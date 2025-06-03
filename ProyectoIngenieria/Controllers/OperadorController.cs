@@ -95,5 +95,32 @@ namespace ProyectoIngenieria.Controllers
             return View(operadorVM);
         }
 
+        [HttpGet]
+        public IActionResult DocumentoOperador(int id)
+        {
+            var operador = _unitOfWork.Operador.GetAll().Where(o => o.Cedula == id);
+            OperadorVM operadorVM = new OperadorVM();
+            operadorVM.Operador = _unitOfWork.Operador.Get(u => u.Cedula == id);
+
+            if (operador == null)
+            {
+                return NotFound();
+            }
+
+            var documentos = _unitOfWork.DocumentoOperador.GetAll().Where(d => d.OperadorCedula == id);
+            operadorVM.Operador.DocumentoOperadors = documentos.ToList();
+
+            return View(operadorVM);
+        }
+
+        
+        [HttpGet]
+        public IActionResult CargarDocumentoOperador()
+        {
+            DocumentoOperadorVM documentoOperadorVM = new DocumentoOperadorVM();
+            return View(documentoOperadorVM);
+        }
+
+
     }
 }

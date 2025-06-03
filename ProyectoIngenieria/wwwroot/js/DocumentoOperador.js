@@ -8,24 +8,18 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/Operador/GetAll",
+            "url": "/DocumentoOperador/GetAll",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "cedula", "width": "15%" },
             { "data": "nombre", "width": "15%" },
-            { "data": "vehiculoId", "width": "15%" },
             {
-                "data": "cedula",
+                "data": "id",
                 "render": function (data) {
                     return `
-                    <a href="/Operador/DocumentoOperador/${data}" class="btn btn-secondary btn-sm mx-2" title="Documentos">
-                        <i class="bi bi-folder2-open"></i>
-                    </a>
-
-                    <a href="/Operador/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
-                        <i class="bi bi-pencil-square"></i>
+                    <a href="/Operador/Documentos/${data}" class="btn btn-success btn-sm mx-2" title="Ver">
+                        <i class="bi bi-eye"></i>
                     </a>
 
                     <a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
