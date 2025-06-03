@@ -20,3 +20,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-link .card {
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #198754;
+}
+
+    .card-link .card:hover {
+        background-color: #d1e7dd; /* Verde clarito */
+        border-color: #145c35; /* Verde más oscuro */
+        box-shadow: 0 0 12px rgba(25, 135, 84, 0.5);
+        transform: scale(1.02);
+    }
