@@ -17,7 +17,7 @@ function loadDataTable() {
             { "data": "descripcion", "width": "15%" },
             { "data": "placa", "width": "15%" },
             { "data": "tipo", "width": "15%" },
-            { "data": "empresaId", "width": "15%" },
+            { "data": "empresaNombre", "width": "15%" },
             {
                 "data": "id",
                 "render": function (data) {

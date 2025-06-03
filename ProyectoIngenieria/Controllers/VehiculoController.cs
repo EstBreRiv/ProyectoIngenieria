@@ -36,7 +36,6 @@ namespace ProyectoIngenieria.Controllers
                     v.Placa,
                     v.Tipo,
                     EmpresaNombre = _unitOfWork.Empresa.Get(x => x.Id == v.EmpresaId).Nombre
-
                 })
                 .ToList();
             return Json(new { data = vehiculos });
