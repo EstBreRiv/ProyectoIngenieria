@@ -94,33 +94,108 @@ namespace ProyectoIngenieria.Controllers
 
             return View(operadorVM);
         }
+        
+        [HttpGet]
+        public IActionResult CargarDocumentoOperador(int id)
+        {
+            DocumentoOperadorVM documentoOperadorVM = new()
+            {
+                DocumentoOperador = new DocumentoOperador()
+                {
+                    OperadorCedula = id
+                }
+            };
+
+            return View(documentoOperadorVM);
+        }
+
+        [HttpPost]
+        public IActionResult CargarDocumentoOperador(DocumentoOperadorVM documentoOperadorVM)
+        {
+            if (ModelState.IsValid)
+            {
+                if (documentoOperadorVM.Archivo != null && documentoOperadorVM.Archivo.Length > 0)
+                {
+                    var nombreArchivo = Path.GetFileNameWithoutExtension(documentoOperadorVM.Archivo.FileName);
+                    var extension = Path.GetExtension(documentoOperadorVM.Archivo.FileName);
+                    var nombreUnico = $"{nombreArchivo}_{DateTime.Now.Ticks}{extension}";
+                    var rutaGuardar = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "documentos", "documentoOperador", nombreUnico);
+
+                    using (var stream = new FileStream(rutaGuardar, FileMode.Create))
+                    {
+                        documentoOperadorVM.Archivo.CopyTo(stream);
+                    }
+
+                    // Guardar el path del archivo en la base de datos
+                    documentoOperadorVM.DocumentoOperador.Ruta = "/documentos/documentoOperador/" + nombreUnico;
+                }
+
+                // Guardar el registro en base de datos
+                _unitOfWork.DocumentoOperador.Add(documentoOperadorVM.DocumentoOperador);
+                _unitOfWork.Save();
+
+                return RedirectToAction("DocumentoOperador", new { id = documentoOperadorVM.DocumentoOperador.OperadorCedula });
+            }
+
+            return View(documentoOperadorVM);
+        }
 
         [HttpGet]
         public IActionResult DocumentoOperador(int id)
         {
-            var operador = _unitOfWork.Operador.GetAll().Where(o => o.Cedula == id);
-            OperadorVM operadorVM = new OperadorVM();
-            operadorVM.Operador = _unitOfWork.Operador.Get(u => u.Cedula == id);
+            var operador = _unitOfWork.Operador.Get(u => u.Cedula == id);
 
             if (operador == null)
             {
                 return NotFound();
             }
 
-            var documentos = _unitOfWork.DocumentoOperador.GetAll().Where(d => d.OperadorCedula == id);
-            operadorVM.Operador.DocumentoOperadors = documentos.ToList();
+            OperadorVM operadorVM = new OperadorVM
+            {
+                Operador = operador
+            };
 
             return View(operadorVM);
         }
 
-        
+
         [HttpGet]
-        public IActionResult CargarDocumentoOperador()
+        public IActionResult GetDocumentosOperador(int id)
         {
-            DocumentoOperadorVM documentoOperadorVM = new DocumentoOperadorVM();
-            return View(documentoOperadorVM);
+            var documentos = _unitOfWork.DocumentoOperador
+                .GetAll()
+                .Where(d => d.OperadorCedula == id)
+                .Select(d => new {
+                    d.Id,
+                    d.Nombre,
+                    d.Ruta // <-- importante
+                })
+                .ToList();
+
+            return Json(new { data = documentos });
         }
 
+        [HttpDelete]
+        public IActionResult DeleteDocumento(int id)
+        {
+            var documento = _unitOfWork.DocumentoOperador.Get(d => d.Id == id);
+            if (documento == null)
+            {
+                return Json(new { success = false, message = "Error al borrar el documento" });
+            }
+
+            // Aquí podés eliminar físicamente el archivo si querés:
+            var rutaFisica = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", documento.Ruta.TrimStart('/'));
+            if (System.IO.File.Exists(rutaFisica))
+            {
+                System.IO.File.Delete(rutaFisica);
+            }
+
+            _unitOfWork.DocumentoOperador.Remove(documento);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Documento eliminado exitosamente" });
+        }
 
     }
 }

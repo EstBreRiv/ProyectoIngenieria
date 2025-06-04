@@ -46,17 +46,15 @@ function loadDataTable() {
 
 function Delete(id) {
     Swal.fire({
-        title: "Esta seguro de querer eliminar?",
-        text: "Los datos no seran eliminados de la base de datos, pero seran invisibles para el usuario",
+        title: "¿Estás seguro?",
+        text: "El operador será eliminado definitivamente.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, estoy seguro!"
+        confirmButtonText: "Sí, eliminar"
     }).then((result) => {
         if (result.isConfirmed) {
-
-            //metodo que permite hacer el delete sin tener que hacer un httpget
             $.ajax({
                 url: "/Operador/Delete/" + id,
                 type: 'DELETE',
@@ -64,18 +62,14 @@ function Delete(id) {
                     if (data.success) {
                         dataTable.ajax.reload();
                         toastr.success(data.message);
-                    }
-                    else {
+                    } else {
                         toastr.error(data.message);
                     }
                 },
-                error: function (data) {
-                    toastr.errort(data.message);
+                error: function () {
+                    toastr.error("Error al procesar la solicitud");
                 }
             });
-
-
         }
     });
-
 }

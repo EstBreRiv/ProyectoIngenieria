@@ -6,26 +6,27 @@ $(document).ready(function () {
 });
 
 function loadDataTable() {
+    const cedula = $('#operadorCedula').val(); // obtén el valor del hidden input
+
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/DocumentoOperador/GetAll",
-            "type": "GET",
-            "datatype": "json"
+            url: `/Operador/GetDocumentosOperador?id=${cedula}`,
+            type: "GET",
+            datatype: "json"
         },
         "columns": [
             { "data": "nombre", "width": "15%" },
             {
-                "data": "id",
-                "render": function (data) {
+                "data": "ruta",
+                "render": function (ruta, type, row) {
                     return `
-                    <a href="/Operador/Documentos/${data}" class="btn btn-success btn-sm mx-2" title="Ver">
-                        <i class="bi bi-eye"></i>
-                    </a>
-
-                    <a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                        <i class="bi bi-trash"></i>
-                    </a>
-                    `
+                <a href="${ruta}" class="btn btn-success btn-sm mx-2" title="Ver" target="_blank">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a onClick="Delete(${row.id})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                    <i class="bi bi-trash"></i>
+                </a>
+            `
                 },
                 "width": "25%"
             }
@@ -33,43 +34,36 @@ function loadDataTable() {
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         }
-
     });
 }
 
 
 function Delete(id) {
     Swal.fire({
-        title: "Esta seguro de querer eliminar?",
-        text: "Los datos no seran eliminados de la base de datos, pero seran invisibles para el usuario",
+        title: "¿Estás seguro?",
+        text: "Este documento será eliminado definitivamente.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, estoy seguro!"
+        confirmButtonText: "Sí, eliminar"
     }).then((result) => {
         if (result.isConfirmed) {
-
-            //metodo que permite hacer el delete sin tener que hacer un httpget
             $.ajax({
-                url: "/Operador/Delete/" + id,
+                url: "/Operador/DeleteDocumento/" + id,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
                         toastr.success(data.message);
-                    }
-                    else {
+                    } else {
                         toastr.error(data.message);
                     }
                 },
-                error: function (data) {
-                    toastr.errort(data.message);
+                error: function () {
+                    toastr.error("Error al procesar la solicitud");
                 }
             });
-
-
         }
     });
-
 }
