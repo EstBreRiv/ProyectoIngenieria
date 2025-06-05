@@ -15,7 +15,7 @@ function loadDataTable() {
             datatype: "json"
         },
         "columns": [
-            { "data": "nombre", "width": "15%" },
+            { "data": "nombre", "width": "50%" },
             {
                 "data": "ruta",
                 "render": function (ruta, type, row) {
@@ -28,7 +28,7 @@ function loadDataTable() {
                 </a>
             `
                 },
-                "width": "25%"
+                "width": "20%"
             }
         ],
         language: {

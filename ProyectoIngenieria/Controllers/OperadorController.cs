@@ -72,7 +72,6 @@ namespace ProyectoIngenieria.Controllers
 
                 if (operadorExistente == null)
                 {
-                    // Nuevo operador
                     _unitOfWork.Operador.Add(operadorVM.Operador);
                 }
                 else
@@ -80,21 +79,48 @@ namespace ProyectoIngenieria.Controllers
                     // Actualizar campos manualmente sobre la instancia ya trackeada
                     operadorExistente.Nombre = operadorVM.Operador.Nombre;
                     operadorExistente.VehiculoId = operadorVM.Operador.VehiculoId;
-
-                    // Ya está siendo trackeado, así que no uses Update()
                 }
 
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            // Recargar lista de vehículos en caso de error
             var vehiculos = _unitOfWork.Vehiculo.GetAll().Where(v => v.Estado != "Inactivo");
             ViewBag.VehiculosList = new SelectList(vehiculos, "Id", "Modelo");
 
             return View(operadorVM);
         }
-        
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var operador = _unitOfWork.Operador.Get(o => o.Cedula == id);
+
+            if (operador == null)
+            {
+                return Json(new { success = false, message = "Error al borrar el operador" });
+            }
+
+            var documentos = _unitOfWork.DocumentoOperador.GetAll().Where(d => d.OperadorCedula == id).ToList();
+
+            foreach (var doc in documentos)
+            {
+                var rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", doc.Ruta.TrimStart('/'));
+                if (System.IO.File.Exists(rutaCompleta))
+                {
+                    System.IO.File.Delete(rutaCompleta);
+                }
+
+                _unitOfWork.DocumentoOperador.Remove(doc);
+            }
+
+            _unitOfWork.Operador.Remove(operador);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Operador eliminado correctamente" });
+        }
+
+
         [HttpGet]
         public IActionResult CargarDocumentoOperador(int id)
         {
@@ -168,7 +194,7 @@ namespace ProyectoIngenieria.Controllers
                 .Select(d => new {
                     d.Id,
                     d.Nombre,
-                    d.Ruta // <-- importante
+                    d.Ruta
                 })
                 .ToList();
 
@@ -184,7 +210,6 @@ namespace ProyectoIngenieria.Controllers
                 return Json(new { success = false, message = "Error al borrar el documento" });
             }
 
-            // Aquí podés eliminar físicamente el archivo si querés:
             var rutaFisica = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", documento.Ruta.TrimStart('/'));
             if (System.IO.File.Exists(rutaFisica))
             {
