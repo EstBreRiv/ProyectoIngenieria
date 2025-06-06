@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-5 fw-bold text-success">EXCAVACIONES Y TRANSPORTES RIVERA????? </h1>
+
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+    <!-- Vehículos -->
+    <div class="col">
+        <a asp-controller="Vehiculo" asp-action="Index" class="card-link">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-truck-front fs-1 text-success"></i>
+                    <h5 class="card-title mt-3">Vehículos</h5>
+                    <p class="card-text">Gestionar los vehículos registrados.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Empresas -->
+    <div class="col">
+        <a asp-controller="Empresa" asp-action="Index" class="card-link">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-building fs-1 text-success"></i>
+                    <h5 class="card-title mt-3">Empresas</h5>
+                    <p class="card-text">Administrar la información de las empresas.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Operadores -->
+    <div class="col">
+        <a asp-controller="Operador" asp-action="Index" class="card-link">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-person-workspace fs-1 text-success"></i>
+                    <h5 class="card-title mt-3">Operadores</h5>
+                    <p class="card-text">Administrar la información de los operadores.</p>
+                </div>
+            </div>
+        </a>
+    </div>
