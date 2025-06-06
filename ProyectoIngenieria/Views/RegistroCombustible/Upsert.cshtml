@@ -1,0 +1,65 @@
+﻿@using ProyectoIngenieria.Models.ViewModels
+@model RegistroCombustibleVM
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+            <form method="post">
+                <input hidden asp-for="RegistroCombustible.Id" />
+
+
+                <!-- Header -->
+                <div class="border-bottom pb-3 mb-4">
+                    <h2 class="h4 text-success">
+                        @(Model.RegistroCombustible.Id == 0 ? "Agregar" : "Actualizar") registro de combustible
+                    </h2>
+                </div>
+
+                <!-- Fecha de compra -->
+                <div class="mb-3">
+                    <label asp-for="RegistroCombustible.FechaCompra" class="form-label text-muted"></label>
+                    <input asp-for="RegistroCombustible.FechaCompra" type="text" class="form-control" placeholder="Ingrese la fecha de compra" />
+                    <span asp-validation-for="RegistroCombustible.FechaCompra" class="form-text text-danger"></span>
+                </div>
+
+                <!-- Litros comprados -->
+                <div class="mb-3">
+                    <label asp-for="RegistroCombustible.LitrosComprados" class="form-label text-muted"></label>
+                    <input asp-for="RegistroCombustible.LitrosComprados" type="text" class="form-control" placeholder="Ingrese los litros comprados" />
+                    <span asp-validation-for="RegistroCombustible.LitrosComprados" class="form-text text-danger"></span>
+                </div>
+
+                <!-- Precio por litro -->
+                <div class="mb-3">
+                    <label asp-for="RegistroCombustible.PrecioLitro" class="form-label text-muted"></label>
+                    <input asp-for="RegistroCombustible.PrecioLitro" type="text" class="form-control" placeholder="Ingrese el precio por litro" />
+                    <span asp-validation-for="RegistroCombustible.PrecioLitro" class="form-text text-danger"></span>
+                </div>
+
+                <!-- Total pagado -->
+                <div class="mb-3">
+                    <label asp-for="RegistroCombustible.TotalPagado" class="form-label text-muted"></label>
+                    <input asp-for="RegistroCombustible.TotalPagado" type="text" class="form-control" placeholder="Ingrese el total pagado" />
+                    <span asp-validation-for="RegistroCombustible.TotalPagado" class="form-text text-danger"></span>
+                </div>
+
+                <!-- Botones -->
+
+                <div class="d-flex gap-3 pt-3">
+                    <button type="submit" class="btn btn-success w-50">
+                        Guardar
+                    </button>
+                    <a asp-controller="RegistroCombustible" asp-action="Index" class="btn btn-outline-secondary w-50 text-center">
+                        Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
