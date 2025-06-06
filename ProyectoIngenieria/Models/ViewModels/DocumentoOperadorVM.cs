@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoIngenieria.Models.ViewModels
 {
@@ -11,5 +12,8 @@ namespace ProyectoIngenieria.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> DocumentoOperadorList { get; set; }
+
+        [NotMapped]
+        public IFormFile Archivo { get; set; }
     }
 }
