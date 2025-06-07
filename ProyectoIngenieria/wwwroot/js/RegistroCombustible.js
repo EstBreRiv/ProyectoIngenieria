@@ -2,20 +2,30 @@
 
 $(document).ready(function () {
     console.log("Task.js cargado y listo");
+
+    // Obtener el ID del vehículo desde el campo oculto
+    var vehiculoId = $('#VehiculoIdHidden').val();
+
     loadDataTable();
 });
 
 function loadDataTable() {
+    var vehiculoId = $('#VehiculoIdHidden').val(); // Obtener el ID del vehículo
+
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/RegistroCombustible/GetAll"
+            url: "/RegistroCombustible/GetAll",
+            data: function (d) {
+                d.id = vehiculoId; // Pasar el ID del vehículo al backend
+            }
         },
+
         "columns": [
             { "data": "id", "width": "15%" },
-            { "data": "fecha_compra", "width": "15%" },
-            { "data": "litros_comprados", "width": "15%" },
-            { "data": "precio_litro", "width": "15%" },
-            { "data": "total_pagado", "width": "15%" },
+            { "data": "fechaCompra", "width": "15%" },
+            { "data": "litrosComprados", "width": "15%" },
+            { "data": "precioLitro", "width": "15%" },
+            { "data": "totalPagado", "width": "15%" },
 
             {
                 "data": "id",

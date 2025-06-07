@@ -17,15 +17,16 @@ namespace ProyectoIngenieria.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
+            ViewBag.VehiculoId = id; // Pasa el ID a la vista para que el JS lo use
             return View();
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int id)
         {
-            var registrosCombustible = _unitOfWork.RegistroCombustible.GetAll()
+            var registrosCombustible = _unitOfWork.RegistroCombustible.GetAll(r => r.VehiculoId == id)
                 .Select(r => new
                 {
                     r.Id,
@@ -39,21 +40,26 @@ namespace ProyectoIngenieria.Controllers
         }
 
         [HttpGet]
-        public IActionResult Upsert(int? id)
+        public IActionResult Upsert(int? id, int? vehiculoId) //Puede recibir 2 id
         {
             RegistroCombustibleVM registroCombustibleVM = new()
             {
-                RegistroCombustible = new RegistroCombustible(),
-                RegistroCombustibleList = _unitOfWork.RegistroCombustible.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.FechaCompra.ToString(),
-                    Value = i.Id.ToString()
-                }).ToList()
+                RegistroCombustible = new RegistroCombustible()
+                //RegistroCombustibleList = _unitOfWork.RegistroCombustible.GetAll().Select(i => new SelectListItem
+                //{
+                //    Text = i.FechaCompra.ToString(),
+                //    Value = i.Id.ToString()
+                //}).ToList()
             };
 
             if (id == null || id == 0)
             {
                 // Create
+                if (vehiculoId.HasValue)
+                {
+                    registroCombustibleVM.RegistroCombustible.VehiculoId = vehiculoId.Value;
+                    ViewBag.VehiculoId = vehiculoId.Value; //Agarra el vehiculoId desde la URL y lo pasa al viewbag y al VM, luego se manda a la vista
+                }
                 return View(registroCombustibleVM);
             }
             else
@@ -64,6 +70,9 @@ namespace ProyectoIngenieria.Controllers
                 {
                     return NotFound();
                 }
+
+                ViewBag.VehiculoId = registroCombustibleVM.RegistroCombustible.VehiculoId; //Util para edicion
+
                 return View(registroCombustibleVM);
             }
         }
@@ -82,7 +91,7 @@ namespace ProyectoIngenieria.Controllers
                     _unitOfWork.RegistroCombustible.Update(registroCombustibleVM.RegistroCombustible);
                 }
                 _unitOfWork.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = registroCombustibleVM.RegistroCombustible.VehiculoId }); //Para que se redirija con la URL con id del vehiculo asociado
             }
             return View(registroCombustibleVM);
         }

@@ -11,7 +11,7 @@
             <h2 class="text-center mb-4">@ViewData["Title"]</h2>
 
             <form method="post">
-                <input hidden asp-for="RegistroCombustible.Id" />
+                <input hidden asp-for="RegistroCombustible.VehiculoId" value="@ViewBag.VehiculoId"/>
 
                 <div class="card shadow border">
                     <div class="card-body">
@@ -50,7 +50,7 @@
                             <button type="submit" class="btn btn-success w-50">
                                 Guardar
                             </button>
-                            <a asp-controller="RegistroCombustible" asp-action="Index" class="btn btn-outline-secondary w-50 text-center">
+                            <a href="/RegistroCombustible/Index/@Model.RegistroCombustible.VehiculoId" class="btn btn-outline-secondary w-50 text-center">
                                 Volver
                             </a>
                         </div>
@@ -62,6 +62,43 @@
 </div>
 
 @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Obtener el VehiculoId al cargar la página
+            let vehiculoId = document.querySelector("[name='RegistroCombustible.VehiculoId']").value;
+
+            // Imprimir el valor en la consola
+            console.log("Vehículo ID al cargar la vista:", vehiculoId);
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector("form").addEventListener("submit", function (event) {
+                event.preventDefault(); // Evita el envío automático del formulario
+
+                // Obtener los valores del formulario
+                let vehiculoId = document.querySelector("[name='RegistroCombustible.VehiculoId']").value;
+                let fechaCompra = document.querySelector("[name='RegistroCombustible.FechaCompra']").value;
+                let litrosComprados = document.querySelector("[name='RegistroCombustible.LitrosComprados']").value;
+                let precioLitro = document.querySelector("[name='RegistroCombustible.PrecioLitro']").value;
+                let totalPagado = document.querySelector("[name='RegistroCombustible.TotalPagado']").value;
+
+                // Mostrar los valores en la consola
+                console.log("Datos recolectados:");
+                console.log("Vehículo ID:", vehiculoId);
+                console.log("Fecha de Compra:", fechaCompra);
+                console.log("Litros Comprados:", litrosComprados);
+                console.log("Precio por Litro:", precioLitro);
+                console.log("Total Pagado:", totalPagado);
+
+                // Opcional: Puedes permitir que el formulario se envíe después de mostrar los datos
+                this.submit();
+            });
+        });
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }
+
+
 

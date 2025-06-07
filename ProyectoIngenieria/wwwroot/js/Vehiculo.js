@@ -26,7 +26,7 @@ function loadDataTable() {
                                 <i class="bi bi-pencil-square"></i> Editar
                             </a>
 
-                            <a href="/RegistroCombustible/Index" class="btn btn-primary mx-2">
+                            <a href="/RegistroCombustible/Index/${data}" class="btn btn-primary mx-2">
                                 <i class="bi bi-pencil-square"></i> Registro de combustible
                             </a>
 
