@@ -11,6 +11,7 @@
             <h2 class="text-center mb-4">@ViewData["Title"]</h2>
 
             <form method="post">
+                <input asp-for="RegistroCombustible.Id" type="hidden" />
                 <input hidden asp-for="RegistroCombustible.VehiculoId" value="@ViewBag.VehiculoId"/>
 
                 <div class="card shadow border">
@@ -19,28 +20,28 @@
                         <!-- Fecha de compra -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.FechaCompra" class="form-label text-muted">Fecha de compra</label>
-                            <input asp-for="RegistroCombustible.FechaCompra" type="text" class="form-control" placeholder="Ingrese la fecha de compra" />
+                            <input asp-for="RegistroCombustible.FechaCompra" type="date" class="form-control"/>
                             <span asp-validation-for="RegistroCombustible.FechaCompra" class="text-danger small"></span>
                         </div>
 
                         <!-- Litros comprados -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.LitrosComprados" class="form-label text-muted">Litros comprados</label>
-                            <input asp-for="RegistroCombustible.LitrosComprados" type="text" class="form-control" placeholder="Ingrese los litros comprados" value="" />
+                            <input asp-for="RegistroCombustible.LitrosComprados" type="text" class="form-control" placeholder="Ingrese los litros comprados"/>
                             <span asp-validation-for="RegistroCombustible.LitrosComprados" class="text-danger small"></span>
                         </div>
 
                         <!-- Precio por litro -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.PrecioLitro" class="form-label text-muted">Precio por litro</label>
-                            <input asp-for="RegistroCombustible.PrecioLitro" type="text" class="form-control" placeholder="Ingrese el precio por litro" value="" />
+                            <input asp-for="RegistroCombustible.PrecioLitro" type="text" class="form-control" placeholder="Ingrese el precio por litro" />
                             <span asp-validation-for="RegistroCombustible.PrecioLitro" class="text-danger small"></span>
                         </div>
 
-                        <!-- Total pagado -->
+                        <!-- Total pagado (calculado automáticamente) -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.TotalPagado" class="form-label text-muted">Total pagado</label>
-                            <input asp-for="RegistroCombustible.TotalPagado" type="text" class="form-control" placeholder="Ingrese el total pagado" value="" />
+                            <input asp-for="RegistroCombustible.TotalPagado" type="text" class="form-control bg-secondary-subtle" placeholder="Se calculará automáticamente" readonly tabindex="-1" />
                             <span asp-validation-for="RegistroCombustible.TotalPagado" class="text-danger small"></span>
                         </div>
 
@@ -62,42 +63,26 @@
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Obtener el VehiculoId al cargar la página
-            let vehiculoId = document.querySelector("[name='RegistroCombustible.VehiculoId']").value;
-
-            // Imprimir el valor en la consola
-            console.log("Vehículo ID al cargar la vista:", vehiculoId);
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector("form").addEventListener("submit", function (event) {
-                event.preventDefault(); // Evita el envío automático del formulario
-
-                // Obtener los valores del formulario
-                let vehiculoId = document.querySelector("[name='RegistroCombustible.VehiculoId']").value;
-                let fechaCompra = document.querySelector("[name='RegistroCombustible.FechaCompra']").value;
-                let litrosComprados = document.querySelector("[name='RegistroCombustible.LitrosComprados']").value;
-                let precioLitro = document.querySelector("[name='RegistroCombustible.PrecioLitro']").value;
-                let totalPagado = document.querySelector("[name='RegistroCombustible.TotalPagado']").value;
-
-                // Mostrar los valores en la consola
-                console.log("Datos recolectados:");
-                console.log("Vehículo ID:", vehiculoId);
-                console.log("Fecha de Compra:", fechaCompra);
-                console.log("Litros Comprados:", litrosComprados);
-                console.log("Precio por Litro:", precioLitro);
-                console.log("Total Pagado:", totalPagado);
-
-                // Opcional: Puedes permitir que el formulario se envíe después de mostrar los datos
-                this.submit();
-            });
-        });
-    </script>
     <partial name="_ValidationScriptsPartial" />
+
+    <!-- Calcula el precio del total pagado -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const litrosInput = document.querySelector("[name='RegistroCombustible.LitrosComprados']");
+            const precioInput = document.querySelector("[name='RegistroCombustible.PrecioLitro']");
+            const totalInput = document.querySelector("[name='RegistroCombustible.TotalPagado']");
+
+            function calcularTotal() {
+                const litros = parseFloat(litrosInput.value) || 0;
+                const precio = parseFloat(precioInput.value) || 0;
+                const total = litros * precio;
+                totalInput.value = total.toFixed(2);
+            }
+
+            litrosInput.addEventListener("input", calcularTotal);
+            precioInput.addEventListener("input", calcularTotal);
+        });
+    </script>
 }
 
 

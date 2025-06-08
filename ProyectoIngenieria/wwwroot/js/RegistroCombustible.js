@@ -32,8 +32,8 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                             <div class="text-center">
-                                <a href="/RegistoCombustible/Upsert/${data}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mx-1 text-xs">
-                                    <i class="bi bi-pencil-square"></i> Editar
+                                <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-pencil-square me-1"></i> Editar
                                 </a>
                             </div>
 

@@ -80,6 +80,22 @@ namespace ProyectoIngenieria.Controllers
         [HttpPost]
         public IActionResult Upsert(RegistroCombustibleVM registroCombustibleVM)
         {
+            // Validación manual adicional por si los campos son nullable
+            if (registroCombustibleVM.RegistroCombustible.LitrosComprados == null)
+            {
+                ModelState.AddModelError("RegistroCombustible.LitrosComprados", "Este campo es obligatorio.");
+            }
+
+            if (registroCombustibleVM.RegistroCombustible.PrecioLitro == null)
+            {
+                ModelState.AddModelError("RegistroCombustible.PrecioLitro", "Este campo es obligatorio.");
+            }
+
+            if (registroCombustibleVM.RegistroCombustible.FechaCompra == null)
+            {
+                ModelState.AddModelError("RegistroCombustible.FechaCompra", "Debe ingresar la fecha de compra.");
+            }
+
             if (ModelState.IsValid)
             {
                 if (registroCombustibleVM.RegistroCombustible.Id == 0)
@@ -91,8 +107,14 @@ namespace ProyectoIngenieria.Controllers
                     _unitOfWork.RegistroCombustible.Update(registroCombustibleVM.RegistroCombustible);
                 }
                 _unitOfWork.Save();
-                return RedirectToAction("Index", new { id = registroCombustibleVM.RegistroCombustible.VehiculoId }); //Para que se redirija con la URL con id del vehiculo asociado
+
+                //Para que se redirija con la URL con id del vehiculo asociado
+                return RedirectToAction("Index", new { id = registroCombustibleVM.RegistroCombustible.VehiculoId }); 
             }
+
+            // Si el modelo no es válido, asegurarse de mantener el VehiculoId en ViewBag
+            ViewBag.VehiculoId = registroCombustibleVM.RegistroCombustible.VehiculoId;
+
             return View(registroCombustibleVM);
         }
     }
