@@ -26,7 +26,7 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult GetAll()
         {
             var vehiculos = _unitOfWork.Vehiculo.GetAll()
-                .Where(v => v.Estado == "Activo")
+                .Where(v => v.Estado != "Inactivo")
                 .Select(v => new
                 {
                     v.Id,
@@ -125,16 +125,26 @@ namespace ProyectoIngenieria.Controllers
                 {
                     return NotFound();
                 }
+
+                /*
+                var operador = _unitOfWork.Operador.Get(o => o.VehiculoId == id);
+                if (operador == null)
+                {
+                    return NotFound();
+                }
+                */
+
                 //soft delete
                 vehiculo.Estado = "Inactivo"; // Cambiar estado a Inactivo
+                //operador.VehiculoId = 0; // Desasociar operador del vehículo
                 _unitOfWork.Vehiculo.Update(vehiculo);
+                //_unitOfWork.Operador.Update(operador);
                 _unitOfWork.Save();
-                //return View(vehiculo);
-                return Json(new { success = true, message = "Eliminado exitosamente" });
+                return Json(new { success = true, message = "Se ha inactivado exitosamente" });
             }
             catch
             {
-                return Json(new { success = false, message = "No se pudo eliminar" });
+                return Json(new { success = false, message = "No se pudo inactivar" });
             }
         }
     }
