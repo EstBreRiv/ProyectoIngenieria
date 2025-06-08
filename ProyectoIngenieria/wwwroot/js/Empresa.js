@@ -11,7 +11,6 @@ function loadDataTable() {
             "url": "/Empresa/GetAll"
         },
         "columns": [
-            { "data": "id", "width": "15%" },
             { "data": "nombre", "width": "30%" },
             
             {
@@ -19,13 +18,13 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                             <div class="text-center">
-                                <a href="/Empresa/Upsert/${data}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mx-1 text-xs">
-                                    <i class="bi bi-pencil-square"></i> Editar
+                                <a href="/Empresa/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
                             </div>
-
                           `
-                }
+                },
+                "width": "25%"
             }
         ],
         language: {

@@ -15,23 +15,23 @@ function loadDataTable() {
         "columns": [
             { "data": "cedula", "width": "15%" },
             { "data": "nombre", "width": "15%" },
-            { "data": "vehiculoId", "width": "15%" },
+            { "data": "vehiculoModelo", "width": "15%" },
             {
                 "data": "cedula",
                 "render": function (data) {
                     return `
-                    <a href="/Operador/DocumentoOperador/${data}" class="btn btn-secondary btn-sm mx-2" title="Documentos">
-                        <i class="bi bi-folder2-open"></i>
-                    </a>
+                            <a href="/Operador/DocumentoOperador/${data}" class="btn btn-secondary btn-sm mx-2" title="Documentos">
+                                <i class="bi bi-folder2-open"></i>
+                            </a>
 
-                    <a href="/Operador/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
+                            <a href="/Operador/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
 
-                    <a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                        <i class="bi bi-trash"></i>
-                    </a>
-                    `
+                            <a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                          `
                 },
                 "width": "25%"
             }

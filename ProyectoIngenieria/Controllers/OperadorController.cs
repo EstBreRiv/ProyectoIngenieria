@@ -24,7 +24,14 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var operadores = _unitOfWork.Operador.GetAll();
+            var operadores = _unitOfWork.Operador.GetAll().Select(o => new
+                {
+                    o.Cedula,
+                    o.Nombre,
+                    o.VehiculoId,
+                    VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo
+                })
+                .ToList();
             return Json(new { data = operadores });
         }
 
