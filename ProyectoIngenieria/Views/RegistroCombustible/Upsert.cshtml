@@ -1,0 +1,89 @@
+﻿@using ProyectoIngenieria.Models.ViewModels
+@model RegistroCombustibleVM
+
+@{
+    ViewData["Title"] = Model.RegistroCombustible.Id == 0 ? "Crear registro de combustible" : "Editar registro de combustible";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+            <form method="post">
+                <input asp-for="RegistroCombustible.Id" type="hidden" />
+                <input hidden asp-for="RegistroCombustible.VehiculoId" value="@ViewBag.VehiculoId"/>
+
+                <div class="card shadow border">
+                    <div class="card-body">
+
+                        <!-- Fecha de compra -->
+                        <div class="mb-3">
+                            <label asp-for="RegistroCombustible.FechaCompra" class="form-label text-muted">Fecha de compra</label>
+                            <input asp-for="RegistroCombustible.FechaCompra" type="date" class="form-control"/>
+                            <span asp-validation-for="RegistroCombustible.FechaCompra" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Litros comprados -->
+                        <div class="mb-3">
+                            <label asp-for="RegistroCombustible.LitrosComprados" class="form-label text-muted">Litros comprados</label>
+                            <input asp-for="RegistroCombustible.LitrosComprados" type="text" class="form-control" placeholder="Ingrese los litros comprados"/>
+                            <span asp-validation-for="RegistroCombustible.LitrosComprados" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Precio por litro -->
+                        <div class="mb-3">
+                            <label asp-for="RegistroCombustible.PrecioLitro" class="form-label text-muted">Precio por litro</label>
+                            <input asp-for="RegistroCombustible.PrecioLitro" type="text" class="form-control" placeholder="Ingrese el precio por litro" />
+                            <span asp-validation-for="RegistroCombustible.PrecioLitro" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Total pagado (calculado automáticamente) -->
+                        <div class="mb-3">
+                            <label asp-for="RegistroCombustible.TotalPagado" class="form-label text-muted">Total pagado</label>
+                            <input asp-for="RegistroCombustible.TotalPagado" type="text" class="form-control bg-secondary-subtle" placeholder="Se calculará automáticamente" readonly tabindex="-1" />
+                            <span asp-validation-for="RegistroCombustible.TotalPagado" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Botones -->
+
+                        <div class="d-flex gap-3 pt-3">
+                            <button type="submit" class="btn btn-success w-50">
+                                Guardar
+                            </button>
+                            <a href="/RegistroCombustible/Index/@Model.RegistroCombustible.VehiculoId" class="btn btn-outline-secondary w-50 text-center">
+                                Volver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Calcula el precio del total pagado -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const litrosInput = document.querySelector("[name='RegistroCombustible.LitrosComprados']");
+            const precioInput = document.querySelector("[name='RegistroCombustible.PrecioLitro']");
+            const totalInput = document.querySelector("[name='RegistroCombustible.TotalPagado']");
+
+            function calcularTotal() {
+                const litros = parseFloat(litrosInput.value) || 0;
+                const precio = parseFloat(precioInput.value) || 0;
+                const total = litros * precio;
+                totalInput.value = total.toFixed(2);
+            }
+
+            litrosInput.addEventListener("input", calcularTotal);
+            precioInput.addEventListener("input", calcularTotal);
+        });
+    </script>
+}
+
+
+
