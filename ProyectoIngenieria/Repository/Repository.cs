@@ -43,9 +43,14 @@ namespace ProyectoIngenieria.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
 
             if (includeProperties != null)
             {
@@ -55,7 +60,6 @@ namespace ProyectoIngenieria.Repository
                 }
             }
 
-            //retorna na lista con toda la informacion y los eager loadings que se especificaron
             return query.ToList();
         }
 

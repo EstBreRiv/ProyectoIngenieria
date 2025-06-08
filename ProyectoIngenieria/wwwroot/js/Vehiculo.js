@@ -26,6 +26,10 @@ function loadDataTable() {
                                 <i class="bi bi-pencil-square"></i> Editar
                             </a>
 
+                            <a href="/RegistroCombustible/Index/${data}" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i> Registro de combustible
+                            </a>
+
                             <a onClick=Delete(${data}) class="btn btn-danger mx-2">
                                 <i class="bi bi-trash"></i> Eliminar
                             </a>
