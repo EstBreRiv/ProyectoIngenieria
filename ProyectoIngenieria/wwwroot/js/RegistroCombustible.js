@@ -35,6 +35,9 @@ function loadDataTable() {
                                 <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-sm btn-primary">
                                     <i class="bi bi-pencil-square me-1"></i> Editar
                                 </a>
+                                <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
                             </div>
 
                           `
@@ -45,5 +48,33 @@ function loadDataTable() {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         }
 
+    });
+}
+
+function Delete(url) {
+    Swal.fire({
+        title: '¿Está seguro?',
+        text: "¡No podrá recuperar el registro eliminado!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        dataTable.ajax.reload();
+                    } else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        }
     });
 }

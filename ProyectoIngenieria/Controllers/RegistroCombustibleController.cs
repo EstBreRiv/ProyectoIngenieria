@@ -117,6 +117,20 @@ namespace ProyectoIngenieria.Controllers
 
             return View(registroCombustibleVM);
         }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var registro = _unitOfWork.RegistroCombustible.Get(r => r.Id == id);
+            if (registro == null)
+            {
+                return Json(new { success = false, message = "Error al eliminar el registro." });
+            }
+
+            _unitOfWork.RegistroCombustible.Remove(registro);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Registro eliminado exitosamente." });
+        }
     }
 }
 
