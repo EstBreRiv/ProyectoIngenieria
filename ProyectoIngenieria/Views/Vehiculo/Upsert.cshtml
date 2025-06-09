@@ -3,6 +3,12 @@
 
 @{
     ViewData["Title"] = Model.Vehiculo.Id == 0 ? "Crear Vehículo" : "Editar Vehículo";
+
+    bool estaVacio = string.IsNullOrWhiteSpace(Model.Vehiculo.Modelo)
+        && string.IsNullOrWhiteSpace(Model.Vehiculo.Tipo)
+        && string.IsNullOrWhiteSpace(Model.Vehiculo.Descripcion)
+        && string.IsNullOrWhiteSpace(Model.Vehiculo.Placa)
+        && (Model.Vehiculo.EmpresaId == 0 || Model.Vehiculo.EmpresaId == null);
 }
 
 <div class="container py-5">
@@ -75,9 +81,19 @@
                                 @(Model.Vehiculo.Id == 0 ? "Crear" : "Actualizar")
 
                             </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary w-25">
-                                Volver
-                            </a>
+                            @if (Model.Vehiculo.Id == 0 || estaVacio)
+                            {
+                                <a asp-controller="Vehiculo" asp-action="Index" class="btn btn-outline-secondary w-25">
+                                    Volver
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Vehiculo" asp-action="DetalleVehiculo" asp-route-id="@Model.Vehiculo.Id" class="btn btn-outline-secondary w-25">
+                                    Volver
+                                </a>
+                            }
+
                         </div>
                     </div>
                 </div>

@@ -21,19 +21,12 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
-                            <a href="/Vehiculo/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-
-                            <a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                                <i class="bi bi-trash"></i>
-
-                            <a href="/RegistroCombustible/Index/${data}" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i> Registro de combustible
-                            </a>
-
-                          `
-                }
+                        <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                            <i class="bi bi-info-circle"></i>
+                        </a>
+                    `;
+                },
+                "width": "40%"
             }
         ],
         language: {
@@ -55,7 +48,7 @@ function Delete(id) {
         confirmButtonText: "Sí, desactivar"
     }).then((result) => {
         if (result.isConfirmed) {
-            $.ajax({
+                      $.ajax({
                 url: "/Vehiculo/Delete/" + id,
                 type: 'DELETE',
                 success: function (data) {
