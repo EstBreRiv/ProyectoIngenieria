@@ -101,7 +101,8 @@ namespace ProyectoIngenieria.Controllers
                     _unitOfWork.Vehiculo.Update(vehiculoVM.Vehiculo);
                 }
                 _unitOfWork.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("DetalleVehiculo", new { id = vehiculoVM.Vehiculo.Id });
+
             }
 
             // Recargar empresas si hay error de validación
@@ -145,6 +146,11 @@ namespace ProyectoIngenieria.Controllers
         {
             var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == id, includeProperties: "Empresa");
 
+
+
+            if (vehiculo == null || vehiculo.Estado == "Inactivo")
+                return NotFound();
+
             var vehiculoVM = new VehiculoVM
             {
                 Vehiculo = vehiculo
@@ -152,6 +158,7 @@ namespace ProyectoIngenieria.Controllers
 
             return View(vehiculoVM);
         }
+
 
         [HttpPost]
         public IActionResult Activar(int? id)
