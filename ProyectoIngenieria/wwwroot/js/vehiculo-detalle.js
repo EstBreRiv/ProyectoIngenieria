@@ -29,35 +29,3 @@ function Delete(id) {
         }
     });
 }
-
-function Activar(id) {
-    Swal.fire({
-        title: '¿Está seguro?',
-        text: "El vehículo será activado.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#28a745',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, activar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.post("/Vehiculo/Activar", { id: id })
-                .done(function (data) {
-                    if (data.success) {
-                        toastr.success(data.message);
-                        setTimeout(() => {
-                            window.location.href = '/Vehiculo/Index';
-                        }, 2000);
-
-                    } else {
-                        toastr.error(data.message);
-                    }
-                })
-                .fail(function () {
-                    toastr.error("Error al intentar activar.");
-                });
-        }
-    });
-}
-
-
