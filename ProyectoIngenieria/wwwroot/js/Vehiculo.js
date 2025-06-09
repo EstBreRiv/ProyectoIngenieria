@@ -18,8 +18,13 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
+
+                        <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                            <i class="bi bi-info-circle"></i>
+
                         <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-info btn-sm mx-2" title="Ver detalles">
                             <i class="bi bi-info-circle"></i> Detalles
+
                         </a>
                     `;
                 },
@@ -31,3 +36,36 @@ function loadDataTable() {
         }
     });
 }
+
+
+
+function Delete(id) {
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "El vehículo quedará inactivo definitivamente.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, desactivar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+                      $.ajax({
+                url: "/Vehiculo/Delete/" + id,
+                type: 'DELETE',
+                success: function (data) {
+                    if (data.success) {
+                        dataTable.ajax.reload();
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Error al procesar la solicitud");
+                }
+            });
+        }
+    });
+}
+
