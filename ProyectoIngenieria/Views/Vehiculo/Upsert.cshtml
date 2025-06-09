@@ -75,9 +75,10 @@
                                 @(Model.Vehiculo.Id == 0 ? "Crear" : "Actualizar")
 
                             </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary w-25">
+                            <a asp-controller="Vehiculo" asp-action="DetalleVehiculo" asp-route-id="@Model.Vehiculo.Id" class="btn btn-outline-secondary w-25">
                                 Volver
                             </a>
+
                         </div>
                     </div>
                 </div>
