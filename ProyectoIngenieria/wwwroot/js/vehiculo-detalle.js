@@ -32,7 +32,7 @@ function Delete(id) {
 
 function Activar(id) {
     Swal.fire({
-        title: '¿Estás segura?',
+        title: '¿Está seguro?',
         text: "El vehículo será activado.",
         icon: 'warning',
         showCancelButton: true,
