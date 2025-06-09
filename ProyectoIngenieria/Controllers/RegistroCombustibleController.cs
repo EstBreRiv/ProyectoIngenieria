@@ -4,6 +4,7 @@ using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository;
 using ProyectoIngenieria.Repository.Interfaces;
+using System.Globalization;
 
 namespace ProyectoIngenieria.Controllers
 {
@@ -42,6 +43,7 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult Upsert(int? id, int? vehiculoId) //Puede recibir 2 id
         {
+            string culturaActual = CultureInfo.CurrentCulture.Name;
             RegistroCombustibleVM registroCombustibleVM = new()
             {
                 RegistroCombustible = new RegistroCombustible()
