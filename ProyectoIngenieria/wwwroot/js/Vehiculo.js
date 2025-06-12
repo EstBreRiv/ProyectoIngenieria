@@ -11,15 +11,22 @@ function loadDataTable() {
             "url": "/Vehiculo/GetAll"
         },
         "columns": [
+
             { "data": "modelo", "width": "15%" },
             { "data": "estado", "width": "10%" },
             { "data": "descripcion", "width": "30%" },
+
             {
                 "data": "id",
                 "render": function (data) {
                     return `
+
                         <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                             <i class="bi bi-info-circle"></i>
+
+                        <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-info btn-sm mx-2" title="Ver detalles">
+                            <i class="bi bi-info-circle"></i> Detalles
+
                         </a>
                     `;
                 },
@@ -29,7 +36,6 @@ function loadDataTable() {
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         }
-
     });
 }
-//commit
+
