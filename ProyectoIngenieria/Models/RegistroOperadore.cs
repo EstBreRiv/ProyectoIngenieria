@@ -3,19 +3,17 @@ using System.Collections.Generic;
 
 namespace ProyectoIngenieria.Models;
 
-public partial class RegistroCombustible
+public partial class RegistroOperadore
 {
     public int Id { get; set; }
 
-    public DateOnly FechaCompra { get; set; }
+    public DateTime Fecha { get; set; }
 
-    public decimal LitrosComprados { get; set; }
-
-    public decimal PrecioLitro { get; set; }
-
-    public decimal TotalPagado { get; set; }
+    public int OperadorCedula { get; set; }
 
     public int VehiculoId { get; set; }
+
+    public virtual Operador OperadorCedulaNavigation { get; set; } = null!;
 
     public virtual Vehiculo Vehiculo { get; set; } = null!;
 }

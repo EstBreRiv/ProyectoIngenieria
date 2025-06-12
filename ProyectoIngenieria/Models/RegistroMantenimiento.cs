@@ -7,7 +7,7 @@ public partial class RegistroMantenimiento
 {
     public int Id { get; set; }
 
-    public string? Descripcion { get; set; }
+    public string Descripcion { get; set; } = null!;
 
     public decimal Precio { get; set; }
 
@@ -17,7 +17,15 @@ public partial class RegistroMantenimiento
 
     public int CatalogoMantenimientoId { get; set; }
 
+    public int OperadorCedula { get; set; }
+
+    public int RepuestoId { get; set; }
+
     public virtual CatalogoMantenimiento CatalogoMantenimiento { get; set; } = null!;
+
+    public virtual Operador OperadorCedulaNavigation { get; set; } = null!;
+
+    public virtual Repuesto Repuesto { get; set; } = null!;
 
     public virtual Vehiculo Vehiculo { get; set; } = null!;
 }

@@ -24,15 +24,16 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var operadores = _unitOfWork.Operador.GetAll().Select(o => new
-                {
-                    o.Cedula,
-                    o.Nombre,
-                    o.VehiculoId,
-                    VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo
-                })
-                .ToList();
-            return Json(new { data = operadores });
+            //var operadores = _unitOfWork.Operador.GetAll().Select(o => new
+            //    {
+            //        o.Cedula,
+            //        o.Nombre,
+            //        o.VehiculoId,
+            //        VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo
+            //    })
+            //    .ToList();
+            //return Json(new { data = operadores });
+            return View();
         }
 
         [HttpGet]
@@ -84,8 +85,8 @@ namespace ProyectoIngenieria.Controllers
                 else
                 {
                     // Actualizar campos manualmente sobre la instancia ya trackeada
-                    operadorExistente.Nombre = operadorVM.Operador.Nombre;
-                    operadorExistente.VehiculoId = operadorVM.Operador.VehiculoId;
+                    //operadorExistente.Nombre = operadorVM.Operador.Nombre;
+                    //operadorExistente.VehiculoId = operadorVM.Operador.VehiculoId;
                 }
 
                 _unitOfWork.Save();
