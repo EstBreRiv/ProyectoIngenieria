@@ -24,10 +24,6 @@ function loadDataTable() {
                         <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                             <i class="bi bi-info-circle"></i>
 
-                        <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-info btn-sm mx-2" title="Ver detalles">
-                            <i class="bi bi-info-circle"></i> Detalles
-
-                        </a>
                     `;
                 },
                 "width": "20%"
