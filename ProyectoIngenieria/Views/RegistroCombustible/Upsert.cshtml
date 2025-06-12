@@ -27,21 +27,21 @@
                         <!-- Litros comprados -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.LitrosComprados" class="form-label text-muted">Litros comprados</label>
-                            <input asp-for="RegistroCombustible.LitrosComprados" type="text" class="form-control" placeholder="Ingrese los litros comprados"/>
+                            <input asp-for="RegistroCombustible.LitrosComprados" type="number" step="0.01" class="form-control" placeholder="Ingrese los litros comprados" />
                             <span asp-validation-for="RegistroCombustible.LitrosComprados" class="text-danger small"></span>
                         </div>
 
                         <!-- Precio por litro -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.PrecioLitro" class="form-label text-muted">Precio por litro</label>
-                            <input asp-for="RegistroCombustible.PrecioLitro" type="text" class="form-control" placeholder="Ingrese el precio por litro" />
+                            <input asp-for="RegistroCombustible.PrecioLitro" type="number" step="0.01" class="form-control" placeholder="Ingrese el precio por litro" />
                             <span asp-validation-for="RegistroCombustible.PrecioLitro" class="text-danger small"></span>
                         </div>
 
                         <!-- Total pagado (calculado automáticamente) -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.TotalPagado" class="form-label text-muted">Total pagado</label>
-                            <input asp-for="RegistroCombustible.TotalPagado" type="text" class="form-control bg-secondary-subtle" placeholder="Se calculará automáticamente" readonly tabindex="-1" />
+                            <input asp-for="RegistroCombustible.TotalPagado" type="number" step="0.01" class="form-control" readonly/>
                             <span asp-validation-for="RegistroCombustible.TotalPagado" class="text-danger small"></span>
                         </div>
 

@@ -32,11 +32,11 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                             <div class="text-center">
-                                <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-sm btn-primary">
-                                    <i class="bi bi-pencil-square me-1"></i> Editar
+                                <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-success btn-sm mx-2" title="Editar"">
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash"></i> Eliminar
+                                <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
                                 </a>
                             </div>
 
