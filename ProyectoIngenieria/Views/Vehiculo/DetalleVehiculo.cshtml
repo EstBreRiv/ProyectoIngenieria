@@ -6,14 +6,9 @@
 
 <div class="container mt-4">
     <div class="card shadow-lg">
-
         <div class="card-header bg-success text-white">
             <h4 class="mb-0">Detalles del Vehículo</h4>
 
-
-
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Detalles del Vehículo</h4>
 
         </div>
         <div class="card-body">
@@ -41,7 +36,6 @@
                 <a asp-controller="Vehiculo" asp-action="Upsert" asp-route-id="@Model.Vehiculo.Id" class="btn btn-warning">
                     <i class="bi bi-pencil-square"></i> Editar
                 </a>
-
 
                 @if (Model.Vehiculo.Estado == "Activo")
                 {
@@ -74,28 +68,6 @@
                 </a>
 
                 <a href="/Vehiculo/Index" class="btn btn-outline-secondary ms-auto">
-
-                <button class="btn btn-danger" onclick="Delete(@Model.Vehiculo.Id)">
-                    <i class="bi bi-trash"></i> Desactivar
-                </button>
-
-                <a href="/RegistroCombustible/Index/@Model.Vehiculo.Id" class="btn btn-secondary">
-                    Registro Combustible
-                </a>
-
-                <a href="/RegistroMantenimiento/Index/@Model.Vehiculo.Id" class="btn btn-secondary">
-                    Mantenimientos
-                </a>
-
-                <a href="/HorasTrabajo/Index/@Model.Vehiculo.Id" class="btn btn-secondary">
-                    Horas de Trabajo
-                </a>
-
-                <a href="/DocumentoVehiculo/Index/@Model.Vehiculo.Id" class="btn btn-secondary">
-                    Documentos
-                </a>
-
-                <a href="/Vehiculo/Index" class="btn btn-outline-primary ms-auto">
                     Volver a la lista
                 </a>
             </div>
@@ -108,8 +80,4 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/js/vehiculo-detalle.js"></script>
-
-        }
-
 }
-
