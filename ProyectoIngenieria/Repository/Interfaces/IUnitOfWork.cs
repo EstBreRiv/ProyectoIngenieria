@@ -12,6 +12,7 @@
         INotificacionRepository Notificacion { get; }
         IRegistroCombustibleRepository RegistroCombustible { get; }
         IRegistroMantenimientoRepository RegistroMantenimiento { get; }
+        IRegistroOperadoresRepository RegistroOperadores { get; }
 
         object EmpresaRepository { get; }
 
