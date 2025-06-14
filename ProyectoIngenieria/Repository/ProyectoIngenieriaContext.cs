@@ -43,7 +43,7 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
 
     public virtual DbSet<TipoTrabajo> TipoTrabajos { get; set; }
 
-    public virtual DbSet<Vehiculo> Vehiculos { get; set; } 
+    public virtual DbSet<Vehiculo> Vehiculos { get; set; }
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; } //Agregado para agregar el dbset al ApplicationUser, en caso de cualquier cambio
 

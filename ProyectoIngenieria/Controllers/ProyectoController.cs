@@ -57,24 +57,5 @@ namespace ProyectoIngenieria.Controllers
                 return View(proyectoVM);
             }
         }
-
-        [HttpPost]
-        public IActionResult Upsert(ProyectoVM proyectoVM)
-        {
-            if (ModelState.IsValid)
-            {
-                if (proyectoVM.Proyecto.Id == 0)
-                {
-                    _unitOfWork.Proyecto.Add(proyectoVM.Proyecto);
-                }
-                else
-                {
-                    _unitOfWork.Proyecto.Update(proyectoVM.Proyecto);
-                }
-                _unitOfWork.Save();
-                return RedirectToAction("Index");
-            }
-            return View(proyectoVM);
-        }
     }
 }

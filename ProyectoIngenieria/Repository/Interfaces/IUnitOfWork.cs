@@ -13,7 +13,7 @@
         IRegistroCombustibleRepository RegistroCombustible { get; }
         IRegistroMantenimientoRepository RegistroMantenimiento { get; }
         IProyectoRepository Proyecto { get; }
-
+        ILugarTrabajoRepository LugarTrabajo { get; }
         object EmpresaRepository { get; }
 
         void Save();
