@@ -72,7 +72,12 @@
                                 <i class="bi bi-person-workspace me-1"></i> Lugares de trabajo
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
+                               asp-area="" asp-controller="TipoTrabajo" asp-action="Index">
+                                <i class="bi bi-person-workspace me-1"></i> Categorias de trabajo
+                            </a>
+                        </li>
                       
                     </ul>
 

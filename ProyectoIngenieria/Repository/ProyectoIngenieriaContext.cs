@@ -135,6 +135,12 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
                 .HasColumnName("Precio_Hora");
             entity.Property(e => e.ProyectoId).HasColumnName("PROYECTO_ID");
             entity.Property(e => e.TipoTrabajoId).HasColumnName("TIPO_TRABAJO_ID");
+            entity.Property(e => e.TotalGanancia)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Total_Ganancia");
+            entity.Property(e => e.TotalHoras)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Total_Horas");
             entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
 
             entity.HasOne(d => d.LugarTrabajo).WithMany(p => p.HorasTrabajos)
