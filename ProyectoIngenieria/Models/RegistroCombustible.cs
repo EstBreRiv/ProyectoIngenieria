@@ -7,11 +7,11 @@ public partial class RegistroCombustible
 {
     public int Id { get; set; }
 
-    public DateOnly FechaCompra { get; set; }
+    public DateOnly? FechaCompra { get; set; }
 
-    public decimal LitrosComprados { get; set; }
+    public decimal? LitrosComprados { get; set; }
 
-    public decimal PrecioLitro { get; set; }
+    public decimal? PrecioLitro { get; set; }
 
     public decimal TotalPagado { get; set; }
 
