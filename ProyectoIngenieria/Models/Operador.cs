@@ -12,10 +12,7 @@ public partial class Operador
     [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
     public string Nombre { get; set; } = null!;
 
-    [Required(ErrorMessage = "Se debe elegir un vehículo para operar.")]
-    public int VehiculoId { get; set; }
-
     public virtual ICollection<DocumentoOperador> DocumentoOperadors { get; set; } = new List<DocumentoOperador>();
 
-    public virtual Vehiculo Vehiculo { get; set; } = null!;
+    public virtual ICollection<RegistroOperadores> RegistroOperadores { get; set; } = new List<RegistroOperadores>();
 }

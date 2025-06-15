@@ -38,11 +38,11 @@
 
                 <!-- Vehiculo -->
                 <div class="mb-4">
-                    <label asp-for="Operador.VehiculoId" class="form-label">Seleccione el vehículo que opera</label>
-                    <select asp-for="Operador.VehiculoId" asp-items="@ViewBag.VehiculosList" class="form-select">
+                    <label asp-for="VehiculoId" class="form-label">Seleccione el vehículo que opera</label>
+                    <select asp-for="VehiculoId" asp-items="@ViewBag.VehiculosList" class="form-select">
                         <option value="">Seleccione Vehículo</option>
                     </select>
-                    <span asp-validation-for="Operador.VehiculoId" class="text-danger small"></span>
+                    <span asp-validation-for="VehiculoId" class="text-danger small"></span>
                 </div>
 
                 <!-- Botones -->

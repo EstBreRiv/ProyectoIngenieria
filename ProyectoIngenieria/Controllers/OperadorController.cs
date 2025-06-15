@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using ProyectoIngenieria.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProyectoIngenieria.Controllers
 {
@@ -24,15 +25,15 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var operadores = _unitOfWork.Operador.GetAll().Select(o => new
+            // quiero obtener solo nombre y cedula de los operadores
+            var operadores = _unitOfWork.Operador.GetAll()
+                .Select(o => new
                 {
                     o.Cedula,
                     o.Nombre,
-                    o.VehiculoId,
-                    VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo
-                })
-                .ToList();
+                });
             return Json(new { data = operadores });
+            
         }
 
         [HttpGet]
@@ -76,6 +77,7 @@ namespace ProyectoIngenieria.Controllers
             if (ModelState.IsValid)
             {
                 var operadorExistente = _unitOfWork.Operador.Get(u => u.Cedula == operadorVM.Operador.Cedula);
+                RegistroOperadoresVM registroOperadoresVM = new RegistroOperadoresVM();
 
                 if (operadorExistente == null)
                 {
@@ -85,9 +87,11 @@ namespace ProyectoIngenieria.Controllers
                 {
                     // Actualizar campos manualmente sobre la instancia ya trackeada
                     operadorExistente.Nombre = operadorVM.Operador.Nombre;
-                    operadorExistente.VehiculoId = operadorVM.Operador.VehiculoId;
                 }
-
+                registroOperadoresVM.RegistroOperador.OperadorCedula = operadorVM.Operador.Cedula;
+                registroOperadoresVM.RegistroOperador.VehiculoId = operadorVM.VehiculoId;
+                registroOperadoresVM.RegistroOperador.Fecha = DateTime.Now;
+                _unitOfWork.RegistroOperadores.Add(registroOperadoresVM.RegistroOperador);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }

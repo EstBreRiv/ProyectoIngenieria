@@ -9,7 +9,7 @@ public partial class RegistroOperadores
     public int Id { get; set; }
 
     [Required(ErrorMessage = "El campo Fecha es obligatorio.")]
-    public DateOnly Fecha { get; set; }
+    public DateTime Fecha { get; set; }
 
     [Required(ErrorMessage = "Se debe elegir un operador.")]
     public int OperadorCedula { get; set; }

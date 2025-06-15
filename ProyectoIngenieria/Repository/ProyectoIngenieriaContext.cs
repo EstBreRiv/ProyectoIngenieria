@@ -158,12 +158,6 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
 
             entity.Property(e => e.Cedula).ValueGeneratedNever();
             entity.Property(e => e.Nombre).HasMaxLength(50);
-            entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
-
-            entity.HasOne(d => d.Vehiculo).WithMany(p => p.Operadors)
-                .HasForeignKey(d => d.VehiculoId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("OPERADOR_MAQUINA");
         });
 
         modelBuilder.Entity<RegistroCombustible>(entity =>
@@ -232,6 +226,28 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
                 .HasForeignKey(d => d.EmpresaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("MAQUINA_EMPRESA");
+        });
+
+        modelBuilder.Entity<RegistroOperadores>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("REGISTRO_OPERADORES_pk");
+
+            entity.ToTable("REGISTRO_OPERADORES");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Fecha).HasColumnName("Fecha");
+            entity.Property(e => e.OperadorCedula).HasColumnName("OPERADOR_Cedula");
+            entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
+
+            entity.HasOne(d => d.Vehiculo).WithMany(p => p.RegistroOperadores)
+                .HasForeignKey(d => d.VehiculoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("REGISTRO_OPERADORES_VEHICULO");
+
+            entity.HasOne(d => d.Operador).WithMany(p => p.RegistroOperadores)
+                .HasForeignKey(d => d.OperadorCedula)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("REGISTRO_OPERADORES_OPERADOR");
         });
 
         OnModelCreatingPartial(modelBuilder);
