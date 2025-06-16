@@ -25,15 +25,25 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
 
     public virtual DbSet<HorasTrabajo> HorasTrabajos { get; set; }
 
+    public virtual DbSet<LugarTrabajo> LugarTrabajos { get; set; }
+
     public virtual DbSet<Notificacion> Notificacions { get; set; }
 
     public virtual DbSet<Operador> Operadors { get; set; }
+
+    public virtual DbSet<Proyecto> Proyectos { get; set; }
 
     public virtual DbSet<RegistroCombustible> RegistroCombustibles { get; set; }
 
     public virtual DbSet<RegistroMantenimiento> RegistroMantenimientos { get; set; }
 
-    public virtual DbSet<Vehiculo> Vehiculos { get; set; }
+    public virtual DbSet<RegistroOperadores> RegistroOperadores { get; set; }
+
+    public virtual DbSet<Repuesto> Repuestos { get; set; }
+
+    public virtual DbSet<TipoTrabajo> TipoTrabajos { get; set; }
+
+    public virtual DbSet<Vehiculo> Vehiculos { get; set; } 
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; } //Agregado para agregar el dbset al ApplicationUser, en caso de cualquier cambio
 
@@ -51,7 +61,7 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
         modelBuilder.Entity<IdentityUserRole<string>>().HasKey(r => new { r.UserId, r.RoleId });
         modelBuilder.Entity<IdentityUserToken<string>>().HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
 
-    modelBuilder.Entity<CatalogoMantenimiento>(entity =>
+        modelBuilder.Entity<CatalogoMantenimiento>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("CATALOGO_MANTENIMIENTO_pk");
 
@@ -119,16 +129,45 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
             entity.Property(e => e.HorometroInicial)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("Horometro_Inicial");
-            entity.Property(e => e.Lugar).HasMaxLength(200);
+            entity.Property(e => e.LugarTrabajoId).HasColumnName("LUGAR_TRABAJO_ID");
             entity.Property(e => e.PrecioHora)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("Precio_Hora");
+            entity.Property(e => e.ProyectoId).HasColumnName("PROYECTO_ID");
+            entity.Property(e => e.TipoTrabajoId).HasColumnName("TIPO_TRABAJO_ID");
             entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
+
+            entity.HasOne(d => d.LugarTrabajo).WithMany(p => p.HorasTrabajos)
+                .HasForeignKey(d => d.LugarTrabajoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("HORAS_TRABAJO_LUGAR_TRABAJO");
+
+            entity.HasOne(d => d.Proyecto).WithMany(p => p.HorasTrabajos)
+                .HasForeignKey(d => d.ProyectoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("HORAS_TRABAJO_PROYECTO");
+
+            entity.HasOne(d => d.TipoTrabajo).WithMany(p => p.HorasTrabajos)
+                .HasForeignKey(d => d.TipoTrabajoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("HORAS_TRABAJO_TIPO_TRABAJO");
 
             entity.HasOne(d => d.Vehiculo).WithMany(p => p.HorasTrabajos)
                 .HasForeignKey(d => d.VehiculoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("HORAS_TRABAJO_MAQUINA");
+        });
+
+        modelBuilder.Entity<LugarTrabajo>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("LUGAR_TRABAJO_pk");
+
+            entity.ToTable("LUGAR_TRABAJO");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Canton).HasMaxLength(100);
+            entity.Property(e => e.Nombre).HasMaxLength(100);
+            entity.Property(e => e.Provincia).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Notificacion>(entity =>
@@ -156,12 +195,20 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
 
             entity.Property(e => e.Cedula).ValueGeneratedNever();
             entity.Property(e => e.Nombre).HasMaxLength(50);
-            entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
+        });
 
-            entity.HasOne(d => d.Vehiculo).WithMany(p => p.Operadors)
-                .HasForeignKey(d => d.VehiculoId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("OPERADOR_MAQUINA");
+        modelBuilder.Entity<Proyecto>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PROYECTO_pk");
+
+            entity.ToTable("PROYECTO");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Cliente).HasMaxLength(100);
+            entity.Property(e => e.FechaInicio).HasColumnName("Fecha_Inicio");
+            entity.Property(e => e.NombreProyecto)
+                .HasMaxLength(100)
+                .HasColumnName("Nombre_Proyecto");
         });
 
         modelBuilder.Entity<RegistroCombustible>(entity =>
@@ -198,7 +245,9 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.CatalogoMantenimientoId).HasColumnName("CATALOGO_MANTENIMIENTO_ID");
             entity.Property(e => e.Descripcion).HasMaxLength(200);
+            entity.Property(e => e.OperadorCedula).HasColumnName("OPERADOR_Cedula");
             entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.RepuestoId).HasColumnName("REPUESTO_ID");
             entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
 
             entity.HasOne(d => d.CatalogoMantenimiento).WithMany(p => p.RegistroMantenimientos)
@@ -206,10 +255,67 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("REGISTRO_MANTENIMIENTO_CATALOGO_MANTENIMIENTO");
 
+            entity.HasOne(d => d.OperadorCedulaNavigation).WithMany(p => p.RegistroMantenimientos)
+                .HasForeignKey(d => d.OperadorCedula)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("REGISTRO_MANTENIMIENTO_OPERADOR");
+
+            entity.HasOne(d => d.Repuesto).WithMany(p => p.RegistroMantenimientos)
+                .HasForeignKey(d => d.RepuestoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("REGISTRO_MANTENIMIENTO_REPUESTO");
+
             entity.HasOne(d => d.Vehiculo).WithMany(p => p.RegistroMantenimientos)
                 .HasForeignKey(d => d.VehiculoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("REGISTRO_MANTENIMIENTO_MAQUINA");
+        });
+
+        modelBuilder.Entity<RegistroOperadores>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("REGISTRO_OPERADORES_pk");
+
+            entity.ToTable("REGISTRO_OPERADORES");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
+            entity.Property(e => e.OperadorCedula).HasColumnName("OPERADOR_Cedula");
+            entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
+
+            entity.HasOne(d => d.OperadorCedulaNavigation).WithMany(p => p.RegistroOperadores)
+                .HasForeignKey(d => d.OperadorCedula)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("REGISTRO_OPERADORES_OPERADOR");
+
+            entity.HasOne(d => d.Vehiculo).WithMany(p => p.RegistroOperadores)
+                .HasForeignKey(d => d.VehiculoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("REGISTRO_OPERADORES_VEHICULO");
+        });
+
+        modelBuilder.Entity<Repuesto>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("REPUESTO_pk");
+
+            entity.ToTable("REPUESTO");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Descripcion).HasMaxLength(100);
+            entity.Property(e => e.Nombre).HasMaxLength(100);
+            entity.Property(e => e.PrecioEstimado)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Precio_Estimado");
+        });
+
+        modelBuilder.Entity<TipoTrabajo>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("TIPO_TRABAJO_pk");
+
+            entity.ToTable("TIPO_TRABAJO");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Descripcion).HasMaxLength(100);
+            entity.Property(e => e.Nombre).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Vehiculo>(entity =>

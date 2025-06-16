@@ -24,21 +24,22 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var operadores = _unitOfWork.Operador.GetAll().Select(o => new
-                {
-                    o.Cedula,
-                    o.Nombre,
-                    o.VehiculoId,
-                    VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo
-                })
-                .ToList();
+            //var operadores = _unitOfWork.Operador.GetAll().Select(o => new
+            //    {
+            //        o.Cedula,
+            //        o.Nombre,
+            //        o.VehiculoId,
+            //        VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo
+            //    })
+            //    .ToList();
+            //return Json(new { data = operadores });
+            var operadores = _unitOfWork.Operador.GetAll();
             return Json(new { data = operadores });
         }
 
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
-            // Cargar vehiculos para el dropdown
             var vehiculos = _unitOfWork.Vehiculo.GetAll()
                 .Where(v => v.Estado != "Inactivo");
             ViewBag.VehiculosList = new SelectList(vehiculos, "Id", "Modelo");
@@ -55,12 +56,10 @@ namespace ProyectoIngenieria.Controllers
 
             if (id == null || id == 0)
             {
-                // Create
                 return View(operadorVM);
             }
             else
             {
-                // Update
                 operadorVM.Operador = _unitOfWork.Operador.Get(u => u.Cedula == id);
                 if (operadorVM.Operador == null)
                 {
@@ -76,18 +75,24 @@ namespace ProyectoIngenieria.Controllers
             if (ModelState.IsValid)
             {
                 var operadorExistente = _unitOfWork.Operador.Get(u => u.Cedula == operadorVM.Operador.Cedula);
-
+                
                 if (operadorExistente == null)
                 {
                     _unitOfWork.Operador.Add(operadorVM.Operador);
                 }
                 else
                 {
-                    // Actualizar campos manualmente sobre la instancia ya trackeada
                     operadorExistente.Nombre = operadorVM.Operador.Nombre;
-                    operadorExistente.VehiculoId = operadorVM.Operador.VehiculoId;
                 }
 
+                RegistroOperadores registro = new RegistroOperadores
+                {
+                    OperadorCedula = operadorVM.Operador.Cedula,
+                    Fecha = DateTime.Now,
+                    VehiculoId = operadorVM.VehiculoId
+                };
+
+                _unitOfWork.RegistroOperadores.Add(registro);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
@@ -227,6 +232,26 @@ namespace ProyectoIngenieria.Controllers
             _unitOfWork.Save();
 
             return Json(new { success = true, message = "Documento eliminado exitosamente" });
+        }
+
+        [HttpGet]
+        public IActionResult RegistroOperadores()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetRegistroOperadores()
+        {
+            var registros = _unitOfWork.RegistroOperadores.GetAll().Select(o => new
+            {
+                o.OperadorCedula,
+                OperadorNombre = _unitOfWork.Operador.Get(x => x.Cedula == o.OperadorCedula).Nombre,
+                VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo,
+                Fecha = o.Fecha.ToString("dd/MM/yyyy"),
+                o.VehiculoId,
+            }).ToList();
+            return Json(new { data = registros });
         }
 
     }

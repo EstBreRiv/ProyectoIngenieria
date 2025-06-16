@@ -12,7 +12,10 @@
         INotificacionRepository Notificacion { get; }
         IRegistroCombustibleRepository RegistroCombustible { get; }
         IRegistroMantenimientoRepository RegistroMantenimiento { get; }
-
+        IProyectoRepository Proyecto { get; }
+        ILugarTrabajoRepository LugarTrabajo { get; }
+        ITipoTrabajoRepository TipoTrabajo { get; }
+        IRegistroOperadoresRepository RegistroOperadores { get; }
         object EmpresaRepository { get; }
 
         void Save();

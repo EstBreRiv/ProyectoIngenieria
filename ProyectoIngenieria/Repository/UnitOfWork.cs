@@ -26,6 +26,14 @@ namespace ProyectoIngenieria.Repository
 
         public IRegistroMantenimientoRepository RegistroMantenimiento { get; private set; }
 
+        public IProyectoRepository Proyecto { get; private set; }
+
+        public ILugarTrabajoRepository LugarTrabajo { get; private set; }
+
+        public ITipoTrabajoRepository TipoTrabajo { get; private set; }
+
+        public IRegistroOperadoresRepository RegistroOperadores { get; private set; }
+
         public object EmpresaRepository => throw new NotImplementedException();
 
         public UnitOfWork(ProyectoIngenieriaContext db)
@@ -41,6 +49,10 @@ namespace ProyectoIngenieria.Repository
             Notificacion = new NotificacionRepository(_db);
             RegistroCombustible = new RegistroCombustibleRepository(_db);
             RegistroMantenimiento = new RegistroMantenimientoRepository(_db);
+            Proyecto = new ProyectoRepository(_db);
+            LugarTrabajo = new LugarTrabajoRepository(_db);
+            TipoTrabajo = new TipoTrabajoRepository(_db);
+            RegistroOperadores = new RegistroOperadoresRepository(_db);
         }
 
         public void Save()

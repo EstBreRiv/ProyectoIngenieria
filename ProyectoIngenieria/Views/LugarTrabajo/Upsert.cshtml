@@ -1,0 +1,63 @@
+@using ProyectoIngenieria.Models.ViewModels
+@model LugarTrabajoVM
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+            <form method="post">
+                <input hidden asp-for="lugarTrabajo.Id" />
+
+
+                <!-- Header -->
+                <div class="border-bottom pb-3 mb-4">
+                    <h2 class="h4 text-success">
+                        @(Model.lugarTrabajo.Id == 0 ? "Agregar" : "Actualizar") Lugar de Trabajo
+                    </h2>
+                </div>
+
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label asp-for="lugarTrabajo.Nombre" class="form-label text-muted"></label>
+                    <input asp-for="lugarTrabajo.Nombre" type="text" class="form-control" placeholder="Ingrese el nombre de la ubicacion" />
+                    <span asp-validation-for="lugarTrabajo.Nombre" class="form-text text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <select asp-for="lugarTrabajo.Provincia" class="form-select">
+                        <option value="">Seleccione la provincia</option>
+                        <option value="San Jose">San Jose</option>
+                        <option value="Alajuela">Alajuela</option>
+                        <option value="Heredia">Heredia</option>
+                        <option value="Guanacaste">Guanacaste</option>
+                        <option value="Cartago">Cartago</option>
+                        <option value="Puntarenas">Puntarenas</option>
+                        <option value="Limon">Limon</option>
+                    </select>
+                    <span asp-validation-for="lugarTrabajo.Provincia" class="form-text text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="lugarTrabajo.Canton" class="form-label text-muted"></label>
+                    <input asp-for="lugarTrabajo.Canton" type="text" class="form-control" placeholder="Ingrese el nombre del canton" />
+                    <span asp-validation-for="lugarTrabajo.Canton" class="form-text text-danger"></span>
+                </div>
+
+                <!-- Botones -->
+
+                <div class="d-flex gap-3 pt-3">
+                    <button type="submit" class="btn btn-success w-50">
+                        Guardar
+                    </button>
+                    <a asp-controller="Empresa" asp-action="Index" class="btn btn-outline-secondary w-50 text-center">
+                        Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
