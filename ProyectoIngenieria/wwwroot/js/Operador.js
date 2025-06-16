@@ -15,7 +15,6 @@ function loadDataTable() {
         "columns": [
             { "data": "cedula", "width": "15%" },
             { "data": "nombre", "width": "15%" },
-            { "data": "vehiculoModelo", "width": "15%" },
             {
                 "data": "cedula",
                 "render": function (data) {

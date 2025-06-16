@@ -37,13 +37,13 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
 
     public virtual DbSet<RegistroMantenimiento> RegistroMantenimientos { get; set; }
 
-    public virtual DbSet<RegistroOperadore> RegistroOperadores { get; set; }
+    public virtual DbSet<RegistroOperadores> RegistroOperadores { get; set; }
 
     public virtual DbSet<Repuesto> Repuestos { get; set; }
 
     public virtual DbSet<TipoTrabajo> TipoTrabajos { get; set; }
 
-    public virtual DbSet<Vehiculo> Vehiculos { get; set; }
+    public virtual DbSet<Vehiculo> Vehiculos { get; set; } 
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; } //Agregado para agregar el dbset al ApplicationUser, en caso de cualquier cambio
 
@@ -135,12 +135,6 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
                 .HasColumnName("Precio_Hora");
             entity.Property(e => e.ProyectoId).HasColumnName("PROYECTO_ID");
             entity.Property(e => e.TipoTrabajoId).HasColumnName("TIPO_TRABAJO_ID");
-            entity.Property(e => e.TotalGanancia)
-                .HasColumnType("decimal(18, 2)")
-                .HasColumnName("Total_Ganancia");
-            entity.Property(e => e.TotalHoras)
-                .HasColumnType("decimal(18, 2)")
-                .HasColumnName("Total_Horas");
             entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
 
             entity.HasOne(d => d.LugarTrabajo).WithMany(p => p.HorasTrabajos)
@@ -277,7 +271,7 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
                 .HasConstraintName("REGISTRO_MANTENIMIENTO_MAQUINA");
         });
 
-        modelBuilder.Entity<RegistroOperadore>(entity =>
+        modelBuilder.Entity<RegistroOperadores>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("REGISTRO_OPERADORES_pk");
 

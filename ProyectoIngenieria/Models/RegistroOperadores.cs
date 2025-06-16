@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProyectoIngenieria.Models;
 
-public partial class RegistroOperadore
+public partial class RegistroOperadores
 {
     public int Id { get; set; }
 
