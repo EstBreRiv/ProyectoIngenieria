@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Catálogo de Mantenimientos";
+}
+
+<div class="max-w-6xl mx-auto mt-12 p-8 bg-white rounded-3xl shadow-lg border border-gray-300">
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Catálogo de Mantenimientos</h1>
+        <a asp-controller="CatalogoMantenimiento" asp-action="Upsert"
+           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition-all">
+            + Nuevo Mantenimiento
+        </a>
+    </div>
+
+    <div class="overflow-x-auto border border-gray-200 rounded-xl">
+        <table id="tablaCatalogo" class="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
+            <thead class="bg-blue-50 uppercase text-xs font-semibold text-gray-600">
+                <tr>
+                    <th class="px-6 py-3">Nombre</th>
+                    <th class="px-6 py-3">Descripción</th>
+                    <th class="px-6 py-3 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white">
+                <!-- Cargado dinámicamente con JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/CatalogoMantenimiento.js"></script>
+}

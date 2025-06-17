@@ -30,6 +30,8 @@ namespace ProyectoIngenieria.Repository
 
         public ILugarTrabajoRepository LugarTrabajo { get; private set; }
 
+        public IRepuestoRepository Repuesto { get; private set; }
+
         public object EmpresaRepository => throw new NotImplementedException();
 
         public UnitOfWork(ProyectoIngenieriaContext db)
@@ -47,6 +49,7 @@ namespace ProyectoIngenieria.Repository
             RegistroMantenimiento = new RegistroMantenimientoRepository(_db);
             Proyecto = new ProyectoRepository(_db);
             LugarTrabajo = new LugarTrabajoRepository(_db);
+            Repuesto = new RepuestoRepository(_db);
         }
 
         public void Save()

@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Repuestos";
+}
+
+<div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md border border-gray-200">
+    <div class="flex justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Gestión de Repuestos</h1>
+        <a asp-controller="Repuesto" asp-action="Upsert" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            + Nuevo Repuesto
+        </a>
+    </div>
+
+    <div class="overflow-x-auto border rounded">
+        <table id="tablaRepuesto" class="min-w-full text-sm text-left text-gray-700">
+            <thead class="bg-gray-100 text-xs font-semibold text-gray-600">
+                <tr>
+                    <th class="px-6 py-3">Nombre</th>
+                    <th class="px-6 py-3">Descripción</th>
+                    <th class="px-6 py-3">Precio Estimado</th>
+                    <th class="px-6 py-3 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200"></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Repuesto.js"></script>
+}

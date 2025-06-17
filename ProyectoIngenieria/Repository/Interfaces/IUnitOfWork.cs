@@ -14,6 +14,8 @@
         IRegistroMantenimientoRepository RegistroMantenimiento { get; }
         IProyectoRepository Proyecto { get; }
         ILugarTrabajoRepository LugarTrabajo { get; }
+
+        IRepuestoRepository Repuesto { get; }
         object EmpresaRepository { get; }
 
         void Save();
