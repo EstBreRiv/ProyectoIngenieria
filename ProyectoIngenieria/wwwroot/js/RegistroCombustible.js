@@ -14,7 +14,7 @@ function loadDataTable() {
 
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            url: "/RegistroCombustible/GetAll",
+            url: "/Admin/RegistroCombustible/GetAll",
             data: function (d) {
                 d.id = vehiculoId; // Pasar el ID del vehículo al backend
             }
@@ -32,10 +32,10 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                             <div class="text-center">
-                                <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-success btn-sm mx-2" title="Editar"">
+                                <a href="/Admin/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-success btn-sm mx-2" title="Editar"">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                                <a onClick=Delete("/Admin/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </div>

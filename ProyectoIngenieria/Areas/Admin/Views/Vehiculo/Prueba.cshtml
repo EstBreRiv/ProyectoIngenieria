@@ -1,4 +1,5 @@
-﻿@model Vehiculo
+﻿@using ProyectoIngenieria.Models
+@model Vehiculo
 @{
     ViewData["Title"] = Model.Id == 0 ? "Agregar Vehículo" : "Editar Vehículo";
     var empresas = ViewBag.Empresas as List<SelectListItem>;

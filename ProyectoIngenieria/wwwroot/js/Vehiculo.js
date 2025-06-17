@@ -8,7 +8,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/Vehiculo/GetAll"
+            "url": "/Admin/Vehiculo/GetAll"
         },
         "columns": [
 
@@ -21,7 +21,7 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
 
-                        <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                        <a href="/Admin/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                             <i class="bi bi-info-circle"></i>
 
                     `;

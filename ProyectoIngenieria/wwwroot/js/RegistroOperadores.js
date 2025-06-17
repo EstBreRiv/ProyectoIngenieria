@@ -8,7 +8,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/Operador/GetRegistroOperadores",
+            "url": "/Admin/Operador/GetRegistroOperadores",
             "type": "GET",
             "datatype": "json"
         },
@@ -21,7 +21,7 @@ function loadDataTable() {
                 "data": "vehiculoId",
                 "render": function (data) {
                     return `
-                            <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver Vehiculo">
+                            <a href="/Admin/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver Vehiculo">
                                 <i class="bi bi-eye"></i>
                             </a>
                           `

@@ -10,7 +10,7 @@ function loadDataTable() {
 
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            url: `/Operador/GetDocumentosOperador?id=${cedula}`,
+            url: `/Admin/Operador/GetDocumentosOperador?id=${cedula}`,
             type: "GET",
             datatype: "json"
         },

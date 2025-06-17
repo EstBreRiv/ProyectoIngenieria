@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using ProyectoIngenieria.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     public class OperadorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -75,7 +78,7 @@ namespace ProyectoIngenieria.Controllers
             if (ModelState.IsValid)
             {
                 var operadorExistente = _unitOfWork.Operador.Get(u => u.Cedula == operadorVM.Operador.Cedula);
-                
+
                 if (operadorExistente == null)
                 {
                     _unitOfWork.Operador.Add(operadorVM.Operador);
@@ -203,7 +206,8 @@ namespace ProyectoIngenieria.Controllers
             var documentos = _unitOfWork.DocumentoOperador
                 .GetAll()
                 .Where(d => d.OperadorCedula == id)
-                .Select(d => new {
+                .Select(d => new
+                {
                     d.Id,
                     d.Nombre,
                     d.Ruta

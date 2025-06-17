@@ -10,13 +10,13 @@ function Delete(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Vehiculo/Delete/" + id,
+                url: "/Admin/Vehiculo/Delete/" + id,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         toastr.success(data.message);
                         setTimeout(() => {
-                            window.location.href = '/Vehiculo/Index';
+                            window.location.href = '/Admin/Vehiculo/Index';
                         }, 2000);
                     } else {
                         toastr.error(data.message);
@@ -41,12 +41,12 @@ function Activar(id) {
         confirmButtonText: 'Sí, activar'
     }).then((result) => {
         if (result.isConfirmed) {
-            $.post("/Vehiculo/Activar", { id: id })
+            $.post("/Admin/Vehiculo/Activar", { id: id })
                 .done(function (data) {
                     if (data.success) {
                         toastr.success(data.message);
                         setTimeout(() => {
-                            window.location.href = '/Vehiculo/Index';
+                            window.location.href = '/Admin/Vehiculo/Index';
                         }, 2000);
 
                     } else {

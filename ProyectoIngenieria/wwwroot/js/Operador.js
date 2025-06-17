@@ -8,7 +8,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/Operador/GetAll",
+            "url": "/Admin/Operador/GetAll",
             "type": "GET",
             "datatype": "json"
         },
@@ -19,11 +19,11 @@ function loadDataTable() {
                 "data": "cedula",
                 "render": function (data) {
                     return `
-                            <a href="/Operador/DocumentoOperador/${data}" class="btn btn-secondary btn-sm mx-2" title="Documentos">
+                            <a href="/Admin/Operador/DocumentoOperador/${data}" class="btn btn-secondary btn-sm mx-2" title="Documentos">
                                 <i class="bi bi-folder2-open"></i>
                             </a>
 
-                            <a href="/Operador/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
+                            <a href="/Admin/Operador/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
 

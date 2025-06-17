@@ -25,7 +25,7 @@
     <header class="sticky-top">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
             <div class="container">
-                <a class="navbar-brand fw-bold text-success" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand fw-bold text-success" asp-area="Admin" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-tools me-1"></i> ProyectoIngenieria
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -35,52 +35,55 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-house-door-fill me-1"></i>Inicio
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Empresa" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="Empresa" asp-action="Index">
-                                <i class="bi bi-building me-1"></i>Empresas
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Vehiculo" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="Vehiculo" asp-action="Index">
-                                <i class="bi bi-truck-front me-1"></i>Vehículos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="Operador" asp-action="Index">
-                                <i class="bi bi-person-workspace me-1"></i> Operadores
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="Proyecto" asp-action="Index">
-                                <i class="bi bi-person-workspace me-1"></i> Proyectos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="LugarTrabajo" asp-action="Index">
-                                <i class="bi bi-person-workspace me-1"></i> Lugares de trabajo
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="TipoTrabajo" asp-action="Index">
-                                <i class="bi bi-person-workspace me-1"></i> Categorias de trabajo
-                            </a>
-                        </li>
-                      
-                    </ul>
 
+                        @if (User.IsInRole(ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-house-door-fill me-1"></i>Inicio
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Empresa" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="" asp-controller="Empresa" asp-action="Index">
+                                    <i class="bi bi-building me-1"></i>Empresas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Vehiculo" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="" asp-controller="Vehiculo" asp-action="Index">
+                                    <i class="bi bi-truck-front me-1"></i>Vehículos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="" asp-controller="Operador" asp-action="Index">
+                                    <i class="bi bi-person-workspace me-1"></i> Operadores
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="" asp-controller="Proyecto" asp-action="Index">
+                                    <i class="bi bi-person-workspace me-1"></i> Proyectos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="" asp-controller="LugarTrabajo" asp-action="Index">
+                                    <i class="bi bi-person-workspace me-1"></i> Lugares de trabajo
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Operador" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="" asp-controller="TipoTrabajo" asp-action="Index">
+                                    <i class="bi bi-person-workspace me-1"></i> Categorias de trabajo
+                                </a>
+                            </li>
+                        }
+                        
                     </ul>
 
                     <div class="ms-auto">

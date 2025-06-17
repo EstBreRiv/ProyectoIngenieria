@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using System.Linq;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     public class VehiculoController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +29,7 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult GetAll()
         {
             var vehiculos = _unitOfWork.Vehiculo.GetAll()
-            
+
                 .Select(v => new
                 {
                     v.Id,

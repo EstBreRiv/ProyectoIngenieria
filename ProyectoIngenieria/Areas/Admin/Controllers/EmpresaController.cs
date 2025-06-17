@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
-    public class TipoTrabajoController : Controller
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
+    public class EmpresaController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public TipoTrabajoController(IUnitOfWork unitOfWork)
+        public EmpresaController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -23,17 +26,17 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var TiposTrabajo = _unitOfWork.TipoTrabajo.GetAll();
-            return Json(new { data = TiposTrabajo });
+            var empresas = _unitOfWork.Empresa.GetAll();
+            return Json(new { data = empresas });
         }
 
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
-            TipoTrabajoVM tipoTrabajoVM = new()
+            EmpresaVM empresaVM = new()
             {
-                tipoTrabajo = new Models.TipoTrabajo(),
-                TiposTrabajoList = _unitOfWork.TipoTrabajo.GetAll().Select(i => new SelectListItem
+                Empresa = new Empresa(),
+                EmpresasList = _unitOfWork.Empresa.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Nombre,
                     Value = i.Id.ToString()
@@ -43,37 +46,38 @@ namespace ProyectoIngenieria.Controllers
             if (id == null || id == 0)
             {
                 // Create
-                return View(tipoTrabajoVM);
+                return View(empresaVM);
             }
             else
             {
                 // Update
-                tipoTrabajoVM.tipoTrabajo = _unitOfWork.TipoTrabajo.Get(u => u.Id == id);
-                if (tipoTrabajoVM.tipoTrabajo == null)
+                empresaVM.Empresa = _unitOfWork.Empresa.Get(u => u.Id == id);
+                if (empresaVM.Empresa == null)
                 {
                     return NotFound();
                 }
-                return View(tipoTrabajoVM);
+                return View(empresaVM);
             }
         }
 
         [HttpPost]
-        public IActionResult Upsert(TipoTrabajoVM tipoTrabajoVM)
+        public IActionResult Upsert(EmpresaVM empresaVM)
         {
             if (ModelState.IsValid)
             {
-                if (tipoTrabajoVM.tipoTrabajo.Id == 0)
+                if (empresaVM.Empresa.Id == 0)
                 {
-                    _unitOfWork.TipoTrabajo.Add(tipoTrabajoVM.tipoTrabajo);
+                    _unitOfWork.Empresa.Add(empresaVM.Empresa);
                 }
                 else
                 {
-                    _unitOfWork.TipoTrabajo.Update(tipoTrabajoVM.tipoTrabajo);
+                    _unitOfWork.Empresa.update(empresaVM.Empresa);
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            return View(tipoTrabajoVM);
+            return View(empresaVM);
         }
+
     }
 }

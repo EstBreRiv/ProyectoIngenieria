@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Operador\DocumentoOperador.cshtml">
+    <Content Update="Areas\Admin\Views\Operador\DocumentoOperador.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Views\Operador\Index.cshtml">
+    <Content Update="Areas\Admin\Views\Operador\Index.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -34,6 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Customer\Controllers\" />
+    <Folder Include="Areas\Customer\Views\" />
+    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\documentos\documentoOperador\" />
   </ItemGroup>
 
