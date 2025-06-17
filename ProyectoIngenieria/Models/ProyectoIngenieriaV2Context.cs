@@ -15,26 +15,40 @@ public partial class ProyectoIngenieriaV2Context : DbContext
     {
     }
 
-    public virtual DbSet<Proyecto> Proyectos { get; set; }
+    public virtual DbSet<HorasTrabajo> HorasTrabajos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=ProyectoIngenieriaV2;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ProyectoIngenieriaV2;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Proyecto>(entity =>
+        modelBuilder.Entity<HorasTrabajo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PROYECTO_pk");
+            entity.HasKey(e => e.Id).HasName("HORAS_TRABAJO_pk");
 
-            entity.ToTable("PROYECTO");
+            entity.ToTable("HORAS_TRABAJO");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Cliente).HasMaxLength(100);
-            entity.Property(e => e.FechaInicio).HasColumnName("Fecha_Inicio");
-            entity.Property(e => e.NombreProyecto)
-                .HasMaxLength(100)
-                .HasColumnName("Nombre_Proyecto");
+            entity.Property(e => e.HorometroFinal)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Horometro_Final");
+            entity.Property(e => e.HorometroInicial)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Horometro_Inicial");
+            entity.Property(e => e.LugarTrabajoId).HasColumnName("LUGAR_TRABAJO_ID");
+            entity.Property(e => e.PrecioHora)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Precio_Hora");
+            entity.Property(e => e.ProyectoId).HasColumnName("PROYECTO_ID");
+            entity.Property(e => e.TipoTrabajoId).HasColumnName("TIPO_TRABAJO_ID");
+            entity.Property(e => e.TotalGanancia)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Total_Ganancia");
+            entity.Property(e => e.TotalHoras)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Total_Horas");
+            entity.Property(e => e.VehiculoId).HasColumnName("VEHICULO_ID");
         });
 
         OnModelCreatingPartial(modelBuilder);

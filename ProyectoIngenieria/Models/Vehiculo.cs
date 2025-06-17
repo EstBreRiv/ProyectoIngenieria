@@ -31,5 +31,5 @@ public partial class Vehiculo
 
     public virtual ICollection<RegistroMantenimiento> RegistroMantenimientos { get; set; } = new List<RegistroMantenimiento>();
 
-    public virtual ICollection<RegistroOperadore> RegistroOperadores { get; set; } = new List<RegistroOperadore>();
+    public virtual ICollection<RegistroOperadores> RegistroOperadores { get; set; } = new List<RegistroOperadores>();
 }

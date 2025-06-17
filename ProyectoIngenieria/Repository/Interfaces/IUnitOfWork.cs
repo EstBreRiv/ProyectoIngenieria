@@ -14,6 +14,8 @@
         IRegistroMantenimientoRepository RegistroMantenimiento { get; }
         IProyectoRepository Proyecto { get; }
         ILugarTrabajoRepository LugarTrabajo { get; }
+        ITipoTrabajoRepository TipoTrabajo { get; }
+        IRegistroOperadoresRepository RegistroOperadores { get; }
 
         IRepuestoRepository Repuesto { get; }
         object EmpresaRepository { get; }
