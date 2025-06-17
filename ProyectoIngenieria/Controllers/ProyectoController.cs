@@ -6,31 +6,41 @@ using ProyectoIngenieria.Repository.Interfaces;
 
 namespace ProyectoIngenieria.Controllers
 {
+    // Controlador para gestionar proyectos relacionados con los trabajos de las maquinas
+    // Permite crear, editar y listar los proyectos
     public class ProyectoController : Controller
     {
+        // Inyección de dependencias del unit of work
         private readonly IUnitOfWork _unitOfWork;
 
+        // Constructor que recibe el unit of work
         public ProyectoController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
+        // Acciones del controlador
+        // Index: Muestra la vista principal de los proyectos
         [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        // GetAll: Devuelve todos los proyectos en formato JSON
         [HttpGet]
         public IActionResult GetAll()
         {
+            // Obtiene todos los proyectos desde el repositorio y los retiorna como JSON
             var proyectos = _unitOfWork.Proyecto.GetAll();
             return Json(new { data = proyectos });
         }
 
+        // Upsert: Permite crear o editar un proyecto
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
+            // Crea una instancia del ViewModel ProyectoVM
             ProyectoVM proyectoVM = new ProyectoVM
             {
                 Proyecto = new Models.Proyecto(),
@@ -41,19 +51,23 @@ namespace ProyectoIngenieria.Controllers
                 }).ToList()
             };
 
+            // Si el id es nulo o 0, se trata de una creación
             if (id == null || id == 0)
             {
-                // Create
+                // envia un modelo vacio a la vista
                 return View(proyectoVM);
             }
             else
             {
-                // Update
+                // Si el id es válido, se trata de una edición
+                // Obtiene el proyecto por id desde el repositorio 
                 proyectoVM.Proyecto = _unitOfWork.Proyecto.Get(u => u.Id == id);
                 if (proyectoVM.Proyecto == null)
                 {
+                    // Si no se encuentra el proyecto, retorna NotFound
                     return NotFound();
                 }
+                // Retorna la vista con el proyecto encontrado
                 return View(proyectoVM);
             }
         }
