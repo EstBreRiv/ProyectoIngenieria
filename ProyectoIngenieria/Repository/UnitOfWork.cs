@@ -34,8 +34,13 @@ namespace ProyectoIngenieria.Repository
 
         public IRegistroOperadoresRepository RegistroOperadores { get; private set; }
 
+
         public ITipoVehiculoRepository TipoVehiculo { get; private set; }
         public IMarcaRepository Marca { get; private set; }
+
+        public IRepuestoRepository Repuesto { get; private set; }
+
+
         public object EmpresaRepository => throw new NotImplementedException();
 
         public UnitOfWork(ProyectoIngenieriaContext db)
@@ -57,6 +62,7 @@ namespace ProyectoIngenieria.Repository
             RegistroOperadores = new RegistroOperadoresRepository(_db);
             Marca = new MarcaRepository(_db);
             TipoVehiculo = new TipoVehiculoRepository(_db);
+            Repuesto = new RepuestoRepository(_db);
         }
 
         public void Save()

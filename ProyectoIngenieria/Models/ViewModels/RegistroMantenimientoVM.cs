@@ -8,8 +8,16 @@ namespace ProyectoIngenieria.Models.ViewModels
         [ValidateNever]
         public RegistroMantenimiento RegistroMantenimiento { get; set; }
 
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ListaVehiculos { get; set; }
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> RegistroMantenmientoList { get; set; }
+        public IEnumerable<SelectListItem> ListaCatalogoMantenimiento { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ListaOperadores { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ListaRepuestos { get; set; }
     }
 }

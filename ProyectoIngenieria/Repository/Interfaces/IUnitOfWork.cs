@@ -18,7 +18,7 @@
         IRegistroOperadoresRepository RegistroOperadores { get; }
         IMarcaRepository Marca { get; }
         ITipoVehiculoRepository TipoVehiculo { get; }
-
+        IRepuestoRepository Repuesto { get; }
         object EmpresaRepository { get; }
 
         void Save();
