@@ -17,11 +17,9 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
-                            <div class="text-center">
                                 <a href="/Empresa/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                            </div>
                           `
                 },
                 "width": "25%"

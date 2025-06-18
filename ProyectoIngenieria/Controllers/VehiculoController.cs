@@ -43,7 +43,7 @@ namespace ProyectoIngenieria.Controllers
                     v.Estado,
                     v.Descripcion,
                     v.Placa,
-                    v.Tipo,
+                    //v.Tipo,
                     EmpresaNombre = _unitOfWork.Empresa.Get(x => x.Id == v.EmpresaId).Nombre
                 })
                 .ToList();
@@ -59,6 +59,14 @@ namespace ProyectoIngenieria.Controllers
             // Cargar empresas para el dropdown
             var empresas = _unitOfWork.Empresa.GetAll();
             ViewBag.EmpresaList = new SelectList(empresas, "Id", "Nombre");
+
+            // Cargar tipos de vehículos para el dropdown
+            var tiposVehiculo = _unitOfWork.TipoVehiculo.GetAll();
+            ViewBag.TipoVehiculoList = new SelectList(tiposVehiculo, "Id", "Tipo");
+
+            //Faltan cargas las marcas y los tipos de vehiculos
+            var marcas = _unitOfWork.Marca.GetAll();
+            ViewBag.MarcaList = new SelectList(marcas, "Id", "NombreMarca");
 
             // Crear una instancia del ViewModel VehiculoVM
             VehiculoVM vehiculoVM = new()

@@ -31,12 +31,12 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult GetAll()
         {
             //var operadores = _unitOfWork.Operador.GetAll().Select(o => new
-            //    {
-            //        o.Cedula,
-            //        o.Nombre,
-            //        o.VehiculoId,
-            //        VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo
-            //    })
+            //{
+            //    o.Cedula,
+            //    o.Nombre,
+            //    o.Telefono,
+            //    o.TipoColaborador,
+            //})
             //    .ToList();
             //return Json(new { data = operadores });
 
@@ -109,7 +109,7 @@ namespace ProyectoIngenieria.Controllers
                 }
 
                 // Crea un registro en el historial de los operadores y las maquinas
-                RegistroOperadores registro = new RegistroOperadores
+                RegistroOperadore registro = new RegistroOperadore
                 {
                     OperadorCedula = operadorVM.Operador.Cedula,
                     Fecha = DateTime.Now,

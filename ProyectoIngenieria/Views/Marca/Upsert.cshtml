@@ -1,0 +1,43 @@
+@using ProyectoIngenieria.Models.ViewModels
+@model MarcaVM
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+            <form method="post">
+                <input hidden asp-for="marca.Id" />
+
+
+                <!-- Header -->
+                <div class="border-bottom pb-3 mb-4">
+                    <h2 class="h4 text-success">
+                        @(Model.marca.Id == 0 ? "Agregar" : "Actualizar") Marca
+                    </h2>
+                </div>
+
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label asp-for="marca.NombreMarca" class="form-label text-muted"></label>
+                    <input asp-for="marca.NombreMarca" type="text" class="form-control" placeholder="Ingrese el nombre de la marca" />
+                    <span asp-validation-for="marca.NombreMarca" class="form-text text-danger"></span>
+                </div>
+
+                <!-- Botones -->
+
+                <div class="d-flex gap-3 pt-3">
+                    <button type="submit" class="btn btn-success w-50">
+                        Guardar
+                    </button>
+                    <a asp-controller="Marca" asp-action="Index" class="btn btn-outline-secondary w-50 text-center">
+                        Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

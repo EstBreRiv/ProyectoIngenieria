@@ -8,17 +8,16 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/TipoTrabajo/GetAll"
+            "url": "/Marca/GetAll"
         },
         "columns": [
-            { "data": "nombre", "width": "40%" },
-            { "data": "descripcion", "width": "40%" },
-
+            { "data": "nombreMarca", "width": "30%" },
+            
             {
                 "data": "id",
                 "render": function (data) {
                     return `
-                                <a href="/TipoTrabajo/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
+                                <a href="/Marca/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                           `

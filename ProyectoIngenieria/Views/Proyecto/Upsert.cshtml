@@ -35,6 +35,12 @@
                     <span asp-validation-for="Proyecto.FechaInicio" class="text-danger small"></span>
                 </div>
 
+                <div class="mb-3">
+                    <label asp-for="Proyecto.FechaFin" class="form-label text-muted">Indique la fecha de cierre del Proyecto</label>
+                    <input asp-for="Proyecto.FechaFin" type="date" class="form-control" />
+                    <span asp-validation-for="Proyecto.FechaFin" class="text-danger small"></span>
+                </div>
+
                 <!-- Botones -->
 
                 <div class="d-flex gap-3 pt-3">

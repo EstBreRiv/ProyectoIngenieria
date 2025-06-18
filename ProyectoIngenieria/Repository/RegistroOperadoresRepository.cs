@@ -3,7 +3,7 @@ using ProyectoIngenieria.Repository.Interfaces;
 
 namespace ProyectoIngenieria.Repository
 {
-    public class RegistroOperadoresRepository : Repository<RegistroOperadores>, IRegistroOperadoresRepository
+    public class RegistroOperadoresRepository : Repository<RegistroOperadore>, IRegistroOperadoresRepository
     {
         private readonly ProyectoIngenieriaContext _db;
 
@@ -12,9 +12,9 @@ namespace ProyectoIngenieria.Repository
             _db = db;
         }
 
-        public void Update(RegistroOperadores registroOperadores)
+        public void Update(RegistroOperadore registroOperadore)
         {
-            _db.RegistroOperadores.Update(registroOperadores);
+            _db.RegistroOperadores.Update(registroOperadore);
         }
     }
 }

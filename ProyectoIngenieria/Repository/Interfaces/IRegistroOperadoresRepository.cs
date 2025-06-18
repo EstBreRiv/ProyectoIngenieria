@@ -2,8 +2,8 @@
 
 namespace ProyectoIngenieria.Repository.Interfaces
 {
-    public interface IRegistroOperadoresRepository : IRepository<RegistroOperadores>
+    public interface IRegistroOperadoresRepository : IRepository<RegistroOperadore>
     {
-        void Update(RegistroOperadores registroOperadores);
+        void Update(RegistroOperadore registroOperadores);
     }
 }

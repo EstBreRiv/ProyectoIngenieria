@@ -15,6 +15,10 @@ public partial class HorasTrabajo
 
     public decimal PrecioHora { get; set; }
 
+    public decimal TotalHoras { get; set; }
+
+    public decimal TotalGanancia { get; set; }
+
     public int VehiculoId { get; set; }
 
     public int LugarTrabajoId { get; set; }
@@ -22,10 +26,6 @@ public partial class HorasTrabajo
     public int TipoTrabajoId { get; set; }
 
     public int ProyectoId { get; set; }
-
-    public decimal? TotalHoras { get; set; }
-
-    public decimal? TotalGanancia { get; set; }
 
     public virtual LugarTrabajo LugarTrabajo { get; set; } = null!;
 
