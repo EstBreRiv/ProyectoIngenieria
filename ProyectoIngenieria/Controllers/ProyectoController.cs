@@ -71,5 +71,31 @@ namespace ProyectoIngenieria.Controllers
                 return View(proyectoVM);
             }
         }
+
+        //Upsert: Permite crear o editar una empresa, recibe el modelo de vista EmpresaVM
+        [HttpPost]
+        public IActionResult Upsert(ProyectoVM proyectoVM)
+        {
+            //Valida el modelo recibido, si no es válido, devuelve la vista con los errores
+            if (ModelState.IsValid)
+            {
+                if (proyectoVM.Proyecto.Id == 0)
+                {
+                    // Si el Id es 0, se trata de una creación de una nueva empresa
+                    _unitOfWork.Proyecto.Add(proyectoVM.Proyecto);
+                }
+                else
+                {
+                    // Si el Id es diferente de 0, se trata de una edición de una empresa existente
+                    _unitOfWork.Proyecto.Update(proyectoVM.Proyecto);
+                }
+                // Guarda los cambios en la base de datos
+                _unitOfWork.Save();
+                // Redirige a la vista principal de empresas
+                return RedirectToAction("Index");
+            }
+            return View(proyectoVM);
+        }
+
     }
 }
