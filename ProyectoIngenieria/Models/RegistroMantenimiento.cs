@@ -19,13 +19,11 @@ public partial class RegistroMantenimiento
 
     public int OperadorCedula { get; set; }
 
-    public int RepuestoId { get; set; }
-
     public virtual CatalogoMantenimiento CatalogoMantenimiento { get; set; } = null!;
 
     public virtual Operador OperadorCedulaNavigation { get; set; } = null!;
 
-    public virtual Repuesto Repuesto { get; set; } = null!;
+    public virtual ICollection<RepuestosMantenimiento> RepuestosMantenimientos { get; set; } = new List<RepuestosMantenimiento>();
 
     public virtual Vehiculo Vehiculo { get; set; } = null!;
 }

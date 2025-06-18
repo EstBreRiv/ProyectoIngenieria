@@ -9,9 +9,13 @@ public partial class Operador
 
     public string Nombre { get; set; } = null!;
 
+    public string Telefono { get; set; } = null!;
+
+    public string TipoColaborador { get; set; } = null!;
+
     public virtual ICollection<DocumentoOperador> DocumentoOperadors { get; set; } = new List<DocumentoOperador>();
 
     public virtual ICollection<RegistroMantenimiento> RegistroMantenimientos { get; set; } = new List<RegistroMantenimiento>();
 
-    public virtual ICollection<RegistroOperadores> RegistroOperadores { get; set; } = new List<RegistroOperadores>();
+    public virtual ICollection<RegistroOperadore> RegistroOperadores { get; set; } = new List<RegistroOperadore>();
 }

@@ -16,6 +16,9 @@
         ILugarTrabajoRepository LugarTrabajo { get; }
         ITipoTrabajoRepository TipoTrabajo { get; }
         IRegistroOperadoresRepository RegistroOperadores { get; }
+        IMarcaRepository Marca { get; }
+        ITipoVehiculoRepository TipoVehiculo { get; }
+
         object EmpresaRepository { get; }
 
         void Save();

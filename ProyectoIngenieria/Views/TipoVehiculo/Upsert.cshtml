@@ -1,0 +1,49 @@
+@using ProyectoIngenieria.Models.ViewModels
+@model TipoVehiculoVM
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+            <form method="post">
+                <input hidden asp-for="tipoVehiculo.Id" />
+
+
+                <!-- Header -->
+                <div class="border-bottom pb-3 mb-4">
+                    <h2 class="h4 text-success">
+                        @(Model.tipoVehiculo.Id == 0 ? "Agregar" : "Actualizar") Marca
+                    </h2>
+                </div>
+
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label asp-for="tipoVehiculo.Tipo" class="form-label text-muted"></label>
+                    <input asp-for="tipoVehiculo.Tipo" type="text" class="form-control" placeholder="Ingrese el nuevo tipo de vehiculo" />
+                    <span asp-validation-for="tipoVehiculo.Tipo" class="form-text text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="tipoVehiculo.Descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+                    <textarea asp-for="tipoVehiculo.Descripcion" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+                    <span asp-validation-for="tipoVehiculo.Descripcion" class="text-red-600 text-sm"></span>
+                </div>
+
+                <!-- Botones -->
+
+                <div class="d-flex gap-3 pt-3">
+                    <button type="submit" class="btn btn-success w-50">
+                        Guardar
+                    </button>
+                    <a asp-controller="Marca" asp-action="Index" class="btn btn-outline-secondary w-50 text-center">
+                        Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

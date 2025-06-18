@@ -5,7 +5,7 @@
     ViewData["Title"] = Model.Vehiculo.Id == 0 ? "Crear Vehículo" : "Editar Vehículo";
 
     bool estaVacio = string.IsNullOrWhiteSpace(Model.Vehiculo.Modelo)
-        && string.IsNullOrWhiteSpace(Model.Vehiculo.Tipo)
+        // && string.IsNullOrWhiteSpace(Model.Vehiculo.Tipo)
         && string.IsNullOrWhiteSpace(Model.Vehiculo.Descripcion)
         && string.IsNullOrWhiteSpace(Model.Vehiculo.Placa)
         && (Model.Vehiculo.EmpresaId == 0 || Model.Vehiculo.EmpresaId == null);
@@ -23,6 +23,16 @@
 
                 <div class="card shadow border">
                     <div class="card-body">
+
+                        <!-- Marcas -->
+                        <div class="mb-4">
+                            <label asp-for="Vehiculo.MarcaId" class="form-label">Seleccione la marca del vehiculo</label>
+                            <select asp-for="Vehiculo.MarcaId" asp-items="@ViewBag.MarcaList" class="form-select">
+                                <option value="">Seleccione una marca para el vehiculo</option>
+                            </select>
+                            <span asp-validation-for="Vehiculo.EmpresaId" class="text-danger small"></span>
+                        </div>
+
                         <!-- Modelo -->
                         <div class="mb-3">
                             <label asp-for="Vehiculo.Modelo" class="form-label"></label>
@@ -32,15 +42,16 @@
 
                         <!-- Tipo -->
                         <div class="mb-3">
-                            <label asp-for="Vehiculo.Tipo" class="form-label"></label>
-                            <select asp-for="Vehiculo.Tipo" class="form-select">
-                                <option value="">Seleccione Tipo</option>
-                                <option value="Maquinaria">Maquinaria</option>
-                                <option value="Vehículo">Vehículo</option>
-                            </select>
-                            <span asp-validation-for="Vehiculo.Tipo" class="text-danger small"></span>
+                            <div class="mb-4">
+                                <label asp-for="Vehiculo.TipoVehiculoId" class="form-label">Seleccione el tipo de vehiculo</label>
+                                <select asp-for="Vehiculo.TipoVehiculoId" asp-items="@ViewBag.TipoVehiculoList" class="form-select">
+                                    <option value="">Seleccione el tipo de vehiculo</option>
+                                </select>
+                                <span asp-validation-for="Vehiculo.EmpresaId" class="text-danger small"></span>
+                            </div>
 
                         </div>
+
 
                         <!-- Descripción -->
                         <div class="mb-3">
