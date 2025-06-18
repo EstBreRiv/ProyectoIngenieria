@@ -14,8 +14,8 @@
                 <!-- Vehículo -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Vehículo</label>
-                    <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
-                </div>
+@*                     <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+ *@                </div>
 
                 <!-- Fecha -->
                 <div class="mb-3">
@@ -27,16 +27,16 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Operario</label>
                     <div class="d-flex gap-2">
-                        <select asp-for="RegistroMantenimiento.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select flex-grow-1"></select>
-                        <a asp-controller="Operador" asp-action="Upsert" class="btn btn-primary">+ Nuevo</a>
+@*                         <select asp-for="RegistroMantenimiento.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select flex-grow-1"></select>
+ *@                        <a asp-controller="Operador" asp-action="Upsert" class="btn btn-primary">+ Nuevo</a>
                     </div>
                 </div>
 
                 <!-- Catálogo mantenimiento -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Mantenimiento realizado</label>
-                    <select asp-for="RegistroMantenimiento.CatalogoMantenimientoId" asp-items="Model.ListaCatalogoMantenimiento" class="form-select"></select>
-                </div>
+@*                     <select asp-for="RegistroMantenimiento.CatalogoMantenimientoId" asp-items="Model.ListaCatalogoMantenimiento" class="form-select"></select>
+ *@                </div>
 
                 <!-- Descripción adicional -->
                 <div class="mb-3">
@@ -53,8 +53,8 @@
                 <!-- Repuestos -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Repuestos utilizados</label>
-                    <select asp-for="RegistroMantenimiento.RepuestoId" asp-items="Model.ListaRepuestos" multiple class="form-select" size="5"></select>
-                    <small class="form-text text-muted">Mantén presionada Ctrl (Cmd en Mac) para seleccionar múltiples.</small>
+@*                     <select asp-for="RegistroMantenimiento.RepuestoId" asp-items="Model.ListaRepuestos" multiple class="form-select" size="5"></select>
+ *@                    <small class="form-text text-muted">Mantén presionada Ctrl (Cmd en Mac) para seleccionar múltiples.</small>
                 </div>
 
                 <!-- Botones -->

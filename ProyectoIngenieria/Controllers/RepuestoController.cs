@@ -29,7 +29,7 @@ namespace ProyectoIngenieria.Controllers
         {
             if (id == null || id == 0)
             {
-                return View(new Repuesto());
+                return View(new CatalogoRepuesto());
             }
 
             var repuesto = _unitOfWork.Repuesto.Get(r => r.Id == id);
@@ -40,7 +40,7 @@ namespace ProyectoIngenieria.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Repuesto repuesto)
+        public IActionResult Upsert(CatalogoRepuesto repuesto)
         {
             if (!ModelState.IsValid)
                 return View(repuesto);

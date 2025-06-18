@@ -44,27 +44,27 @@ namespace ProyectoIngenieria.Controllers
         {
             var viewModel = new RegistroMantenimientoVM
             {
-                RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
-                ListaVehiculos = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
-                {
-                    Text = v.Modelo + " - " + v.Placa,
-                    Value = v.Id.ToString()
-                }),
-                ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
-                {
-                    Text = c.Nombre,
-                    Value = c.Id.ToString()
-                }),
-                ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
-                {
-                    Text = o.Nombre,
-                    Value = o.Cedula.ToString()
-                }),
-                ListaRepuestos = _unitOfWork.Repuesto.GetAll().Select(r => new SelectListItem
-                {
-                    Text = r.Nombre,
-                    Value = r.Id.ToString()
-                })
+                //RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
+                //ListaVehiculos = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+                //{
+                //    Text = v.Modelo + " - " + v.Placa,
+                //    Value = v.Id.ToString()
+                //}),
+                //ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+                //{
+                //    Text = c.Nombre,
+                //    Value = c.Id.ToString()
+                //}),
+                //ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
+                //{
+                //    Text = o.Nombre,
+                //    Value = o.Cedula.ToString()
+                //}),
+                //ListaRepuestos = _unitOfWork.Repuesto.GetAll().Select(r => new SelectListItem
+                //{
+                //    Text = r.Nombre,
+                //    Value = r.Id.ToString()
+                //})
             };
 
             if (id != null && viewModel.RegistroMantenimiento == null)
@@ -97,18 +97,18 @@ namespace ProyectoIngenieria.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Si hay errores, volver a cargar los combos
-            viewModel.ListaVehiculos = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
-            {
-                Text = v.Modelo + " - " + v.Placa,
-                Value = v.Id.ToString()
-            });
+            //// Si hay errores, volver a cargar los combos
+            //viewModel.ListaVehiculos = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+            //{
+            //    Text = v.Modelo + " - " + v.Placa,
+            //    Value = v.Id.ToString()
+            //});
 
-            viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
-            {
-                Text = c.Nombre,
-                Value = c.Id.ToString()
-            });
+            //viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+            //{
+            //    Text = c.Nombre,
+            //    Value = c.Id.ToString()
+            //});
 
             return View(viewModel);
         }

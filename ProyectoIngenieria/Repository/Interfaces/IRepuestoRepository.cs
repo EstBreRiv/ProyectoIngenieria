@@ -2,8 +2,8 @@
 
 namespace ProyectoIngenieria.Repository.Interfaces
 {
-    public interface IRepuestoRepository : IRepository<Repuesto>
+    public interface IRepuestoRepository : IRepository<CatalogoRepuesto>
     {
-        void Update(Repuesto repuesto);
+        void Update(CatalogoRepuesto repuesto);
     }
 }

@@ -6,7 +6,7 @@ namespace ProyectoIngenieria.Models.ViewModels
     public class RegistroOperadoresVM
     {
         [ValidateNever]
-        public RegistroOperadores RegistroOperador { get; set; }
+        public RegistroOperadore RegistroOperador { get; set; }
 
 
         [ValidateNever]

@@ -18,6 +18,7 @@
         IRegistroOperadoresRepository RegistroOperadores { get; }
         IMarcaRepository Marca { get; }
         ITipoVehiculoRepository TipoVehiculo { get; }
+        //Cambiar a catalogo de repuesto
         IRepuestoRepository Repuesto { get; }
         object EmpresaRepository { get; }
 
