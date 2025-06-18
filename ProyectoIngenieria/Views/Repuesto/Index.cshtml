@@ -2,29 +2,35 @@
     ViewData["Title"] = "Repuestos";
 }
 
-<div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md border border-gray-200">
-    <div class="flex justify-between mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Gestión de Repuestos</h1>
-        <a asp-controller="Repuesto" asp-action="Upsert" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h4">Gestión de Repuestos</h1>
+        <a asp-controller="Repuesto" asp-action="Upsert" class="btn btn-primary">
             + Nuevo Repuesto
         </a>
     </div>
 
-    <div class="overflow-x-auto border rounded">
-        <table id="tablaRepuesto" class="min-w-full text-sm text-left text-gray-700">
-            <thead class="bg-gray-100 text-xs font-semibold text-gray-600">
+    <div class="table-responsive border rounded">
+        <table id="tablaRepuesto" class="table table-striped table-bordered">
+            <thead class="table-light text-center">
                 <tr>
-                    <th class="px-6 py-3">Nombre</th>
-                    <th class="px-6 py-3">Descripción</th>
-                    <th class="px-6 py-3">Precio Estimado</th>
-                    <th class="px-6 py-3 text-center">Acciones</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio Estimado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200"></tbody>
+            <tbody>
+                <!-- Cargado dinámicamente con JS -->
+            </tbody>
         </table>
     </div>
 </div>
 
-@section Scripts {
-    <script src="~/js/Repuesto.js"></script>
-}
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+
+<script src="~/js/Repuesto.js"></script>

@@ -22,13 +22,22 @@ namespace ProyectoIngenieria.Controllers
         }
 
         // Mostrar todos los registros (para DataTables)
-        [HttpGet]
         public IActionResult GetAll()
         {
-            var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll(includeProperties: "Vehiculo,CatalogoMantenimiento,OperadorCedulaNavigation,Repuesto");
+            var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll()
+                .Select(m => new
+                {
+                    m.Id,
+                    VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Modelo,
+                    m.Descripcion,
+                    CatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.Get(x => x.Id == m.CatalogoMantenimientoId).Nombre,
+                    Fecha = m.Fecha.ToString("dd/MM/yyyy"),
+                    Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
+                });
 
             return Json(new { data = mantenimientos });
         }
+
 
         // Crear / Editar
         public IActionResult Upsert(int? id)

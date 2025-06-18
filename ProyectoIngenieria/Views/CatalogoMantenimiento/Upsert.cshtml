@@ -1,36 +1,36 @@
 ﻿@model ProyectoIngenieria.Models.CatalogoMantenimiento
 
-<div class="max-w-2xl mx-auto mt-12 bg-white p-10 rounded-3xl shadow-lg border border-gray-300">
-    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
-        @(Model.Id == 0 ? "Nuevo Mantenimiento" : "Editar Mantenimiento")
-    </h2>
+<div class="container mt-5">
+    <div class="card shadow border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <h2 class="card-title text-center h4 mb-4">
+                @(Model.Id == 0 ? "Nuevo Mantenimiento" : "Editar Mantenimiento")
+            </h2>
 
-    <form asp-action="Upsert" method="post" class="space-y-6">
-        <input type="hidden" asp-for="Id" />
+            <form asp-action="Upsert" method="post">
+                <input type="hidden" asp-for="Id" />
 
-        <div>
-            <label asp-for="Nombre" class="block text-gray-700 font-medium mb-2">Nombre del mantenimiento</label>
-            <input asp-for="Nombre"
-                   class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
-            <span asp-validation-for="Nombre" class="text-sm text-red-500 mt-1 block"></span>
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label fw-semibold">Nombre del mantenimiento</label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Descripcion" class="form-label fw-semibold">Descripción</label>
+                    <textarea asp-for="Descripcion" rows="4" class="form-control"></textarea>
+                    <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 pt-3">
+                    <button type="submit" class="btn btn-primary px-4">
+                        Guardar
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
         </div>
-
-        <div>
-            <label asp-for="Descripcion" class="block text-gray-700 font-medium mb-2">Descripción</label>
-            <textarea asp-for="Descripcion" rows="4"
-                      class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
-            <span asp-validation-for="Descripcion" class="text-sm text-red-500 mt-1 block"></span>
-        </div>
-
-        <div class="flex justify-center gap-4 pt-4">
-            <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition shadow">
-                Guardar
-            </button>
-            <a asp-action="Index"
-               class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold px-6 py-2 rounded-xl transition shadow border">
-                Cancelar
-            </a>
-        </div>
-    </form>
+    </div>
 </div>
