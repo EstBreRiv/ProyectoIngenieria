@@ -15,6 +15,8 @@ function loadDataTable() {
         "columns": [
             { "data": "cedula", "width": "15%" },
             { "data": "nombre", "width": "15%" },
+            { "data": "telefono", "width": "15%" },
+            { "data": "tipoColaborador", "width": "15%" },
             {
                 "data": "cedula",
                 "render": function (data) {
