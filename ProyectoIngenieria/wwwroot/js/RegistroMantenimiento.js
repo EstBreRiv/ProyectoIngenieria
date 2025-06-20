@@ -20,9 +20,12 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
-                        <a href="/RegistroMantenimiento/Upsert/${data}" class="btn btn-sm bg-blue-600 text-white rounded px-3 py-1 hover:bg-blue-700" title="Editar">
-                            <i class="bi bi-pencil-square"></i> Editar
-                        </a>`;
+                        <a href="/RegistroMantenimiento/Details/${data}" class="btn btn-sm bg-blue-600 text-white rounded px-3 py-1 hover:bg-blue-700" title="Editar">
+                            <i class="bi bi-pencil-square"></i> Detalles
+                        </a>
+
+                        `;
+
                 },
                 "width": "15%", title: "Acciones"
             }

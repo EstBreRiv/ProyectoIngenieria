@@ -19,5 +19,20 @@ namespace ProyectoIngenieria.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> ListaRepuestos { get; set; }
+
+        [ValidateNever]
+        public List<int> RepuestosSeleccionados { get; set; }
+
+        [ValidateNever]
+        public string nombreVehiculo { get; set; }
+
+        [ValidateNever]
+        public string nombreOperador { get; set; }
+
+        [ValidateNever]
+        public string tipoMantenimiento { get; set; }
+
+        [ValidateNever]
+        public List<String> nombresProductos { get; set; } = new List<String>();
     }
 }

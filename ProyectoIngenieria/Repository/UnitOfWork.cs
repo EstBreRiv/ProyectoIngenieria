@@ -40,6 +40,8 @@ namespace ProyectoIngenieria.Repository
 
         public IRepuestoRepository Repuesto { get; private set; }
 
+        public IRepuestosMantenimientoRepository RepuestosMantenimiento { get; private set; }
+
 
         public object EmpresaRepository => throw new NotImplementedException();
 
@@ -63,6 +65,7 @@ namespace ProyectoIngenieria.Repository
             Marca = new MarcaRepository(_db);
             TipoVehiculo = new TipoVehiculoRepository(_db);
             Repuesto = new RepuestoRepository(_db);
+            RepuestosMantenimiento = new RepuestosMantenimientoRepository(_db);
         }
 
         public void Save()

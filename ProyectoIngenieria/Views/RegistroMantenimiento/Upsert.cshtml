@@ -14,8 +14,9 @@
                 <!-- Vehículo -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Vehículo</label>
-@*                     <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
- *@                </div>
+                    <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                   
+                </div>
 
                 <!-- Fecha -->
                 <div class="mb-3">
@@ -27,16 +28,17 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Operario</label>
                     <div class="d-flex gap-2">
-@*                         <select asp-for="RegistroMantenimiento.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select flex-grow-1"></select>
- *@                        <a asp-controller="Operador" asp-action="Upsert" class="btn btn-primary">+ Nuevo</a>
+                        <select asp-for="RegistroMantenimiento.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select flex-grow-1"></select>
+                        <a asp-controller="Operador" asp-action="Upsert" class="btn btn-primary">+ Nuevo</a>
                     </div>
                 </div>
 
                 <!-- Catálogo mantenimiento -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Mantenimiento realizado</label>
-@*                     <select asp-for="RegistroMantenimiento.CatalogoMantenimientoId" asp-items="Model.ListaCatalogoMantenimiento" class="form-select"></select>
- *@                </div>
+                    <select asp-for="RegistroMantenimiento.CatalogoMantenimientoId" asp-items="Model.ListaCatalogoMantenimiento" class="form-select"></select>
+                   
+                </div>
 
                 <!-- Descripción adicional -->
                 <div class="mb-3">
@@ -53,15 +55,66 @@
                 <!-- Repuestos -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Repuestos utilizados</label>
-@*                     <select asp-for="RegistroMantenimiento.RepuestoId" asp-items="Model.ListaRepuestos" multiple class="form-select" size="5"></select>
- *@                    <small class="form-text text-muted">Mantén presionada Ctrl (Cmd en Mac) para seleccionar múltiples.</small>
+                    <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModal()">Agregar Repuestos</button>
+
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaSeleccionados"></tbody>
+                    </table>
                 </div>
+
 
                 <!-- Botones -->
                 <div class="d-flex justify-content-between mt-4">
                     <button type="submit" class="btn btn-success">Guardar y continuar</button>
                     <a asp-action="Index" class="btn btn-link text-decoration-none">Volver</a>
                 </div>
+
+
+                <!-- Modal de repuestos -->
+                <div class="modal fade" id="modalRepuestos" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5>Seleccionar Repuestos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered" id="tablaRepuestos">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 15px;">Seleccionar</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var repuesto in Model.ListaRepuestos)
+                                        {
+                                            var partes = repuesto.Text.Split('|');
+                                            <tr style="width: 2px;">
+                                                <td class="text-center" style="width: 2px;">
+                                                    <input type="checkbox" value="@repuesto.Value" data-nombre="@partes[0]"/>
+                                                </td>
+                                                <td>@partes[0]</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" onclick="guardarSeleccion()">Agregar Seleccionados</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -69,4 +122,86 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        let seleccionados = [];
+
+        function abrirModal() {
+            new bootstrap.Modal(document.getElementById("modalRepuestos")).show();
+        }
+
+        function guardarSeleccion() {
+            const checkboxes = document.querySelectorAll("#tablaRepuestos input[type=checkbox]:checked");
+            const tabla = document.getElementById("tablaSeleccionados");
+            checkboxes.forEach(cb => {
+                const id = parseInt(cb.value);
+                if (!seleccionados.includes(id)) {
+                    seleccionados.push(id);
+                    const fila = document.createElement("tr");
+                    fila.innerHTML = `
+                        <td>
+                            ${cb.dataset.nombre}
+                            <input type="hidden" name="RepuestosSeleccionados" value="${id}" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRepuesto(${id}, this)">Eliminar</button>
+                        </td>
+                    `;
+                    tabla.appendChild(fila);
+                }
+            });
+            bootstrap.Modal.getInstance(document.getElementById("modalRepuestos")).hide();
+        }
+
+        function eliminarRepuesto(id, btn) {
+            seleccionados = seleccionados.filter(x => x !== id);
+            const fila = btn.closest("tr");
+            fila.remove();
+        }
+    </script>
 }
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+<!-- jQuery y DataTables JS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#tablaRepuestos').DataTable({
+            language: {
+                search: "Buscar:",
+                lengthMenu: "Mostrar _MENU_ repuestos",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ repuestos",
+                paginate: {
+                    next: "Siguiente",
+                    previous: "Anterior"
+                },
+                zeroRecords: "No se encontraron repuestos"
+            },
+            pageLength: 10,
+            lengthChange: false,
+            autoWidth: false, // 👈 Evita que DataTables calcule anchos automáticos
+
+            columnDefs: [
+                {
+                    targets: 0, // Primera columna (checkbox)
+                    width: "40px",
+                    className: "text-center"
+                },
+                {
+                    targets: 1, // Segunda columna (nombre)
+                    width: "auto" // Esto permite que se expanda naturalmente
+                }
+            ]
+        });
+
+    });
+</script>
+
+
+
+
+
+

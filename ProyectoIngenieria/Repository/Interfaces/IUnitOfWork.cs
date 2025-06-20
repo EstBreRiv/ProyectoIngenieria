@@ -20,6 +20,7 @@
         ITipoVehiculoRepository TipoVehiculo { get; }
         //Cambiar a catalogo de repuesto
         IRepuestoRepository Repuesto { get; }
+        IRepuestosMantenimientoRepository RepuestosMantenimiento { get; }
         object EmpresaRepository { get; }
 
         void Save();
