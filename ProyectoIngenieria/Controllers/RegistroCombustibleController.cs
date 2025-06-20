@@ -33,22 +33,23 @@ namespace ProyectoIngenieria.Controllers
         // GetAll: Devuelve todos los registros de
         // combustible para un vehículo específico en formato JSON
         [HttpGet]
-        public IActionResult GetAll(int id)
+        public IActionResult GetAll(int id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            // Obtiene todos los registros de combustible del vehículo con el ID proporcionado
-            var registrosCombustible = _unitOfWork.RegistroCombustible.GetAll(r => r.VehiculoId == id)
-                .Select(r => new
-                {
-                    r.Id,
-                    r.FechaCompra,
-                    r.LitrosComprados,
-                    r.PrecioLitro,
-                    r.TotalPagado
-                })
-                .ToList();
-            // Retorna los registros en formato JSON
-            return Json(new { data = registrosCombustible });
+            var query = _unitOfWork.RegistroCombustible
+                .GetAll()
+                .Where(r => r.VehiculoId == id);
+
+            if (fechaInicio.HasValue && fechaFin.HasValue)
+            {
+                query = query.Where(r => r.FechaCompra >= fechaInicio.Value && r.FechaCompra <= fechaFin.Value);
+            }
+
+            var resultado = query.ToList();
+            return Json(new { data = resultado });
         }
+
+
+
 
         // Upsert: Permite crear o editar un registro de combustible
         // tiene un id opcional para editar o crear un nuevo registro y un id de vehiculo

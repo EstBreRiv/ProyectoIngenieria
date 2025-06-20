@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoIngenieria.Models;
 
@@ -7,18 +8,25 @@ public partial class Vehiculo
 {
     public int Id { get; set; }
 
+    [Required(ErrorMessage = "Se debe ingresar el modelo del vehículo.")]
+    [StringLength(50, ErrorMessage = "El modelo no puede tener más de cincuenta caracteres.")]
     public string Modelo { get; set; } = null!;
 
     public string Estado { get; set; } = null!;
 
+    [Required(ErrorMessage = "Se debe ingresar una descripción del vehículo.")]
+    [StringLength(100, ErrorMessage = "La descripción no puede tener más de cien caracteres.")]
     public string? Descripcion { get; set; }
 
     public string? Placa { get; set; }
 
+    [Required(ErrorMessage = "Se debe seleccionar la empresa a la que pertenece el vehículo.")]
     public int EmpresaId { get; set; }
 
+    [Required(ErrorMessage = "Se debe seleccionar la marca del vehículo.")]
     public int MarcaId { get; set; }
 
+    [Required(ErrorMessage = "Se debe seleccionar el tipo de vehículo.")]
     public int TipoVehiculoId { get; set; }
 
     public virtual ICollection<DocumentoVehiculo> DocumentoVehiculos { get; set; } = new List<DocumentoVehiculo>();

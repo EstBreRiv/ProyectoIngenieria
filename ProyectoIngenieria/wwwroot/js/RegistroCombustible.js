@@ -3,50 +3,73 @@
 $(document).ready(function () {
     console.log("Task.js cargado y listo");
 
-    // Obtener el ID del vehículo desde el campo oculto
     var vehiculoId = $('#VehiculoIdHidden').val();
 
     loadDataTable();
 });
 
 function loadDataTable() {
-    var vehiculoId = $('#VehiculoIdHidden').val(); // Obtener el ID del vehículo
+    var vehiculoId = $('#VehiculoIdHidden').val();
 
     dataTable = $('#taskTable').DataTable({
         ajax: {
             url: "/RegistroCombustible/GetAll",
             data: function (d) {
-                d.id = vehiculoId; // Pasar el ID del vehículo al backend
+                d.id = vehiculoId;
+                d.fechaInicio = $('#fechaInicio').val();
+                d.fechaFin = $('#fechaFin').val();
             }
         },
-
-        "columns": [
-            { "data": "id", "width": "15%" },
-            { "data": "fechaCompra", "width": "15%" },
-            { "data": "litrosComprados", "width": "15%" },
-            { "data": "precioLitro", "width": "15%" },
-            { "data": "totalPagado", "width": "15%" },
-
+        destroy: true,
+        columns: [
+            { data: "id" },
+            { data: "fechaCompra" },
+            { data: "litrosComprados" },
+            { data: "precioLitro" },
+            { data: "totalPagado" },
             {
-                "data": "id",
-                "render": function (data) {
+                data: "id",
+                render: function (data) {
                     return `
-                                <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-success btn-sm mx-2" title="Editar"">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                          `
+                        <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-success btn-sm mx-2" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </a>`;
                 }
             }
         ],
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         }
-
     });
 }
+
+$('#btnFiltrar').on('click', function () {
+    var fechaInicio = $('#fechaInicio').val();
+    var fechaFin = $('#fechaFin').val();
+
+    if (!fechaInicio || !fechaFin) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fechas incompletas',
+            text: 'Debes seleccionar tanto la fecha de inicio como la fecha de fin.',
+        });
+        return;
+    }
+
+    dataTable.ajax.reload();
+});
+
+
+$('#btnLimpiar').click(function () {
+    $('#fechaInicio').val('');
+    $('#fechaFin').val('');
+    dataTable.ajax.reload();
+});
+
+
 
 function Delete(url) {
     Swal.fire({
