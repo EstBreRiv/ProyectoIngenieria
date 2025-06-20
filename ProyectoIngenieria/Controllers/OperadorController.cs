@@ -30,16 +30,6 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            //var operadores = _unitOfWork.Operador.GetAll().Select(o => new
-            //{
-            //    o.Cedula,
-            //    o.Nombre,
-            //    o.Telefono,
-            //    o.TipoColaborador,
-            //})
-            //    .ToList();
-            //return Json(new { data = operadores });
-
             // Obtiene todos los operadores desde el repositorio
             // y los devuelve en formato JSON
             var operadores = _unitOfWork.Operador.GetAll();
@@ -157,6 +147,13 @@ namespace ProyectoIngenieria.Controllers
                 }
 
                 _unitOfWork.DocumentoOperador.Remove(doc);
+            }
+
+            var registrosOperadores = _unitOfWork.RegistroOperadores.GetAll().Where(ro => ro.OperadorCedula == id).ToList();
+            // Elimina los registros de operadores asociados al operador
+            foreach (var registro in registrosOperadores)
+            {
+                _unitOfWork.RegistroOperadores.Remove(registro);
             }
 
             // Elimina el operador del repositorio y guarda los cambios

@@ -244,5 +244,131 @@ namespace ProyectoIngenieria.Controllers
             }
         }
 
+        //-----------------------------------------------------------------------------
+
+        // Acciones para manejar los documentos de los vehiculos
+        //permite enviar a la el modelo con el vehiculo al asignar documentos
+        [HttpGet]
+        public IActionResult CargarDocumentoVehiculo(int id)
+        {
+            DocumentoVehiculoVM documentoVehiculoVM = new()
+            {
+                DocumentoVehiculo = new DocumentoVehiculo()
+                {
+                    VehiculoId = id
+                }
+            };
+
+            return View(documentoVehiculoVM);
+        }
+
+        // Carga un documento para un vehiculo específico
+        [HttpPost]
+        public IActionResult CargarDocumentoVehiculo(DocumentoVehiculoVM documentoVehiculoVM)
+        {
+            // Verifica si el modelo es válido
+            if (ModelState.IsValid)
+            {
+                // Verifica si se ha subido un archivo
+                if (documentoVehiculoVM.Archivo != null && documentoVehiculoVM.Archivo.Length > 0)
+                {
+                    // Genera un nombre único para el archivo
+                    var nombreArchivo = Path.GetFileNameWithoutExtension(documentoVehiculoVM.Archivo.FileName);
+                    var extension = Path.GetExtension(documentoVehiculoVM.Archivo.FileName);
+                    var nombreUnico = $"{nombreArchivo}_{DateTime.Now.Ticks}{extension}";
+                    var rutaGuardar = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "documentos", "documentoVehiculo", nombreUnico);
+
+                    // Asegura que el directorio exista
+                    using (var stream = new FileStream(rutaGuardar, FileMode.Create))
+                    {
+                        // Copia el archivo subido al directorio especificado
+                        documentoVehiculoVM.Archivo.CopyTo(stream);
+                    }
+
+                    // Guardar el path del archivo en la base de datos
+                    documentoVehiculoVM.DocumentoVehiculo.Ruta = "/documentos/documentoVehiculo/" + nombreUnico;
+                }
+
+                // Guardar el registro en base de datos
+                _unitOfWork.DocumentoVehiculo.Add(documentoVehiculoVM.DocumentoVehiculo);
+                _unitOfWork.Save();
+
+                return RedirectToAction("DocumentoVehiculo", new { id = documentoVehiculoVM.DocumentoVehiculo.VehiculoId });
+            }
+
+            return View(documentoVehiculoVM);
+        }
+
+        // Muestra los documentos de un vehiculo específico
+        [HttpGet]
+        public IActionResult DocumentoVehiculo(int id)
+        {
+            // Verifica si el vehiculo existe
+            var vehiculo = _unitOfWork.Vehiculo.Get(u => u.Id == id);
+
+            if (vehiculo == null)
+            {
+                // Si no se encuentra el vehiculo, retorna NotFound
+                return NotFound();
+            }
+
+            // Crea una instancia del ViewModel VehiculoVM con el operador encontrado
+            VehiculoVM vehiculoVM = new VehiculoVM
+            {
+                Vehiculo = vehiculo
+            };
+
+            // Obtiene la informacion del vehiculo y los asigna al ViewModel
+            return View(vehiculoVM);
+        }
+
+        // Obtiene los documentos de un vehiculo específico
+        //obtiene un id para identificar el vehiculo
+        [HttpGet]
+        public IActionResult GetDocumentosVehiculo(int id)
+        {
+            // Verifica si el vehiculo existe
+            //obtiene los documentos del vehiculo por su cédula
+            var documentos = _unitOfWork.DocumentoVehiculo
+                .GetAll()
+                .Where(d => d.VehiculoId == id)
+                .Select(d => new {
+                    d.Id,
+                    d.Nombre,
+                    d.Ruta
+                })
+                .ToList();
+
+            // retorna los documentos en formato JSON
+            return Json(new { data = documentos });
+        }
+
+        // Elimina un documento de un vehiculo específico
+        [HttpDelete]
+        public IActionResult DeleteDocumento(int id)
+        {
+            // Busca el documento por su ID
+            var documento = _unitOfWork.DocumentoVehiculo.Get(d => d.Id == id);
+            if (documento == null)
+            {
+                // Si no se encuentra el documento, retorna un mensaje de error
+                return Json(new { success = false, message = "Error al borrar el documento" });
+            }
+
+            // Elimina el archivo físico del servidor
+            var rutaFisica = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", documento.Ruta.TrimStart('/'));
+            if (System.IO.File.Exists(rutaFisica))
+            {
+                System.IO.File.Delete(rutaFisica);
+            }
+
+            // Elimina la ruta del documento de la base de datos y guarda los cambios
+            _unitOfWork.DocumentoVehiculo.Remove(documento);
+            _unitOfWork.Save();
+
+            // Retorna un mensaje de éxito al eliminar el documento
+            return Json(new { success = true, message = "Documento eliminado exitosamente" });
+        }
+
     }
 }

@@ -33,7 +33,7 @@
 
                  <div class="mb-4">
                     <label asp-for="VehiculoId" class="form-label">Seleccione el vehículo que opera</label>
-                    <select asp-for="VehiculoId" asp-items="@ViewBag.VehiculosList" class="form-select">
+                    <select asp-for="VehiculoId" asp-items="@ViewBag.VehiculosList" class="form-select" required data-val="true" data-val-required="Debe seleccionar un vehículo.">
                         <option value="">Seleccione Vehículo</option>
                     </select>
                     <span asp-validation-for="VehiculoId" class="text-danger small"></span>
