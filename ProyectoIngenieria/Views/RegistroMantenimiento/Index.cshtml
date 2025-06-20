@@ -9,52 +9,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.tailwindcss.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.min.css" />
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">Historial de Mantenimientos</h1>
+<body class="bg-light py-4">
+    <div class="container bg-white p-4 rounded shadow">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <h1 class="h3 mb-0">Historial de Mantenimientos</h1>
 
-            <a asp-controller="RegistroMantenimiento" asp-action="Upsert" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Registrar nuevo mantenimiento
-            </a>
-
-            <a asp-controller="Repuesto" asp-action="Index" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Ver repuestos
-            </a>
-
-            <a asp-controller="CatalogoMantenimiento" asp-action="Index" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Ver catálogo de mantenimientos
-            </a>
+            <div class="d-flex flex-wrap gap-2">
+                <a asp-controller="RegistroMantenimiento" asp-action="Upsert" class="btn btn-success">
+                    Registrar nuevo mantenimiento
+                </a>
+                <a asp-controller="Repuesto" asp-action="Index" class="btn btn-success">
+                    Ver repuestos
+                </a>
+                <a asp-controller="CatalogoMantenimiento" asp-action="Index" class="btn btn-primary">
+                    Ver catálogo de mantenimientos
+                </a>
+            </div>
         </div>
 
-        <div class="overflow-x-auto">
-            <table id="tablaMantenimiento" class="min-w-full text-sm text-left text-gray-700 border border-gray-300">
-                <thead class="bg-gray-200 text-xs uppercase font-semibold text-gray-600">
+        <div class="table-responsive">
+            <table id="tablaMantenimiento" class="table table-bordered table-striped table-hover align-middle">
+                <thead class="table-light text-center">
                     <tr>
-                        <th class="px-4 py-2 border">Vehículo</th>
-                        <th class="px-4 py-2 border">Tipo de Mantenimiento</th>
-                        <th class="px-4 py-2 border">Descripción</th>
-                        <th class="px-4 py-2 border">Fecha</th>
-                        <th class="px-4 py-2 border">Precio</th>
-                        <th class="px-4 py-2 border">Acciones</th>
+                        <th>Vehículo</th>
+                        <th>Tipo de Mantenimiento</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     <!-- Datos se cargan por JavaScript -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- jQuery y DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
 

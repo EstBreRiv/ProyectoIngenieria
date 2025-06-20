@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoIngenieria.Models;
 
@@ -7,16 +8,23 @@ public partial class RegistroMantenimiento
 {
     public int Id { get; set; }
 
+    [Required(ErrorMessage = "Se debe ingresar una descripción del mantenimiento realizado.")]
+    [StringLength(200, ErrorMessage = "La descripción no puede tener más de doscientos caracteres.")]
     public string Descripcion { get; set; } = null!;
 
+    [Required(ErrorMessage = "Se debe digitar el precio del mantenimiento.")]
+    [Range(0, 999999999999999999, ErrorMessage = "El precio debe ser positivo")]
     public decimal Precio { get; set; }
 
+    [Required(ErrorMessage = "Se debe proporcionar la fecha del mantenimiento.")]
     public DateOnly Fecha { get; set; }
 
     public int VehiculoId { get; set; }
 
+    [Required(ErrorMessage = "Se debe seleccionar un mantenimiento del catálogo.")]
     public int CatalogoMantenimientoId { get; set; }
 
+    [Required(ErrorMessage = "Se debe seleccionar al operador responsable.")]
     public int OperadorCedula { get; set; }
 
     public virtual CatalogoMantenimiento CatalogoMantenimiento { get; set; } = null!;
