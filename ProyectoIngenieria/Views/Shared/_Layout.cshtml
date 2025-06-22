@@ -76,6 +76,16 @@
                             <li><a class="dropdown-item" asp-controller="Operador" asp-action="Index">Operadores</a></li>
                         </ul>
                     </li>
+
+                    <li class="nav-item position-relative">
+                        <a class="nav-link text-muted" asp-controller="Notificacion" asp-action="Index" id="notificacionLink">
+                            <i class="bi bi-bell-fill"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                                  id="puntoRojo" style="display: none;">
+                                <span class="visually-hidden">Nueva notificación</span>
+                            </span>
+                        </a>
+                    </li>
                 </ul>
 
 
@@ -120,6 +130,20 @@
 
     <!-- JS del proyecto -->
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                fetch("/Notificacion/HayNotificaciones")
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.hay) {
+                            document.getElementById("puntoRojo").style.display = "inline-block";
+                        }
+                    });
+            });
+        </script>
+    }
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

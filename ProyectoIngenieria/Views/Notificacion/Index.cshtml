@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ProyectoIngenieria.Models.Notificacion>
+
+@{
+    ViewData["Title"] = "Buzón de Notificaciones";
+}
+
+<div class="container bg-white p-4 rounded shadow">
+    <h1 class="h3 text-success mb-4">Buzón de Notificaciones</h1>
+
+    <div class="table-responsive">
+        <table id="notificacionesTable" class="table table-bordered table-hover">
+            <thead class="table-success text-dark">
+                <tr>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                    <th>Placa</th>
+                    <th>Vehículo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Titulo</td>
+                        <td>@item.Descripcion</td>
+                        <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Vehiculo.Placa</td>
+                        <td>@item.Vehiculo.Modelo</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#notificacionesTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                }
+            });
+        });
+    </script>
+}
