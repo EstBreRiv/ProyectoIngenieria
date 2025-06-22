@@ -21,8 +21,20 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.Titulo</td>
+                    var claseFila = item.Leida ? "" : "table-warning"; // fondo amarillo suave si no leída
+                    <tr class="@claseFila">
+                        <td>
+                            @if (!item.Leida)
+                            {
+                                <strong>
+                                    <i class="bi bi-dot text-danger"></i> @item.Titulo
+                                </strong>
+                            }
+                            else
+                            {
+                                @item.Titulo
+                            }
+                        </td>
                         <td>@item.Descripcion</td>
                         <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
                         <td>@item.Vehiculo.Placa</td>

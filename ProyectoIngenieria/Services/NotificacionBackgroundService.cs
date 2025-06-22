@@ -22,7 +22,8 @@ public class NotificacionBackgroundService : BackgroundService
             using (var scope = _serviceProvider.CreateScope())
             {
                 var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-                DateOnly hoy = new DateOnly(2025, 6, 16); // Simula que hoy es 15 de junio
+                DateOnly hoy = new DateOnly(2025, 6, 16); // Simula que hoy es 16 de junio
+                //DateOnly hoy = DateOnly.FromDateTime(DateTime.Today);
                 var vehiculos = unitOfWork.Vehiculo.GetAll().ToList();
 
                 foreach (var vehiculo in vehiculos)

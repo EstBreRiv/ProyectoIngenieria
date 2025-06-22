@@ -25,6 +25,14 @@ namespace ProyectoIngenieria.Controllers
                 .OrderByDescending(n => n.Fecha)
                 .ToList();
 
+            // Marcar como leídas
+            foreach (var notificacion in notificaciones.Where(n => !n.Leida))
+            {
+                notificacion.Leida = true;
+            }
+
+            _unitOfWork.Save();
+
             return View(notificaciones);
         }
 
@@ -32,11 +40,10 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult HayNotificaciones()
         {
-            var hoy = DateOnly.FromDateTime(DateTime.Today);
-            var hayNuevas = _unitOfWork.Notificacion.GetAll()
-                .Any(n => n.Fecha == hoy);
+            var hayNoLeidas = _unitOfWork.Notificacion.GetAll()
+                .Any(n => !n.Leida);
 
-            return Json(new { hay = hayNuevas });
+            return Json(new { hay = hayNoLeidas });
         }
     }
 }
