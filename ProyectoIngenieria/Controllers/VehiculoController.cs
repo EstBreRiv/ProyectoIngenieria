@@ -187,13 +187,6 @@ namespace ProyectoIngenieria.Controllers
             // obtiene la informacion del vehiculo a ver detalles
             var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == id, includeProperties: "Empresa");
 
-
-
-            // Verifica si el vehículo existe y está activo
-            if (vehiculo == null || vehiculo.Estado == "Inactivo")
-                // Si no se encuentra el vehículo o está inactivo, retorna NotFound
-                return NotFound();
-
             // Crea una instancia del ViewModel VehiculoVM para pasar a la vista
             var vehiculoVM = new VehiculoVM
             {

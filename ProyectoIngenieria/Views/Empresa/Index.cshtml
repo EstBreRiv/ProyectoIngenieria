@@ -15,13 +15,21 @@
         }
     </style>
 </head>
-<body class="bg-light p-4">
+
+
+<body class="bg-light py-5 px-4">
+
+    <div class="d-flex justify-content-end mt-3 mb-3">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-auto">
+            Volver
+        </a>
+    </div>
 
     <div class="container bg-white p-4 rounded shadow">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3 text-success fw-bold">Empresas</h1>
             <a asp-controller="Empresa" asp-action="Upsert" class="btn btn-success">
-                Agregar Sucursal
+                Agregar Empresa
             </a>
         </div>
 
@@ -38,13 +46,13 @@
                 </tbody>
             </table>
         </div>
-        <div class="d-flex justify-content-end mt-3">
-            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-auto">
-                Volver
-            </a>
-        </div>
+       
     </div>
-
+    <div class="d-flex justify-content-end mt-3">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-auto">
+            Volver
+        </a>
+    </div>
 
     <!-- JS de jQuery y Bootstrap y DataTables -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
