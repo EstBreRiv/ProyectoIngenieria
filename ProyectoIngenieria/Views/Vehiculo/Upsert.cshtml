@@ -11,17 +11,27 @@
         && (Model.Vehiculo.EmpresaId == 0 || Model.Vehiculo.EmpresaId == null);
 }
 
-<div class="container py-5">
+
+
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+        <div class="container py-5">
+            <div class="d-flex justify-content-end mt-3">
+                <a asp-controller="Vehiculo" asp-action="Index" class="btn btn-outline-secondary w-25">
+                    Volver
+                </a>
+            </div>
 
             <form method="post" asp-action="Upsert">
                 <input type="hidden" asp-for="Vehiculo.Id" />
                 <input type="hidden" asp-for="Vehiculo.Estado" />
-
+                
 
                 <div class="card shadow border">
+                    <div class="card-header bg-success text-white text-center">
+                        <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+                    </div>
+
                     <div class="card-body">
 
                         <!-- Marcas -->
@@ -104,6 +114,7 @@
                                 <a asp-controller="Vehiculo" asp-action="DetalleVehiculo" asp-route-id="@Model.Vehiculo.Id" class="btn btn-outline-secondary w-25">
                                     Volver
                                 </a>
+
                             }
                         </div>
                     </div>

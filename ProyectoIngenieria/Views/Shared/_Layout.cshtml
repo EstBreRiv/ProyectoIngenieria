@@ -34,50 +34,95 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-success fw-semibold" : "text-muted")"
-                           asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="bi bi-house-door-fill me-1"></i>Inicio
-                        </a>
-                    </li>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                    <!-- Administración -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-briefcase-fill me-1"></i>Administración
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                            <li><a class="dropdown-item" asp-controller="Empresa" asp-action="Index">Empresas</a></li>
-                            <li><a class="dropdown-item" asp-controller="Proyecto" asp-action="Index">Proyectos</a></li>
-                            <li><a class="dropdown-item" asp-controller="LugarTrabajo" asp-action="Index">Lugares de trabajo</a></li>
-                            <li><a class="dropdown-item" asp-controller="TipoTrabajo" asp-action="Index">Categorías de trabajo</a></li>
-                        </ul>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-success fw-semibold" : "text-muted")"
+                               asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door-fill me-1"></i> Inicio
+                            </a>
+                        </li>
 
-                    <!-- Flota -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted" href="#" id="fleetDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-truck me-1"></i>Flota
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="fleetDropdown">
-                            <li><a class="dropdown-item" asp-controller="Vehiculo" asp-action="Index">Vehículos</a></li>
-                            <li><a class="dropdown-item" asp-controller="Marca" asp-action="Index">Marcas de vehículos</a></li>
-                            <li><a class="dropdown-item" asp-controller="TipoVehiculo" asp-action="Index">Tipos de vehículos</a></li>
-                        </ul>
-                    </li>
+                        <!-- Administración -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-briefcase-fill me-1"></i> Administración
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Empresa" asp-action="Index">
+                                        <i class="bi bi-building me-1"></i> Empresas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Proyecto" asp-action="Index">
+                                        <i class="bi bi-kanban me-1"></i> Proyectos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="LugarTrabajo" asp-action="Index">
+                                        <i class="bi bi-geo-alt me-1"></i> Lugares de trabajo
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="TipoTrabajo" asp-action="Index">
+                                        <i class="bi bi-list-check me-1"></i> Categorías de trabajo
+                                    </a>
+                                </li>
+                               
+                                <li>
+                                    <a class="dropdown-item" asp-controller="HorasTrabajo" asp-action="Index">
+                                        <i class="bi bi-clock-history me-1"></i> Horas de trabajo
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-                    <!-- Personal -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted" href="#" id="staffDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-fill me-1"></i>Personal
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="staffDropdown">
-                            <li><a class="dropdown-item" asp-controller="Operador" asp-action="Index">Operadores</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                        <!-- Flota -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted" href="#" id="fleetDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-truck me-1"></i> Flota
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="fleetDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Vehiculo" asp-action="Index">
+                                        <i class="bi bi-truck-front me-1"></i> Vehículos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Marca" asp-action="Index">
+                                        <i class="bi bi-tags me-1"></i> Marcas de vehículos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="TipoVehiculo" asp-action="Index">
+                                        <i class="bi bi-truck-flatbed me-1"></i> Tipos de vehículos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="RegistroMantenimiento" asp-action="Index">
+                                        <i class="bi bi-wrench-adjustable-circle me-1"></i> Mantenimientos
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
+                        <!-- Personal -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted" href="#" id="staffDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-fill me-1"></i> Personal
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="staffDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Operador" asp-action="Index">
+                                        <i class="bi bi-person-workspace me-1"></i> Operadores
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
 
                     <div class="ms-auto">
                         <partial name="_LoginPartial" />
@@ -86,7 +131,6 @@
             </div>
         </nav>
     </header>
-
 
     <!-- Contenido principal -->
     <main class="flex-grow-1 py-4">
@@ -121,6 +165,11 @@
     <!-- JS del proyecto -->
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <!-- Validaciones de formularios ASP.NET Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

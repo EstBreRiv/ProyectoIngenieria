@@ -1,20 +1,18 @@
 @{
     ViewData["Title"] = "Inicio";
 }
+
 <div class="col">
-        <div class="card h-100 text-center">
-            <div class="card-body">
+    <div class="card h-100 text-center">
+        <div class="card-body">
             <img src="/documentos/Logotipo Excavaciones Rivera.png" alt="Alternate Text" />
         </div>
-        </div>
-    
+    </div>
 </div>
 
-<div class="text-center mb-5">
+<div class="text-center mb-5"></div>
 
-</div>
-
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="row row-cols-1 row-cols-md-4 g-4">
 
     <!-- Vehículos -->
     <div class="col">
@@ -42,10 +40,10 @@
         </a>
     </div>
 
-    <!-- Mantenimiento -->
+    <!-- Mantenimientos -->
     <div class="col">
         <a asp-controller="RegistroMantenimiento" asp-action="Index" class="card-link">
-            <div class="card h-100 text-center hover:shadow-lg transition-all rounded-2xl">
+            <div class="card h-100 text-center">
                 <div class="card-body">
                     <i class="bi bi-wrench-adjustable-circle fs-1 text-success"></i>
                     <h5 class="card-title mt-3">Mantenimientos</h5>
@@ -55,10 +53,8 @@
         </a>
     </div>
 
-
-
     <!-- Operadores -->
-    <div class="col" >
+    <div class="col">
         <a asp-controller="Operador" asp-action="Index" class="card-link">
             <div class="card h-100 text-center">
                 <div class="card-body">
@@ -75,6 +71,7 @@
         <a asp-controller="Proyecto" asp-action="Index" class="card-link">
             <div class="card h-100 text-center">
                 <div class="card-body">
+                    <i class="bi bi-kanban fs-1 text-success"></i>
                     <h5 class="card-title mt-3">Proyectos</h5>
                     <p class="card-text">Administrar los proyectos.</p>
                 </div>
@@ -87,6 +84,7 @@
         <a asp-controller="LugarTrabajo" asp-action="Index" class="card-link">
             <div class="card h-100 text-center">
                 <div class="card-body">
+                    <i class="bi bi-geo-alt fs-1 text-success"></i>
                     <h5 class="card-title mt-3">Lugares</h5>
                     <p class="card-text">Administrar lugares de trabajo.</p>
                 </div>
@@ -94,15 +92,56 @@
         </a>
     </div>
 
-
-    <!-- Categorias de trabajo -->
+    <!-- Categorías de trabajo -->
     <div class="col">
         <a asp-controller="TipoTrabajo" asp-action="Index" class="card-link">
             <div class="card h-100 text-center">
                 <div class="card-body">
+                    <i class="bi bi-list-check fs-1 text-success"></i>
                     <h5 class="card-title mt-3">Tipos de trabajo</h5>
-                    <p class="card-text">Administrar Categorias de trabajo.</p>
+                    <p class="card-text">Administrar Categorías de trabajo.</p>
                 </div>
             </div>
         </a>
     </div>
+
+    <!-- Marcas de vehículos -->
+    <div class="col">
+        <a asp-controller="Marca" asp-action="Index" class="card-link">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-tags fs-1 text-success"></i>
+                    <h5 class="card-title mt-3">Marcas de vehículos</h5>
+                    <p class="card-text">Administrar marcas de vehículos.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Tipos de vehículos -->
+    <div class="col">
+        <a asp-controller="TipoVehiculo" asp-action="Index" class="card-link">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-truck-flatbed fs-1 text-success"></i>
+                    <h5 class="card-title mt-3">Tipos de vehículos</h5>
+                    <p class="card-text">Administrar tipos de vehículos.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Horas de trabajo -->
+    <div class="col">
+        <a asp-controller="HorasTrabajo" asp-action="Index" class="card-link">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-clock-history fs-1 text-success"></i>
+                    <h5 class="card-title mt-3">Horas de trabajo</h5>
+                    <p class="card-text">Administrar registro de horas trabajadas.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+</div>

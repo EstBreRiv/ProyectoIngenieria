@@ -1,0 +1,102 @@
+﻿@model ProyectoIngenieria.Models.ViewModels.HorasTrabajoVM
+
+@{
+    ViewData["Title"] = Model.HorasTrabajo.Id == 0 ? "Agregar Horas de Trabajo" : "Editar Horas de Trabajo";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+            <form asp-action="Upsert" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="HorasTrabajo.Id" />
+                <input type="hidden" asp-for="HorasTrabajo.VehiculoId" />
+
+                <div class="card shadow border">
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label asp-for="HorasTrabajo.Fecha" class="form-label">Fecha del trabajo</label>
+                            <input asp-for="HorasTrabajo.Fecha" class="form-control" type="date" />
+                            <span asp-validation-for="HorasTrabajo.Fecha" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HorasTrabajo.HorometroInicial" class="form-label">Horómetro Inicial</label>
+                            <input asp-for="HorasTrabajo.HorometroInicial" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="HorasTrabajo.HorometroInicial" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HorasTrabajo.HorometroFinal" class="form-label">Horómetro Final</label>
+                            <input asp-for="HorasTrabajo.HorometroFinal" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="HorasTrabajo.HorometroFinal" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HorasTrabajo.PrecioHora" class="form-label">Precio de la hora</label>
+                            <input asp-for="HorasTrabajo.PrecioHora" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="HorasTrabajo.PrecioHora" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HorasTrabajo.LugarTrabajoId" class="form-label">Lugar de Trabajo</label>
+                            <select asp-for="HorasTrabajo.LugarTrabajoId"
+                                    asp-items="Model.LugarTrabajoList"
+                                    class="form-select"
+                                    data-val="true"
+                                    data-val-required="Debe seleccionar un lugar de trabajo."
+                                    data-val-range="Debe seleccionar un lugar de trabajo válido.">
+                                <option value="">-- Seleccione un lugar --</option>
+                            </select>
+                            <span asp-validation-for="HorasTrabajo.LugarTrabajoId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HorasTrabajo.TipoTrabajoId" class="form-label">Tipo de Trabajo</label>
+                            <select asp-for="HorasTrabajo.TipoTrabajoId"
+                                    asp-items="Model.TipoTrabajoList"
+                                    class="form-select"
+                                    data-val="true"
+                                    data-val-required="Debe seleccionar un tipo de trabajo."
+                                    data-val-range="Debe seleccionar un tipo de trabajo válido.">
+                                <option value="">-- Seleccione un tipo --</option>
+                            </select>
+                            <span asp-validation-for="HorasTrabajo.TipoTrabajoId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HorasTrabajo.ProyectoId" class="form-label">Proyecto</label>
+                            <select asp-for="HorasTrabajo.ProyectoId"
+                                    asp-items="Model.ProyectoList"
+                                    class="form-select"
+                                    data-val="true"
+                                    data-val-required="Debe seleccionar un proyecto."
+                                    data-val-range="Debe seleccionar un proyecto válido.">
+                                <option value="">-- Seleccione un proyecto --</option>
+                            </select>
+                            <span asp-validation-for="HorasTrabajo.ProyectoId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 pt-3">
+                            <button type="submit" class="btn btn-success w-25">
+                                @(Model.HorasTrabajo.Id == 0 ? "Crear" : "Actualizar")
+                            </button>
+
+                            <a href="/HorasTrabajo/Index/@Model.HorasTrabajo.VehiculoId" class="btn btn-outline-secondary w-50 text-center">
+                                Volver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
