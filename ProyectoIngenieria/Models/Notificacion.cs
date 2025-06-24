@@ -15,5 +15,7 @@ public partial class Notificacion
 
     public int VehiculoId { get; set; }
 
+    public bool Leida { get; set; } = false;
+
     public virtual Vehiculo Vehiculo { get; set; } = null!;
 }

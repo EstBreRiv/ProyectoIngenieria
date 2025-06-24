@@ -21,6 +21,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddHostedService<NotificacionBackgroundService>();
+
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
