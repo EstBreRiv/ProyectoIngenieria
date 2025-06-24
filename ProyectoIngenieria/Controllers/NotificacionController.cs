@@ -20,20 +20,28 @@ namespace ProyectoIngenieria.Controllers
         // Index: Muestra la vista de notificaciones
         public IActionResult Index()
         {
+            return View(); // sin pasarle modelo, porque DataTable lo pide por AJAX
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
             var notificaciones = _unitOfWork.Notificacion
                 .GetAll(includeProperties: "Vehiculo")
                 .OrderByDescending(n => n.Fecha)
+                .Select(n => new
+                {
+                    n.Id,
+                    n.Titulo,
+                    n.Descripcion,
+                    Fecha = n.Fecha.ToString("dd/MM/yyyy"),
+                    Placa = n.Vehiculo.Placa,
+                    Modelo = n.Vehiculo.Modelo,
+                    Leida = n.Leida
+                })
                 .ToList();
 
-            // Marcar como leídas
-            foreach (var notificacion in notificaciones.Where(n => !n.Leida))
-            {
-                notificacion.Leida = true;
-            }
-
-            _unitOfWork.Save();
-
-            return View(notificaciones);
+            return Json(new { data = notificaciones });
         }
 
         //HayNotificaciones: Revisa si existen notificaciones nuevas
@@ -45,6 +53,22 @@ namespace ProyectoIngenieria.Controllers
                 .ToList();
 
             return Json(new { hay = sinLeer.Any(), count = sinLeer.Count });
+        }
+
+        [HttpPost]
+        public IActionResult MarcarTodasComoLeidas()
+        {
+            var noLeidas = _unitOfWork.Notificacion.GetAll()
+                .Where(n => !n.Leida)
+                .ToList();
+
+            foreach (var noti in noLeidas)
+            {
+                noti.Leida = true;
+            }
+
+            _unitOfWork.Save();
+            return Ok();
         }
     }
 }

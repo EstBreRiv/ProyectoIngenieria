@@ -140,7 +140,6 @@
         fetch("/Notificacion/HayNotificaciones")
             .then(response => response.json())
             .then(data => {
-                console.log("¿Hay nuevas notificaciones?", data);
                 if (data.hay) {
                     document.getElementById("puntoRojo").style.display = "inline-block";
                 }
