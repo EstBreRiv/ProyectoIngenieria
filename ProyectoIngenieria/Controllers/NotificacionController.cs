@@ -40,10 +40,11 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult HayNotificaciones()
         {
-            var hayNoLeidas = _unitOfWork.Notificacion.GetAll()
-                .Any(n => !n.Leida);
+            var sinLeer = _unitOfWork.Notificacion.GetAll()
+                .Where(n => !n.Leida)
+                .ToList();
 
-            return Json(new { hay = hayNoLeidas });
+            return Json(new { hay = sinLeer.Any(), count = sinLeer.Count });
         }
     }
 }

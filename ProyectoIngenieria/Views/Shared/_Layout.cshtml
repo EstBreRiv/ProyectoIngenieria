@@ -81,8 +81,9 @@
                     <li class="nav-item position-relative">
                         <a class="nav-link text-muted" asp-controller="Notificacion" asp-action="Index" id="notificacionLink">
                             <i class="bi bi-bell-fill"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
-                                  id="puntoRojo" style="display: none;">
+                            <span class="position-absolute top-60 translate-middle-y p-1 bg-danger border border-light rounded-circle"
+                                  id="puntoRojo"
+                                  style="right: 6px; display: none;">
                                 <span class="visually-hidden">Nueva notificación</span>
                             </span>
                         </a>
@@ -132,20 +133,18 @@
     <!-- JS del proyecto -->
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @section Scripts {
-        <script>
-            $(document).ready(function () {
-                fetch("/Notificacion/HayNotificaciones")
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.hay) {
-                            document.getElementById("puntoRojo").style.display = "inline-block";
-                        }
-                    });
-            });
-        </script>
-    }
-
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Si hay notificaciones sin leer, el punto rojo de la campana se muestra -->
+    <script>
+        fetch("/Notificacion/HayNotificaciones")
+            .then(response => response.json())
+            .then(data => {
+                console.log("¿Hay nuevas notificaciones?", data);
+                if (data.hay) {
+                    document.getElementById("puntoRojo").style.display = "inline-block";
+                }
+            });
+    </script>
 </body>
 </html>

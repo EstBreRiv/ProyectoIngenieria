@@ -39,23 +39,25 @@ public class NotificacionBackgroundService : BackgroundService
                     var fechaRevision = new DateOnly(hoy.Year, mesRevision, 1);
                     var fechaNotificacion = fechaRevision.AddDays(-15);
 
-                    if (hoy == fechaNotificacion)
+                    // Generar solo si aún no se ha creado para ese mes/año
+                    bool yaExiste = unitOfWork.Notificacion.GetAll()
+                        .Any(n => n.VehiculoId == vehiculo.Id &&
+                                  n.Titulo.Contains("Inspección vehicular") &&
+                                  n.Fecha.Month == fechaNotificacion.Month &&
+                                  n.Fecha.Year == fechaNotificacion.Year);
+
+                    if (!yaExiste && hoy >= fechaNotificacion && hoy <= fechaRevision)
                     {
-                        bool yaExiste = unitOfWork.Notificacion.GetAll()
-                            .Any(n => n.VehiculoId == vehiculo.Id && n.Titulo.Contains("Inspección vehicular") && n.Fecha == hoy);
-
-                        if (!yaExiste)
+                        var notificacion = new Notificacion
                         {
-                            var notificacion = new Notificacion
-                            {
-                                Titulo = "Inspección vehicular próxima",
-                                Descripcion = $"El vehículo con placa {vehiculo.Placa} debe realizar su inspección técnica en {fechaRevision:MMMM}.",
-                                Fecha = hoy,
-                                VehiculoId = vehiculo.Id
-                            };
+                            Titulo = "Inspección vehicular próxima",
+                            Descripcion = $"El vehículo con placa {vehiculo.Placa} debe realizar su inspección técnica en {fechaRevision:MMMM yyyy}.",
+                            Fecha = hoy,
+                            VehiculoId = vehiculo.Id,
+                            Leida = false
+                        };
 
-                            unitOfWork.Notificacion.Add(notificacion);
-                        }
+                        unitOfWork.Notificacion.Add(notificacion);
                     }
                 }
 
