@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Horas de Trabajo del Vehículo";
+}
+
+
+<input type="hidden" id="vehiculoId" value="@ViewBag.VehiculoId" />
+
+<div class="container bg-white p-4 rounded shadow mt-4">
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <h1 class="h3 text-success fw-bold">Horas de Trabajo</h1>
+        <div class="d-flex flex-column align-items-end">
+            <a asp-controller="HorasTrabajo"
+               asp-action="Upsert"
+               asp-route-vehiculoId="@ViewBag.VehiculoId"
+               class="btn btn-success mb-2">
+                Agregar Horas
+            </a>
+            <a asp-controller="Vehiculo"
+               asp-action="DetalleVehiculo"
+               asp-route-id="@ViewBag.VehiculoId"
+               class="btn btn-outline-secondary">
+                Volver al Vehículo
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="tablaHorasTrabajo" class="table table-bordered table-hover">
+            <thead class="table-success text-dark text-center">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Horómetro Inicial</th>
+                    <th>Horómetro Final</th>
+                    <th>Precio Hora</th>
+                    <th>Total Horas</th>
+                    <th>Total Ganancia</th>
+                    <th>Lugar</th>
+                    <th>Tipo</th>
+                    <th>Proyecto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/js/HorasTrabajo.js"></script>
+}

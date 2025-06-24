@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProyectoIngenieria.Models;
+using System.Collections.Generic;
 
 namespace ProyectoIngenieria.Models.ViewModels
 {
     public class HorasTrabajoVM
     {
-        [ValidateNever]
-        public HorasTrabajo HorasTrabajo { get; set; }
-
+        public HorasTrabajo HorasTrabajo { get; set; } = new();
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> HorasTrabajoList { get; set; }
+        public IEnumerable<SelectListItem> LugarTrabajoList { get; set; } = new List<SelectListItem>();
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> TipoTrabajoList { get; set; } = new List<SelectListItem>();
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ProyectoList { get; set; } = new List<SelectListItem>();
     }
 }
