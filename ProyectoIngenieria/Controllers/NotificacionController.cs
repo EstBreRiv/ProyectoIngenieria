@@ -70,5 +70,21 @@ namespace ProyectoIngenieria.Controllers
             _unitOfWork.Save();
             return Ok();
         }
+
+        //Elimina las notificaciones marcando el checkbox
+        [HttpPost]
+        public IActionResult EliminarSeleccionadas([FromBody] List<int> ids)
+        {
+            if (ids == null || !ids.Any()) return BadRequest();
+
+            foreach (var id in ids)
+            {
+                var noti = _unitOfWork.Notificacion.Get(n => n.Id == id);
+                if (noti != null) _unitOfWork.Notificacion.Remove(noti);
+            }
+
+            _unitOfWork.Save();
+            return Ok();
+        }
     }
 }

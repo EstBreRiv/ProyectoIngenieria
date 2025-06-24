@@ -5,10 +5,17 @@
 <div class="container bg-white p-4 rounded shadow">
     <h1 class="h3 text-success mb-4">Buzón de Notificaciones</h1>
 
+    <div class="mb-3">
+        <button id="btnEliminarSeleccionadas" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Eliminar seleccionadas
+        </button>
+    </div>
+
     <div class="table-responsive">
         <table id="notificacionesTable" class="table table-bordered table-hover">
             <thead class="table-success text-dark">
                 <tr>
+                    <th><input type="checkbox" id="checkAll" /></th>
                     <th>Título</th>
                     <th>Descripción</th>
                     <th>Fecha</th>

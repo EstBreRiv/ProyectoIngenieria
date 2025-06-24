@@ -35,23 +35,26 @@ public class NotificacionBackgroundService : BackgroundService
                         continue;
 
                     int mesRevision = ultimoDigito == '0' ? 10 : int.Parse(ultimoDigito.ToString());
-                    var fechaRevision = new DateOnly(hoy.Year, mesRevision, 1);
-                    var fechaNotificacion = fechaRevision.AddDays(-15);
 
-                    // Generar solo si aún no se ha creado para ese mes/año
+                    // Generar solo si HOY es el primer día del mes de revisión
+                    if (hoy.Month != mesRevision || hoy.Day != 1)
+                        continue;
+
+                    // Validar que no exista ya una notificación generada ese día
                     bool yaExiste = unitOfWork.Notificacion.GetAll()
-                        .Any(n => n.VehiculoId == vehiculo.Id &&
-                                  n.Titulo.Contains("Inspección vehicular") &&
-                                  n.Fecha.Month == fechaNotificacion.Month &&
-                                  n.Fecha.Year == fechaNotificacion.Year);
+                        .Any(n =>
+                            n.VehiculoId == vehiculo.Id &&
+                            n.Titulo.StartsWith("Inspección vehicular") &&
+                            n.Fecha == hoy
+                        );
 
-                    if (!yaExiste && hoy >= fechaNotificacion && hoy <= fechaRevision)
+                    if (!yaExiste)
                     {
                         var notificacion = new Notificacion
                         {
                             Titulo = "Inspección vehicular próxima",
-                            Descripcion = $"El vehículo con placa {vehiculo.Placa} debe realizar su inspección técnica en {fechaRevision:MMMM yyyy}.",
-                            Fecha = hoy,
+                            Descripcion = $"El vehículo con placa {vehiculo.Placa} debe realizar su inspección técnica este mes ({hoy:MMMM yyyy}).",
+                            Fecha = hoy, // fecha en la que se genera
                             VehiculoId = vehiculo.Id,
                             Leida = false
                         };
@@ -61,9 +64,10 @@ public class NotificacionBackgroundService : BackgroundService
                 }
 
                 unitOfWork.Save();
+
             }
 
-            _logger.LogInformation("✅ Tarea completada.");
+            _logger.LogInformation("Tarea completada.");
 
             // Esperar 24 horas hasta la siguiente ejecución
             await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
