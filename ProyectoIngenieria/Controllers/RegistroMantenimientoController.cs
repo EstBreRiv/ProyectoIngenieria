@@ -22,9 +22,17 @@ namespace ProyectoIngenieria.Controllers
         }
 
         // Mostrar todos los registros (para DataTables)
-        public IActionResult GetAll()
+        [HttpGet]
+        public IActionResult GetAll(DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll()
+            var query = _unitOfWork.RegistroMantenimiento.GetAll();
+
+            if (fechaInicio.HasValue && fechaFin.HasValue)
+            {
+                query = query.Where(m => m.Fecha >= fechaInicio && m.Fecha <= fechaFin);
+            }
+
+            var mantenimientos = query
                 .Select(m => new
                 {
                     m.Id,
@@ -37,6 +45,7 @@ namespace ProyectoIngenieria.Controllers
 
             return Json(new { data = mantenimientos });
         }
+
 
 
         // Crear / Editar

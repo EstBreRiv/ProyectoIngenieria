@@ -30,6 +30,26 @@
         </div>
 
         <div class="table-responsive">
+
+@*             filtro por fecha
+ *@
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="filtroInicio" class="form-label">Fecha desde</label>
+                    <input type="date" id="filtroInicio" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label for="filtroFin" class="form-label">Fecha hasta</label>
+                    <input type="date" id="filtroFin" class="form-control" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button id="btnFiltrar" class="btn btn-primary w-100">Filtrar</button>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button id="btnLimpiar" class="btn btn-outline-secondary w-100">Limpiar filtros</button>
+                </div>
+            </div>
+
             <table id="tablaMantenimiento" class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-light text-center">
                     <tr>

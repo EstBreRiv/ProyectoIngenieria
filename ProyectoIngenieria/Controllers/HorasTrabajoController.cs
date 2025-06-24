@@ -24,27 +24,32 @@ namespace ProyectoIngenieria.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(int id)
+        public IActionResult GetAll(int id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var data = _unitOfWork.HorasTrabajo.GetAll(
-                h => h.VehiculoId == id,
+            var horas = _unitOfWork.HorasTrabajo.GetAll(
+                h => h.VehiculoId == id &&
+                     (!fechaInicio.HasValue || h.Fecha >= fechaInicio.Value) &&
+                     (!fechaFin.HasValue || h.Fecha <= fechaFin.Value),
                 includeProperties: "LugarTrabajo,TipoTrabajo,Proyecto"
-            ).Select(h => new
+            );
+
+            var data = horas.Select(h => new
             {
-                h.Id,
-                Fecha = h.Fecha.ToString("yyyy-MM-dd"),
-                HorometroInicial = h.HorometroInicial,
-                HorometroFinal = h.HorometroFinal,
-                PrecioHora = h.PrecioHora,
-                TotalHoras = h.TotalHoras,
-                TotalGanancia = h.TotalGanancia,
-                Lugar = h.LugarTrabajo != null ? h.LugarTrabajo.Nombre : "",
-                Tipo = h.TipoTrabajo != null ? h.TipoTrabajo.Nombre : "",
-                Proyecto = h.Proyecto != null ? h.Proyecto.NombreProyecto : ""
+                id = h.Id,
+                fecha = h.Fecha.ToString("yyyy-MM-dd"),
+                horometroInicial = h.HorometroInicial,
+                horometroFinal = h.HorometroFinal,
+                precioHora = h.PrecioHora,
+                totalHoras = h.TotalHoras,
+                totalGanancia = h.TotalGanancia,
+                lugar = h.LugarTrabajo != null ? h.LugarTrabajo.Nombre : "",
+                tipo = h.TipoTrabajo != null ? h.TipoTrabajo.Nombre : "",
+                proyecto = h.Proyecto != null ? h.Proyecto.NombreProyecto : ""
             }).ToList();
 
             return Json(new { data });
         }
+
 
         [HttpGet]
         public IActionResult Upsert(int? id, int? vehiculoId)

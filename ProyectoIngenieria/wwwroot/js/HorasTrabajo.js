@@ -2,29 +2,46 @@
 
 $(document).ready(function () {
     const vehiculoId = $("#vehiculoId").val();
-    cargarTablaHorasTrabajo(vehiculoId);
+
+    inicializarTabla(vehiculoId);
+
+    $("#btnFiltrar").on("click", function () {
+        dataTable.ajax.reload();
+    });
+
+    $("#btnLimpiar").on("click", function () {
+        $("#filtroInicio").val('');
+        $("#filtroFin").val('');
+        dataTable.ajax.reload();
+    });
 });
 
-function cargarTablaHorasTrabajo(vehiculoId) {
+function inicializarTabla(vehiculoId) {
     dataTable = $('#tablaHorasTrabajo').DataTable({
         ajax: {
-            url: `/HorasTrabajo/GetAll?id=${vehiculoId}`
+            url: "/HorasTrabajo/GetAll",
+            data: function (d) {
+                d.id = vehiculoId;
+                d.fechaInicio = $("#filtroInicio").val();
+                d.fechaFin = $("#filtroFin").val();
+            },
+            dataSrc: "data"
         },
         columns: [
-            { data: "fecha"},
-            { data: "horometroInicial"},
-            { data: "horometroFinal"},
+            { data: "fecha" },
+            { data: "horometroInicial" },
+            { data: "horometroFinal" },
             { data: "precioHora" },
             { data: "totalHoras" },
-            { data: "totalGanancia"},
+            { data: "totalGanancia" },
             { data: "lugar" },
-            { data: "tipo"},
+            { data: "tipo" },
             { data: "proyecto" },
             {
                 data: "id",
                 render: function (data, type, row) {
                     return `
-                        <a href="/HorasTrabajo/Upsert?id=${data}&vehiculoId=${vehiculoId}" class="btn btn-sm btn-warning me-1">
+                        <a href="/HorasTrabajo/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-sm btn-warning me-1">
                             <i class="bi bi-pencil-square"></i> Editar
                         </a>
                         <button onclick="Delete(${data})" class="btn btn-sm btn-danger">
@@ -33,8 +50,7 @@ function cargarTablaHorasTrabajo(vehiculoId) {
                     `;
                 },
                 orderable: false,
-                searchable: false,
-                width: "10%"
+                searchable: false
             }
         ],
         language: {
