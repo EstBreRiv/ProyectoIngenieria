@@ -10,7 +10,7 @@ function loadDataTable() {
 
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            url: `/Vehiculo/GetDocumentosVehiculo?id=${vehiculoId}`,
+            url: `/Admin/Vehiculo/GetDocumentosVehiculo?id=${vehiculoId}`,
             type: "GET",
             datatype: "json"
         },
@@ -50,7 +50,7 @@ function Delete(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Vehiculo/DeleteDocumento/" + id,
+                url: "/Admin/Vehiculo/DeleteDocumento/" + id,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {

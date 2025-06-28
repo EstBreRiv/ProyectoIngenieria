@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
+
     // Controller del lugar de trabajo en la que trabajo una maquina
     // permite crear, editar y listar los lugares de trabajo
     public class LugarTrabajoController : Controller

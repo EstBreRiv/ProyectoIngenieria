@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     // Controlador para gestionar proyectos relacionados con los trabajos de las maquinas
     // Permite crear, editar y listar los proyectos
     public class ProyectoController : Controller
@@ -43,7 +46,7 @@ namespace ProyectoIngenieria.Controllers
             // Crea una instancia del ViewModel ProyectoVM
             ProyectoVM proyectoVM = new ProyectoVM
             {
-                Proyecto = new Models.Proyecto(),
+                Proyecto = new Proyecto(),
                 ProyectoList = _unitOfWork.Proyecto.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.NombreProyecto,

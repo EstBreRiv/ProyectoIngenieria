@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
@@ -6,8 +7,11 @@ using ProyectoIngenieria.Repository;
 using ProyectoIngenieria.Repository.Interfaces;
 using System.Globalization;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
+
     // Controlador para gestionar los registros de combustible de los vehículos y maquinaria
     // Permite crear, editar, listar y eliminar registros de combustible
     public class RegistroCombustibleController : Controller
@@ -138,7 +142,7 @@ namespace ProyectoIngenieria.Controllers
                 _unitOfWork.Save();
 
                 //Para que se redirija con la URL con id del vehiculo asociado
-                return RedirectToAction("Index", new { id = registroCombustibleVM.RegistroCombustible.VehiculoId }); 
+                return RedirectToAction("Index", new { id = registroCombustibleVM.RegistroCombustible.VehiculoId });
             }
 
             // Si el modelo no es válido, asegurarse de mantener el VehiculoId en ViewBag

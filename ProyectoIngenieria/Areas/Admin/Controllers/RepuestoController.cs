@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Repository.Interfaces;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     public class RepuestoController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

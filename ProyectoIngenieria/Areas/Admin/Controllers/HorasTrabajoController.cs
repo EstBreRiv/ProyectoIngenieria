@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using System.Linq;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     public class HorasTrabajoController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -58,7 +61,7 @@ namespace ProyectoIngenieria.Controllers
             {
                 HorasTrabajo = new HorasTrabajo
                 {
-                    Fecha = System.DateOnly.FromDateTime(System.DateTime.Today),
+                    Fecha = DateOnly.FromDateTime(DateTime.Today),
                     VehiculoId = vehiculoId ?? 0
                 },
                 LugarTrabajoList = _unitOfWork.LugarTrabajo.GetAll().Select(l => new SelectListItem

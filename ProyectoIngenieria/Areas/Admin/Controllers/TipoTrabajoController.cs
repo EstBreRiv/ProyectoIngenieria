@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
+
     // Controlador para gestionar los tipos de trabajo relacionados
     // a las horas de trabajo de las maquinas
     // Permite crear, editar y listar los tipos de trabajo

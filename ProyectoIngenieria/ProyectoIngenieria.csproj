@@ -19,15 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Operador\DocumentoOperador.cshtml">
+    <Content Update="Areas\Admin\Views\Operador\DocumentoOperador.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Views\Operador\Index.cshtml">
+    <Content Update="Areas\Admin\Views\Operador\Index.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Views\Vehiculo\DocumentoVehiculo.cshtml">
+    <Content Update="Areas\Admin\Views\Vehiculo\DocumentoVehiculo.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Cliente\Controllers\" />
     <Folder Include="wwwroot\documentos\documentoOperador\" />
     <Folder Include="wwwroot\documentos\documentoVehiculo\" />
     <Folder Include="wwwroot\documentos\documentoVehiculo\" />

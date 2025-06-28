@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Repository.Interfaces;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
+
     // Controlador para gestionar las notificaciones generadas para la revision vehicular
     // Permite crear, editar, listar y eliminar notificaciones
     public class NotificacionController : Controller
@@ -35,9 +39,9 @@ namespace ProyectoIngenieria.Controllers
                     n.Titulo,
                     n.Descripcion,
                     Fecha = n.Fecha.ToString("dd/MM/yyyy"),
-                    Placa = n.Vehiculo.Placa,
-                    Modelo = n.Vehiculo.Modelo,
-                    Leida = n.Leida
+                    n.Vehiculo.Placa,
+                    n.Vehiculo.Modelo,
+                    n.Leida
                 })
                 .ToList();
 

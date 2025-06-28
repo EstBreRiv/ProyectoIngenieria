@@ -7,7 +7,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tablaRepuesto').DataTable({
         "ajax": {
-            "url": "/Repuesto/GetAll"
+            "url": "/Admin/Repuesto/GetAll"
         },
         "columns": [
             { "data": "nombre", "width": "25%" },
@@ -24,8 +24,8 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                         <div class="text-center">
-                            <a href="/Repuesto/Upsert/${data}" class="text-blue-600 hover:underline mx-1">Editar</a>
-                            <a onclick=Eliminar("/Repuesto/Delete/${data}") class="text-red-600 hover:underline mx-1 cursor-pointer">Eliminar</a>
+                            <a href="/Admin/Repuesto/Upsert/${data}" class="text-blue-600 hover:underline mx-1">Editar</a>
+                            <a onclick=Eliminar("/Admin/Repuesto/Delete/${data}") class="text-red-600 hover:underline mx-1 cursor-pointer">Eliminar</a>
                         </div>`;
                 },
                 "width": "25%"

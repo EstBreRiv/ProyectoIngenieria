@@ -19,7 +19,7 @@ $(document).ready(function () {
 function inicializarTabla(vehiculoId) {
     dataTable = $('#tablaHorasTrabajo').DataTable({
         ajax: {
-            url: "/HorasTrabajo/GetAll",
+            url: "/Admin/HorasTrabajo/GetAll",
             data: function (d) {
                 d.id = vehiculoId;
                 d.fechaInicio = $("#filtroInicio").val();
@@ -41,7 +41,7 @@ function inicializarTabla(vehiculoId) {
                 data: "id",
                 render: function (data, type, row) {
                     return `
-                        <a href="/HorasTrabajo/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-sm btn-warning me-1">
+                        <a href="/Admin/HorasTrabajo/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-sm btn-warning me-1">
                             <i class="bi bi-pencil-square"></i> Editar
                         </a>
                         <button onclick="Delete(${data})" class="btn btn-sm btn-danger">
@@ -71,7 +71,7 @@ function Delete(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/HorasTrabajo/Delete/${id}`,
+                url: `/Admin/HorasTrabajo/Delete/${id}`,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {

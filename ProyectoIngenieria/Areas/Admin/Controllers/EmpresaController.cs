@@ -1,17 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
-using ProyectoIngenieria.Models;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
-    public class MarcaController : Controller
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
+
+    //Controller de las empresas que permiten identificar la pertenecia de las maquinas
+    //El controller permite crear, editar y listar las empresas
+    public class EmpresaController : Controller
     {
         //Inyeccion de dependencias del UnitOfWork para acceder a los repositorios
         private readonly IUnitOfWork _unitOfWork;
         //Constructor que recibe el UnitOfWork
-        public MarcaController(IUnitOfWork unitOfWork)
+        public EmpresaController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -29,22 +35,22 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult GetAll()
         {
             //Obtiene todas las empresas desde el repositorio y las devuelve en formato JSON
-            var marcas = _unitOfWork.Marca.GetAll();
-            return Json(new { data = marcas });
+            var empresas = _unitOfWork.Empresa.GetAll();
+            return Json(new { data = empresas });
         }
 
         //Upsert: Permite crear o editar una empresa
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
-            
-
-            MarcaVM marcaVM = new()
+            //Crea un modelo de vista EmpresaVM
+            //que contiene la empresa y una lista de empresas para el dropdown
+            EmpresaVM empresaVM = new()
             {
-                marca = new Models.Marca(),
-                MarcasList = _unitOfWork.Marca.GetAll().Select(i => new SelectListItem
+                Empresa = new Empresa(),
+                EmpresasList = _unitOfWork.Empresa.GetAll().Select(i => new SelectListItem
                 {
-                    Text = i.NombreMarca,
+                    Text = i.Nombre,
                     Value = i.Id.ToString()
                 }).ToList()
             };
@@ -52,48 +58,47 @@ namespace ProyectoIngenieria.Controllers
             if (id == null || id == 0)
             {
                 // En el caso de que el id sea nulo o cero, se trata de una creación
-                return View(marcaVM);
+                return View(empresaVM);
             }
             else
             {
                 // En el caso de que el id sea válido, se trata de una edición
-                marcaVM.marca = _unitOfWork.Marca.Get(u => u.Id == id);
-                if (marcaVM.marca == null)
+                empresaVM.Empresa = _unitOfWork.Empresa.Get(u => u.Id == id);
+                if (empresaVM.Empresa == null)
                 {
                     // Si no se encuentra la empresa, se devuelve NotFound
                     return NotFound();
                 }
                 // Se actualiza la lista de empresas para el dropdown
-                return View(marcaVM);
+                return View(empresaVM);
             }
         }
 
 
         //Upsert: Permite crear o editar una empresa, recibe el modelo de vista EmpresaVM
         [HttpPost]
-        public IActionResult Upsert(MarcaVM marcaVM)
+        public IActionResult Upsert(EmpresaVM empresaVM)
         {
             //Valida el modelo recibido, si no es válido, devuelve la vista con los errores
             if (ModelState.IsValid)
             {
-                if (marcaVM.marca.Id == 0)
+                if (empresaVM.Empresa.Id == 0)
                 {
                     // Si el Id es 0, se trata de una creación de una nueva empresa
-                    _unitOfWork.Marca.Add(marcaVM.marca);
+                    _unitOfWork.Empresa.Add(empresaVM.Empresa);
                 }
                 else
                 {
                     // Si el Id es diferente de 0, se trata de una edición de una empresa existente
-                    _unitOfWork.Marca.Update(marcaVM.marca);
+                    _unitOfWork.Empresa.update(empresaVM.Empresa);
                 }
                 // Guarda los cambios en la base de datos
                 _unitOfWork.Save();
                 // Redirige a la vista principal de empresas
                 return RedirectToAction("Index");
             }
-            return View(marcaVM);
+            return View(empresaVM);
         }
 
-    
     }
 }

@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using ProyectoIngenieria.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     // Controlador para las personas que operan las máquinas
     // Permite crear, editar, listar y eliminar operadores
     public class OperadorController : Controller
@@ -86,7 +89,7 @@ namespace ProyectoIngenieria.Controllers
             {
                 // Si el id es 0, se trata de una creación
                 var operadorExistente = _unitOfWork.Operador.Get(u => u.Cedula == operadorVM.Operador.Cedula);
-                
+
                 if (operadorExistente == null)
                 {
                     // Si no existe, se crea un nuevo operador
@@ -251,7 +254,8 @@ namespace ProyectoIngenieria.Controllers
             var documentos = _unitOfWork.DocumentoOperador
                 .GetAll()
                 .Where(d => d.OperadorCedula == id)
-                .Select(d => new {
+                .Select(d => new
+                {
                     d.Id,
                     d.Nombre,
                     d.Ruta

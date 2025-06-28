@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     public class RegistroMantenimientoController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -136,7 +139,8 @@ namespace ProyectoIngenieria.Controllers
 
             if (ModelState.IsValid)
             {
-                if (viewModel.RepuestosSeleccionados.Count == 0) { 
+                if (viewModel.RepuestosSeleccionados.Count == 0)
+                {
                     return Json(new { success = false, message = "Debe seleccionar al menos un repuesto." });
                 }
 
@@ -161,10 +165,13 @@ namespace ProyectoIngenieria.Controllers
             return Json(new { success = true, message = "Se guardaron correctamente la lista de productos" });
         }
 
-        public IActionResult registroOperadorMantenimiento(RegistroMantenimientoVM registroMantenimientoVM) {
+        public IActionResult registroOperadorMantenimiento(RegistroMantenimientoVM registroMantenimientoVM)
+        {
 
-            if (ModelState.IsValid) {
-                if (registroMantenimientoVM.DetallesOperadores.Count == 0) {
+            if (ModelState.IsValid)
+            {
+                if (registroMantenimientoVM.DetallesOperadores.Count == 0)
+                {
                     return Json(new { success = false, message = "Debe seleccionar al menos un operador." });
 
                 }
@@ -175,7 +182,7 @@ namespace ProyectoIngenieria.Controllers
 
                 foreach (var detalle in registroMantenimientoVM.DetallesOperadores)
                 {
-                 
+
                     var operadorMantenimiento = new OperadorMantenimiento
                     {
                         HorasTrabajo = detalle.HorasTrabajo,

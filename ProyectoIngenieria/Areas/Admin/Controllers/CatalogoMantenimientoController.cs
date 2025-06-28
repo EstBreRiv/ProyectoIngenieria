@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Repository.Interfaces;
 
+[Area("Admin")]
+[Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
 public class CatalogoMantenimientoController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;

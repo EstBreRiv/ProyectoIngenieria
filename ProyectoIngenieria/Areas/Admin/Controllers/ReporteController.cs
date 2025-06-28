@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     public class ReporteController : Controller
     {
         // Inyección de dependencias del UnitOfWork para acceder a los repositorios
         private readonly IUnitOfWork _unitOfWork;
-        private string [] meses = new string[]
+        private string[] meses = new string[]
         {
             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -30,7 +33,7 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetReporteData(int mes)
         {
-            
+
 
             if (mes < 1 || mes > 12)
             {

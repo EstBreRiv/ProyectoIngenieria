@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using System.Linq;
 
-namespace ProyectoIngenieria.Controllers
+namespace ProyectoIngenieria.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
     // Controlador para gestionar vehículos de las empresas, el controller permitira manejar 
     // diferentes aspeos de los vehículos como crear, editar, listar y eliminar
     public class VehiculoController : Controller
@@ -35,7 +38,7 @@ namespace ProyectoIngenieria.Controllers
             // Obtiene todos los vehículos desde el repositorio y los
             // transforma en un objeto anónimo
             var vehiculos = _unitOfWork.Vehiculo.GetAll()
-            
+
                 .Select(v => new
                 {
                     v.Id,
@@ -325,7 +328,8 @@ namespace ProyectoIngenieria.Controllers
             var documentos = _unitOfWork.DocumentoVehiculo
                 .GetAll()
                 .Where(d => d.VehiculoId == id)
-                .Select(d => new {
+                .Select(d => new
+                {
                     d.Id,
                     d.Nombre,
                     d.Ruta

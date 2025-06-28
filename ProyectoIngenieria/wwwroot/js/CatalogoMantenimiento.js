@@ -3,7 +3,7 @@
 $(document).ready(function () {
     dataTable = $('#tablaCatalogo').DataTable({
         ajax: {
-            url: '/CatalogoMantenimiento/GetAll'
+            url: '/Admin/CatalogoMantenimiento/GetAll'
         },
         columns: [
             { data: 'nombre', width: '30%' },
@@ -12,8 +12,8 @@ $(document).ready(function () {
                 data: 'id',
                 render: function (data) {
                     return `
-                        <a href="/CatalogoMantenimiento/Upsert/${data}" class="text-blue-600 hover:underline mr-2">Editar</a>
-                        <a onclick="eliminar('/CatalogoMantenimiento/Delete/${data}')" class="text-red-600 hover:underline">Eliminar</a>
+                        <a href="/Admin/CatalogoMantenimiento/Upsert/${data}" class="text-blue-600 hover:underline mr-2">Editar</a>
+                        <a onclick="eliminar('/Admin/CatalogoMantenimiento/Delete/${data}')" class="text-red-600 hover:underline">Eliminar</a>
                     `;
                 },
                 width: '20%'

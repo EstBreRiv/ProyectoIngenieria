@@ -10,7 +10,7 @@ function loadDataTable() {
 
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            url: `/Operador/GetDocumentosOperador?id=${cedula}`,
+            url: `/Admin/Operador/GetDocumentosOperador?id=${cedula}`,
             type: "GET",
             datatype: "json"
         },
@@ -50,7 +50,7 @@ function Delete(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Operador/DeleteDocumento/" + id,
+                url: "/Admin/Operador/DeleteDocumento/" + id,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
