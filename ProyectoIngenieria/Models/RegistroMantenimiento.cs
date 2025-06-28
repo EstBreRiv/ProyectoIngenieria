@@ -21,15 +21,7 @@ public partial class RegistroMantenimiento
 
     public int VehiculoId { get; set; }
 
-    [Required(ErrorMessage = "Se debe seleccionar un mantenimiento del catálogo.")]
-    public int CatalogoMantenimientoId { get; set; }
-
-    [Required(ErrorMessage = "Se debe seleccionar al operador responsable.")]
-    public int OperadorCedula { get; set; }
-
-    public virtual CatalogoMantenimiento CatalogoMantenimiento { get; set; } = null!;
-
-    public virtual Operador OperadorCedulaNavigation { get; set; } = null!;
+    public virtual ICollection<OperadorMantenimiento> OperadorMantenimientos { get; set; } = new List<OperadorMantenimiento>();
 
     public virtual ICollection<RepuestosMantenimiento> RepuestosMantenimientos { get; set; } = new List<RepuestosMantenimiento>();
 

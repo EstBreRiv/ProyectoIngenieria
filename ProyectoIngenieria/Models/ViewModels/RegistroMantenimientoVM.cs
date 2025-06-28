@@ -22,6 +22,9 @@ namespace ProyectoIngenieria.Models.ViewModels
 
         [ValidateNever]
         public List<int> RepuestosSeleccionados { get; set; }
+        
+        [ValidateNever]
+        public ICollection<OperadorMantenimiento> DetallesOperadores { get; set; }
 
         [ValidateNever]
         public string nombreVehiculo { get; set; }

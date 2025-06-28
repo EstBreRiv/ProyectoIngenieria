@@ -21,6 +21,7 @@
         //Cambiar a catalogo de repuesto
         IRepuestoRepository Repuesto { get; }
         IRepuestosMantenimientoRepository RepuestosMantenimiento { get; }
+        IOperadorMantenimientoRepository OperadorMantenimiento { get; }
         object EmpresaRepository { get; }
 
         void Save();

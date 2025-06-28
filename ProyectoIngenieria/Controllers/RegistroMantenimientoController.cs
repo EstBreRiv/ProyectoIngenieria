@@ -38,7 +38,6 @@ namespace ProyectoIngenieria.Controllers
                     m.Id,
                     VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Modelo,
                     m.Descripcion,
-                    CatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.Get(x => x.Id == m.CatalogoMantenimientoId).Nombre,
                     Fecha = m.Fecha.ToString("dd/MM/yyyy"),
                     Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
                 });
@@ -108,6 +107,8 @@ namespace ProyectoIngenieria.Controllers
 
                 registroProductos(viewModel);
 
+                registroOperadorMantenimiento(viewModel);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -160,47 +161,80 @@ namespace ProyectoIngenieria.Controllers
             return Json(new { success = true, message = "Se guardaron correctamente la lista de productos" });
         }
 
+        public IActionResult registroOperadorMantenimiento(RegistroMantenimientoVM registroMantenimientoVM) {
+
+            if (ModelState.IsValid) {
+                if (registroMantenimientoVM.DetallesOperadores.Count == 0) {
+                    return Json(new { success = false, message = "Debe seleccionar al menos un operador." });
+
+                }
+
+                //Obtiene el registro mas reciente de mantenimiento
+                var ultimoMantenimienro = _unitOfWork.RegistroMantenimiento.
+                    GetAll().OrderByDescending(m => m.Id).FirstOrDefault();
+
+                foreach (var detalle in registroMantenimientoVM.DetallesOperadores)
+                {
+                 
+                    var operadorMantenimiento = new OperadorMantenimiento
+                    {
+                        HorasTrabajo = detalle.HorasTrabajo,
+                        OperadorCedula = detalle.OperadorCedula,
+                        CatalogoMantenimientoId = detalle.CatalogoMantenimientoId,
+                        RegistroMantenimientoId = ultimoMantenimienro.Id
+                    };
+                    _unitOfWork.OperadorMantenimiento.Add(operadorMantenimiento);
+                }
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Operadores registrados correctamente" });
+            }
+            return Json(new { success = true, message = "Operador registrado correctamente" });
+        }
+
         // Ver detalles de un mantenimiento incluyendo sus productos
         [HttpGet]
         public IActionResult Details(int id)
         {
-
             var mantenimiento = _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id);
 
             if (mantenimiento == null)
             {
                 return NotFound();
             }
-            RegistroMantenimientoVM registroMantenimientoVM = new RegistroMantenimientoVM
+
+            var registroMantenimientoVM = new RegistroMantenimientoVM
             {
                 RegistroMantenimiento = mantenimiento,
 
                 nombreVehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Marca + "  " +
-                _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Modelo + " - " +
-                                  _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Placa,
+                                 _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Modelo + " - " +
+                                 _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Placa,
 
-                nombreOperador = _unitOfWork.Operador.Get(o => o.Cedula == mantenimiento.OperadorCedula).Nombre,
+                nombresProductos = _unitOfWork.RepuestosMantenimiento
+                    .GetAll(rm => rm.RegistroMantenimientoId == id)
+                    .Select(rm => _unitOfWork.Repuesto.Get(r => r.Id == rm.CatalogoRepuestoId).Nombre)
+                    .ToList(),
 
-                tipoMantenimiento = _unitOfWork.CatalogoMantenimiento.Get(c => c.Id == mantenimiento.CatalogoMantenimientoId).Nombre,
+                DetallesOperadores = _unitOfWork.OperadorMantenimiento
+                    .GetAll(o => o.RegistroMantenimientoId == id)
+                    .ToList(),
+
+                ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
+                {
+                    Text = o.Nombre,
+                    Value = o.Cedula.ToString()
+                }),
+
+                ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                })
             };
-
-            // Obtener los nombres de los productos asociados al mantenimiento
-            var listaRepuestos = _unitOfWork.RepuestosMantenimiento.GetAll(rm => rm.RegistroMantenimientoId == id);
-
-            foreach (var repuesto in listaRepuestos)
-            {
-                var nombre = _unitOfWork.Repuesto.Get(r => r.Id == repuesto.CatalogoRepuestoId).Nombre;
-                registroMantenimientoVM.nombresProductos.Add(nombre); 
-            }
-            if (mantenimiento == null)
-            {
-                return NotFound();
-            }
-
-           
 
             return View(registroMantenimientoVM);
         }
+
 
         // Historial por vehículo
         public IActionResult Historial(int vehiculoId)

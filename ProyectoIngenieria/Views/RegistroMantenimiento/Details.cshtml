@@ -5,19 +5,13 @@
 }
 
 <div class="container mt-5">
-    <div class="card shadow border-0 mx-auto" style="max-width: 800px;">
+    <div class="card shadow border-0 mx-auto" style="max-width: 900px;">
         <div class="card-body">
             <h2 class="card-title h4 mb-4 text-center text-primary">Detalles del Mantenimiento</h2>
 
-            <dl class="row">
-                <dt class="col-sm-4">Vehículo</dt>
+            <dl class="row mb-4">
+                <dt class="col-sm-4">Vehículo - Placa</dt>
                 <dd class="col-sm-8">@Model.nombreVehiculo</dd>
-
-                <dt class="col-sm-4">Operador</dt>
-                <dd class="col-sm-8">@Model.nombreOperador</dd>
-
-                <dt class="col-sm-4">Tipo de mantenimiento</dt>
-                <dd class="col-sm-8">@Model.tipoMantenimiento</dd>
 
                 <dt class="col-sm-4">Fecha</dt>
                 <dd class="col-sm-8">@Model.RegistroMantenimiento.Fecha.ToString("dd/MM/yyyy")</dd>
@@ -48,6 +42,40 @@
                     }
                 </dd>
             </dl>
+
+            <h5 class="text-secondary mt-5 mb-3">Operadores y tareas realizadas</h5>
+
+            @if (Model.DetallesOperadores != null && Model.DetallesOperadores.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped align-middle">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Nombre del Operador</th>
+                                <th>Tarea Realizada</th>
+                                <th>Horas Trabajadas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalle in Model.DetallesOperadores)
+                            {
+                                var operador = Model.ListaOperadores.FirstOrDefault(o => o.Value == detalle.OperadorCedula.ToString());
+                                var tarea = Model.ListaCatalogoMantenimiento.FirstOrDefault(t => t.Value == detalle.CatalogoMantenimientoId.ToString());
+
+                                <tr>
+                                    <td>@(operador?.Text ?? "Desconocido")</td>
+                                    <td>@(tarea?.Text ?? "Desconocida")</td>
+                                    <td>@detalle.HorasTrabajo</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No hay operadores registrados para este mantenimiento.</p>
+            }
 
             <div class="text-end mt-4">
                 <a asp-action="Index" class="btn btn-secondary">Volver</a>

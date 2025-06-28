@@ -40,6 +40,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\documentos\documentoOperador\" />
     <Folder Include="wwwroot\documentos\documentoVehiculo\" />
+    <Folder Include="wwwroot\documentos\documentoVehiculo\" />
   </ItemGroup>
 
 </Project>
