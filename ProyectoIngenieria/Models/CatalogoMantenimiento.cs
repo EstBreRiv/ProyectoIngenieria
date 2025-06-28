@@ -16,5 +16,5 @@ public partial class CatalogoMantenimiento
     [StringLength(200, ErrorMessage = "La descripción no puede tener más de doscientos caracteres.")]
     public string Descripcion { get; set; } = null!;
 
-    public virtual ICollection<RegistroMantenimiento> RegistroMantenimientos { get; set; } = new List<RegistroMantenimiento>();
+    public virtual ICollection<OperadorMantenimiento> OperadorMantenimientos { get; set; } = new List<OperadorMantenimiento>();
 }

@@ -7,7 +7,9 @@ public partial class RegistroOperadore
 {
     public int Id { get; set; }
 
-    public DateTime Fecha { get; set; }
+    public DateTime FechaInicio { get; set; }
+
+    public DateTime FechaFin { get; set; }
 
     public int OperadorCedula { get; set; }
 

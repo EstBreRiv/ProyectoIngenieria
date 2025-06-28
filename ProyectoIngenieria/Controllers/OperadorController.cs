@@ -99,15 +99,15 @@ namespace ProyectoIngenieria.Controllers
                 }
 
                 // Crea un registro en el historial de los operadores y las maquinas
-                RegistroOperadore registro = new RegistroOperadore
-                {
-                    OperadorCedula = operadorVM.Operador.Cedula,
-                    Fecha = DateTime.Now,
-                    VehiculoId = operadorVM.VehiculoId
-                };
+                //RegistroOperadore registro = new RegistroOperadore
+                //{
+                //    OperadorCedula = operadorVM.Operador.Cedula,
+                //    FechaInicio = DateTime.Now,
+                //    VehiculoId = operadorVM.VehiculoId
+                //};
 
                 // Si el vehículo no es nulo, se asigna al registro y se guarda
-                _unitOfWork.RegistroOperadores.Add(registro);
+                //_unitOfWork.RegistroOperadores.Add(registro);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
@@ -306,7 +306,7 @@ namespace ProyectoIngenieria.Controllers
                 o.OperadorCedula,
                 OperadorNombre = _unitOfWork.Operador.Get(x => x.Cedula == o.OperadorCedula).Nombre,
                 VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == o.VehiculoId).Modelo,
-                Fecha = o.Fecha.ToString("dd/MM/yyyy"),
+                Fecha = o.FechaInicio.ToString("dd/MM/yyyy"),
                 o.VehiculoId,
             }).ToList();
             // Retorna los registros en formato JSON

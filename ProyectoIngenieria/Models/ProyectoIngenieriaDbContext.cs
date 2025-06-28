@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using ProyectoIngenieria.Models;
-using Microsoft.AspNetCore.Identity;
 
-namespace ProyectoIngenieria.Repository;
+namespace ProyectoIngenieria.Models;
 
-public partial class ProyectoIngenieriaContext : IdentityDbContext
+public partial class ProyectoIngenieriaDbContext : DbContext
 {
-  
-    public ProyectoIngenieriaContext(DbContextOptions<ProyectoIngenieriaContext> options)
+    public ProyectoIngenieriaDbContext()
+    {
+    }
+
+    public ProyectoIngenieriaDbContext(DbContextOptions<ProyectoIngenieriaDbContext> options)
         : base(options)
     {
     }
@@ -55,17 +55,12 @@ public partial class ProyectoIngenieriaContext : IdentityDbContext
 
     public virtual DbSet<Vehiculo> Vehiculos { get; set; }
 
-    public DbSet<ApplicationUser> ApplicationUsers { get; set; } //Agregado para agregar el dbset al ApplicationUser, en caso de cualquier cambio
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ProyectoIngenieria;Integrated Security=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-        base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
-        modelBuilder.Entity<IdentityUserRole<string>>().HasKey(r => new { r.UserId, r.RoleId });
-        modelBuilder.Entity<IdentityUserToken<string>>().HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
-
         modelBuilder.Entity<CatalogoMantenimiento>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("CATALOGO_MANTENIMIENTO_pk");

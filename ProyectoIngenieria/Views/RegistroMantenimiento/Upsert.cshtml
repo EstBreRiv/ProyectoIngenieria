@@ -1,7 +1,12 @@
 ﻿@model ProyectoIngenieria.Models.ViewModels.RegistroMantenimientoVM
 @{
     ViewData["Title"] = "Registrar Mantenimiento";
+    var opcionesOperadores = Model.ListaOperadores != null
+        ? string.Join("", Model.ListaOperadores.Select(o => $"<option value='{o.Value}'>{o.Text}</option>"))
+        : "";
+    var opcionesTareas = Model.ListaCatalogoMantenimiento ?? new List<SelectListItem>();
 }
+
 
 <div class="container mt-5">
     <div class="card shadow border-0 mx-auto" style="max-width: 800px;">
@@ -11,72 +16,48 @@
             <form asp-action="Upsert" method="post">
                 <input asp-for="RegistroMantenimiento.Id" type="hidden" />
 
-                <!-- Vehículo -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Vehículo</label>
                     <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
-                   
                 </div>
 
-                <!-- Fecha -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Fecha</label>
                     <input asp-for="RegistroMantenimiento.Fecha" type="date" class="form-control" />
                 </div>
 
-                <!-- Operario -->
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Operario</label>
-                    <div class="d-flex gap-2">
-                        <select asp-for="RegistroMantenimiento.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select flex-grow-1"></select>
-                        <a asp-controller="Operador" asp-action="Upsert" class="btn btn-primary">+ Nuevo</a>
-                    </div>
+                    <label class="form-label fw-semibold">Operarios y tareas realizadas</label>
+                    <div id="contenedor-operadores"></div>
+                    <button type="button" class="btn btn-outline-primary mt-2" id="btnAgregarOperador">Agregar Operador</button>
                 </div>
 
-                <!-- Catálogo mantenimiento -->
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Mantenimiento realizado</label>
-                    <select asp-for="RegistroMantenimiento.CatalogoMantenimientoId" asp-items="Model.ListaCatalogoMantenimiento" class="form-select"></select>
-                   
-                </div>
-
-                <!-- Descripción adicional -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Descripción (opcional)</label>
                     <textarea asp-for="RegistroMantenimiento.Descripcion" class="form-control"></textarea>
                 </div>
 
-                <!-- Precio -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Precio</label>
                     <input asp-for="RegistroMantenimiento.Precio" type="number" step="0.01" class="form-control" />
                 </div>
 
-                <!-- Repuestos -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Repuestos utilizados</label>
                     <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModal()">Agregar Repuestos</button>
-
-                    <table class="table table-sm table-bordered">
+                    <table class="table table-sm table-bordered" id="tablaSeleccionados">
                         <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Acción</th>
-                            </tr>
+                            <tr><th>Nombre</th><th>Acción</th></tr>
                         </thead>
-                        <tbody id="tablaSeleccionados"></tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
 
-
-                <!-- Botones -->
                 <div class="d-flex justify-content-between mt-4">
                     <button type="submit" class="btn btn-success">Guardar y continuar</button>
                     <a asp-action="Index" class="btn btn-link text-decoration-none">Volver</a>
                 </div>
 
-
-                <!-- Modal de repuestos -->
                 <div class="modal fade" id="modalRepuestos" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -85,28 +66,23 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <table class="table table-bordered" id="tablaRepuestos">
+                                <table class="table table-bordered display" id="tablaRepuestos">
                                     <thead>
-                                        <tr>
-                                            <th style="width: 15px;">Seleccionar</th>
-                                            <th>Nombre</th>
-                                        </tr>
+                                        <tr><th style="width: 15px;">Seleccionar</th><th>Nombre</th></tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var repuesto in Model.ListaRepuestos)
                                         {
                                             var partes = repuesto.Text.Split('|');
-                                            <tr style="width: 2px;">
-                                                <td class="text-center" style="width: 2px;">
-                                                    <input type="checkbox" value="@repuesto.Value" data-nombre="@partes[0]"/>
+                                            <tr>
+                                                <td class="text-center">
+                                                    <input type="checkbox" value="@repuesto.Value" data-nombre="@partes[0]" />
                                                 </td>
                                                 <td>@partes[0]</td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
-
-
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-success" onclick="guardarSeleccion()">Agregar Seleccionados</button>
@@ -114,7 +90,6 @@
                         </div>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
@@ -122,30 +97,32 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     <script>
         let seleccionados = [];
+        const tareas = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ListaCatalogoMantenimiento));
+        const opcionesOperadores = `@Html.Raw(opcionesOperadores)`;
 
         function abrirModal() {
-            new bootstrap.Modal(document.getElementById("modalRepuestos")).show();
+            const modal = new bootstrap.Modal(document.getElementById("modalRepuestos"));
+            modal.show();
         }
 
         function guardarSeleccion() {
             const checkboxes = document.querySelectorAll("#tablaRepuestos input[type=checkbox]:checked");
-            const tabla = document.getElementById("tablaSeleccionados");
+            const tabla = document.querySelector("#tablaSeleccionados tbody");
             checkboxes.forEach(cb => {
                 const id = parseInt(cb.value);
                 if (!seleccionados.includes(id)) {
                     seleccionados.push(id);
                     const fila = document.createElement("tr");
                     fila.innerHTML = `
-                        <td>
-                            ${cb.dataset.nombre}
-                            <input type="hidden" name="RepuestosSeleccionados" value="${id}" />
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRepuesto(${id}, this)">Eliminar</button>
-                        </td>
-                    `;
+                                <td>${cb.dataset.nombre}<input type="hidden" name="RepuestosSeleccionados" value="${id}" /></td>
+                                <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarRepuesto(${id}, this)">Eliminar</button></td>`;
                     tabla.appendChild(fila);
                 }
             });
@@ -154,54 +131,153 @@
 
         function eliminarRepuesto(id, btn) {
             seleccionados = seleccionados.filter(x => x !== id);
-            const fila = btn.closest("tr");
-            fila.remove();
+            btn.closest("tr").remove();
         }
+
+        function agregarOperadorChecklist() {
+            const contenedor = document.getElementById("contenedor-operadores");
+            const div = document.createElement("div");
+            div.className = "border p-3 mb-3 bg-light bloque-operador";
+            let tareasHtml = "";
+            tareas.forEach((t, i) => {
+                tareasHtml += `
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input tarea-checkbox" type="checkbox" value="${t.Value}" data-text="${t.Text}" />
+                                    <label class="form-check-label">${t.Text}</label>
+                                </div>
+                            </div>`;
+            });
+            div.innerHTML = `
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Operador</label>
+                                <select class="form-select operador-select">${opcionesOperadores}</select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Horas trabajadas</label>
+                                <input type="number" step="0.1" min="0" class="form-control horas-input" />
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Tareas realizadas</label>
+                            <div class="row">${tareasHtml}</div>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.bloque-operador').remove()">Eliminar</button>
+                        </div>`;
+            contenedor.appendChild(div);
+        }
+
+        $(document).ready(function () {
+            $('#tablaRepuestos').DataTable({
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ repuestos",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ repuestos",
+                    paginate: { next: "Siguiente", previous: "Anterior" },
+                    zeroRecords: "No se encontraron repuestos"
+                },
+                pageLength: 10,
+                lengthChange: false,
+                autoWidth: false
+            });
+
+            document.getElementById("btnAgregarOperador").addEventListener("click", agregarOperadorChecklist);
+
+            $('form').on('submit', function (e) {
+                document.querySelectorAll('.input-generado').forEach(e => e.remove());
+
+                const contenedor = document.getElementById("contenedor-operadores");
+                const bloques = contenedor.querySelectorAll(".bloque-operador");
+                const tablaRepuestos = document.querySelectorAll("input[name='RepuestosSeleccionados']");
+                let globalIndex = 0;
+
+                // Validaciones generales
+                if (bloques.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Falta agregar operadores',
+                        text: 'Debe agregar al menos un operador antes de continuar.'
+                    });
+                    e.preventDefault();
+                    return;
+                }
+
+                if (tablaRepuestos.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Repuestos requeridos',
+                        text: 'Debe seleccionar al menos un repuesto para continuar.'
+                    });
+                    e.preventDefault();
+                    return;
+                }
+
+                let algunError = false;
+
+                bloques.forEach((bloque, bloqueIndex) => {
+                    const operadorCedula = bloque.querySelector(".operador-select").value;
+                    const horas = bloque.querySelector(".horas-input").value;
+                    const tareasMarcadas = bloque.querySelectorAll(".tarea-checkbox:checked");
+
+                    if (!horas || parseFloat(horas) <= 0) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: `Horas faltantes`,
+                            text: `Debe ingresar las horas trabajadas para el operador #${bloqueIndex + 1}.`
+                        });
+                        algunError = true;
+                        return;
+                    }
+
+                    if (tareasMarcadas.length === 0) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: `Tareas requeridas`,
+                            text: `Debe seleccionar al menos una tarea para el operador #${bloqueIndex + 1}.`
+                        });
+                        algunError = true;
+                        return;
+                    }
+
+                    tareasMarcadas.forEach(tarea => {
+                        const catalogoId = tarea.value;
+
+                        const hiddenOperador = document.createElement("input");
+                        hiddenOperador.type = "hidden";
+                        hiddenOperador.name = `DetallesOperadores[${globalIndex}].OperadorCedula`;
+                        hiddenOperador.value = operadorCedula;
+                        hiddenOperador.classList.add("input-generado");
+
+                        const hiddenHoras = document.createElement("input");
+                        hiddenHoras.type = "hidden";
+                        hiddenHoras.name = `DetallesOperadores[${globalIndex}].HorasTrabajo`;
+                        hiddenHoras.value = horas;
+                        hiddenHoras.classList.add("input-generado");
+
+                        const hiddenCatalogo = document.createElement("input");
+                        hiddenCatalogo.type = "hidden";
+                        hiddenCatalogo.name = `DetallesOperadores[${globalIndex}].CatalogoMantenimientoId`;
+                        hiddenCatalogo.value = catalogoId;
+                        hiddenCatalogo.classList.add("input-generado");
+
+                        document.forms[0].appendChild(hiddenOperador);
+                        document.forms[0].appendChild(hiddenHoras);
+                        document.forms[0].appendChild(hiddenCatalogo);
+
+                        globalIndex++;
+                    });
+                });
+
+                if (algunError) {
+                    e.preventDefault(); // Cancelar envío del formulario si hay errores
+                }
+            });
+
+
+        });
     </script>
 }
 
-<!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-
-<!-- jQuery y DataTables JS -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#tablaRepuestos').DataTable({
-            language: {
-                search: "Buscar:",
-                lengthMenu: "Mostrar _MENU_ repuestos",
-                info: "Mostrando _START_ a _END_ de _TOTAL_ repuestos",
-                paginate: {
-                    next: "Siguiente",
-                    previous: "Anterior"
-                },
-                zeroRecords: "No se encontraron repuestos"
-            },
-            pageLength: 10,
-            lengthChange: false,
-            autoWidth: false, // 👈 Evita que DataTables calcule anchos automáticos
-
-            columnDefs: [
-                {
-                    targets: 0, // Primera columna (checkbox)
-                    width: "40px",
-                    className: "text-center"
-                },
-                {
-                    targets: 1, // Segunda columna (nombre)
-                    width: "auto" // Esto permite que se expanda naturalmente
-                }
-            ]
-        });
-
-    });
-</script>
-
-
-
-
-
-

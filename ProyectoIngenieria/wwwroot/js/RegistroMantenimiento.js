@@ -28,7 +28,6 @@ function loadDataTable() {
         },
         columns: [
             { data: "vehiculoModelo", width: "15%", title: "Vehículo" },
-            { data: "catalogoMantenimiento", width: "15%", title: "Tipo de Mantenimiento" },
             { data: "descripcion", width: "25%", title: "Descripción" },
             { data: "fecha", width: "25%", title: "Fecha" },
             { data: "precio", width: "10%", title: "Precio" },
