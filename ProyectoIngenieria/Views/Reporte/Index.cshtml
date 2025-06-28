@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "Reporte mensual por vehículo";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2/theme-bootstrap-4/bootstrap-4.min.css">
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="container mt-5">
+    <div class="card shadow border-0 mx-auto" style="max-width: 1000px;">
+        <div class="card-body">
+            <h2 class="card-title text-center text-primary mb-4">Reporte Mensual de Vehículos</h2>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Seleccione el mes:</label>
+                    <select id="mesSeleccionado" class="form-select">
+                        <option value="">-- Seleccione un mes --</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            var nombreMes = new DateTime(2025, i, 1).ToString("MMMM");
+                            <option value="@i">@nombreMes</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4 align-self-end">
+                    <button id="btnGenerar" class="btn btn-primary mt-2">Generar Reporte</button>
+                </div>
+            </div>
+
+            <table id="tablaReporte" class="display table table-bordered table-striped w-100">
+                <thead class="table-light">
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Placa</th>
+                        <th>Mes</th>
+                        <th>Horas</th>
+                        <th>Ingreso</th>
+                        <th>Combustible</th>
+                        <th>Mantenimiento</th>
+                        <th>Total de gastos</th>
+                        <th>Utilidad</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const tabla = $('#tablaReporte').DataTable({
+            columns: [
+                { data: "modelo" },
+                { data: "placa" },
+                { data: "mes" },
+                { data: "totalHoras" },
+                {
+                    data: "ingresoTotal",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "gastoCombustible",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "gastoMantenimiento",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "totalGastos",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "utilidad",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                }
+            ],
+            language: {
+                search: "Buscar:",
+                lengthMenu: "Mostrar _MENU_ registros",
+                info: "Mostrando _START_ a _END_ de _TOTAL_",
+                paginate: {
+                    previous: "Anterior",
+                    next: "Siguiente"
+                },
+                zeroRecords: "No hay datos para el mes seleccionado"
+            }
+        });
+
+        $('#btnGenerar').click(function () {
+            const mes = parseInt($('#mesSeleccionado').val());
+
+            if (!mes || mes < 1 || mes > 12) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Mes no válido',
+                    text: 'Por favor, seleccione un mes correcto.'
+                });
+                return;
+            }
+
+            $.ajax({
+                url: `/Reporte/GetReporteData?mes=${mes}`,
+                method: 'GET',
+                success: function (result) {
+                    tabla.clear().rows.add(result.data).draw();
+                },
+                error: function (xhr) {
+                    console.error("Error:", xhr);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al cargar',
+                        text: 'No se pudieron obtener los datos del servidor.'
+                    });
+                }
+            });
+        });
+    });
+</script>

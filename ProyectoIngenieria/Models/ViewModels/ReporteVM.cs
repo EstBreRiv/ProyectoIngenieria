@@ -16,6 +16,8 @@
 
         public decimal gastoMantenimiento { get; set; }
 
+        public decimal totalGastos { get; set; }
+
         public decimal utilidad { get; set; }
 
     }

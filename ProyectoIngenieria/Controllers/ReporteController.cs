@@ -8,7 +8,11 @@ namespace ProyectoIngenieria.Controllers
     {
         // Inyección de dependencias del UnitOfWork para acceder a los repositorios
         private readonly IUnitOfWork _unitOfWork;
-
+        private string [] meses = new string[]
+        {
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        };
         // Constructor que recibe el UnitOfWork
         public ReporteController(IUnitOfWork unitOfWork)
         {
@@ -26,7 +30,7 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetReporteData(int mes)
         {
-            mes = 2;
+            
 
             if (mes < 1 || mes > 12)
             {
@@ -56,13 +60,14 @@ namespace ProyectoIngenieria.Controllers
                 {
                     modelo = vehiculo.Modelo,
                     placa = vehiculo.Placa,
-                    mes = new DateTime(DateTime.Now.Year, mes, 1).ToString("MMMM"),
+                    mes = meses[mes - 1],
                     totalHoras = _unitOfWork.HorasTrabajo.GetAll()
                         .Where(c => c.VehiculoId == vehiculo.Id && c.Fecha.Month == mes)
                         .Sum(n => n.TotalHoras),
                     ingresoTotal = ingresoHoras,
                     gastoCombustible = gastoCombustible,
                     gastoMantenimiento = costosMantenimientos,
+                    totalGastos = gastoCombustible + costosMantenimientos,
                     utilidad = ingresoHoras - (gastoCombustible + costosMantenimientos)
                 };
                 // Agregar el reporte a la lista
