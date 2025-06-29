@@ -30,12 +30,12 @@
 
         <div class="row mb-3">
             <div class="col-md-3">
-                <label for="fechaInicio">Fecha inicio</label>
-                <input type="date" id="fechaInicio" class="form-control">
+                <label for="filtroInicio" class="form-label">Fecha desde</label>
+                <input type="text" id="filtroInicio" class="form-control" />
             </div>
             <div class="col-md-3">
-                <label for="fechaFin">Fecha fin</label>
-                <input type="date" id="fechaFin" class="form-control">
+                <label for="filtroFin" class="form-label">Fecha hasta</label>
+                <input type="text" id="filtroFin" class="form-control" />
             </div>
             <div class="col-md-3 align-self-end">
                 <button id="btnFiltrar" class="btn btn-primary">Filtrar</button>
@@ -69,12 +69,33 @@
 
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
-    
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+        <script src="/js/RegistroCombustible.js"></script>
 
-    <script src="/js/RegistroCombustible.js"></script>
+        <!-- Flatpickr -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+        <script>
+            flatpickr("#filtroInicio", {
+                locale: "es",
+                dateFormat: "Y-m-d",
+                defaultDate: ""
+            });
+
+            flatpickr("#filtroFin", {
+                locale: "es",
+                dateFormat: "Y-m-d",
+                defaultDate: ""
+            });
+        </script>
+    }
+   
+
 </body>
 </html>
 

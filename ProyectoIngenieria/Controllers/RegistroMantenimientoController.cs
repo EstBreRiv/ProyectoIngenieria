@@ -36,7 +36,8 @@ namespace ProyectoIngenieria.Controllers
                 .Select(m => new
                 {
                     m.Id,
-                    VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Modelo,
+                    VehiculoModelo = _unitOfWork.Vehiculo.Get(v => v.Id == m.VehiculoId).Modelo + " - " +
+                                     _unitOfWork.Vehiculo.Get(v => v.Id == m.VehiculoId).Placa,
                     m.Descripcion,
                     Fecha = m.Fecha.ToString("dd/MM/yyyy"),
                     Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))

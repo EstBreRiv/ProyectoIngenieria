@@ -24,10 +24,11 @@ namespace ProyectoIngenieria.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(int id, DateOnly? fechaInicio, DateOnly? fechaFin)
+        public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
+            // Si no se proporciona ID o es 0, no se filtra por vehículo
             var horas = _unitOfWork.HorasTrabajo.GetAll(
-                h => h.VehiculoId == id &&
+                h => (!id.HasValue || id == 0 || h.VehiculoId == id) &&
                      (!fechaInicio.HasValue || h.Fecha >= fechaInicio.Value) &&
                      (!fechaFin.HasValue || h.Fecha <= fechaFin.Value),
                 includeProperties: "LugarTrabajo,TipoTrabajo,Proyecto"
@@ -35,6 +36,8 @@ namespace ProyectoIngenieria.Controllers
 
             var data = horas.Select(h => new
             {
+                nombreVehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Modelo + " - " +
+                                 _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Placa,
                 id = h.Id,
                 fecha = h.Fecha.ToString("yyyy-MM-dd"),
                 horometroInicial = h.HorometroInicial,
@@ -42,13 +45,14 @@ namespace ProyectoIngenieria.Controllers
                 precioHora = h.PrecioHora,
                 totalHoras = h.TotalHoras,
                 totalGanancia = h.TotalGanancia,
-                lugar = h.LugarTrabajo != null ? h.LugarTrabajo.Nombre : "",
-                tipo = h.TipoTrabajo != null ? h.TipoTrabajo.Nombre : "",
-                proyecto = h.Proyecto != null ? h.Proyecto.NombreProyecto : ""
+                lugar = h.LugarTrabajo?.Nombre ?? "",
+                tipo = h.TipoTrabajo?.Nombre ?? "",
+                proyecto = h.Proyecto?.NombreProyecto ?? ""
             }).ToList();
 
             return Json(new { data });
         }
+
 
 
         [HttpGet]

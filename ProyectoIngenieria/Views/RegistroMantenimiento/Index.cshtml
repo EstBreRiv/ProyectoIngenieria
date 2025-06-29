@@ -36,11 +36,11 @@
             <div class="row mb-3">
                 <div class="col-md-3">
                     <label for="filtroInicio" class="form-label">Fecha desde</label>
-                    <input type="date" id="filtroInicio" class="form-control" />
+                    <input type="text" id="filtroInicio" class="form-control" />
                 </div>
                 <div class="col-md-3">
                     <label for="filtroFin" class="form-label">Fecha hasta</label>
-                    <input type="date" id="filtroFin" class="form-control" />
+                    <input type="text" id="filtroFin" class="form-control" />
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
                     <button id="btnFiltrar" class="btn btn-primary w-100">Filtrar</button>
@@ -75,5 +75,25 @@
 
     <!-- JS personalizado -->
     <script src="~/js/RegistroMantenimiento.js"></script>
+
+    @section Scripts {
+        <!-- Flatpickr -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+        <script>
+            flatpickr("#filtroInicio", {
+                locale: "es",
+                dateFormat: "Y-m-d",
+            });
+
+            flatpickr("#filtroFin", {
+                locale: "es",
+                dateFormat: "Y-m-d",
+            });
+        </script>
+    }
+
 </body>
 </html>

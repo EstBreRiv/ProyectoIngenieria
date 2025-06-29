@@ -23,7 +23,7 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Fecha</label>
-                    <input asp-for="RegistroMantenimiento.Fecha" type="date" class="form-control" />
+                    <input asp-for="RegistroMantenimiento.Fecha" type="date" class="form-control" id="fechaMantenimiento"/>
                 </div>
 
                 <div class="mb-3">
@@ -101,6 +101,12 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Flatpickr JS + idioma español -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
     <script>
         let seleccionados = [];
@@ -276,6 +282,13 @@
             });
 
 
+        });
+
+
+        flatpickr("#fechaMantenimiento", {
+            locale: "es",
+            dateFormat: "Y-m-d",
+            defaultDate: "@Model.RegistroMantenimiento.Fecha.ToString("yyyy-MM-dd")"
         });
     </script>
 }

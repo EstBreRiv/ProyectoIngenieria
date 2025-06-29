@@ -31,13 +31,13 @@
 
                 <div class="mb-3">
                     <label asp-for="Proyecto.FechaInicio" class="form-label text-muted">Indique la fecha de Inicio del Proyecto</label>
-                    <input asp-for="Proyecto.FechaInicio" type="date" class="form-control" />
+                    <input asp-for="Proyecto.FechaInicio" type="text" class="form-control" id="fechaInicio" />
                     <span asp-validation-for="Proyecto.FechaInicio" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Proyecto.FechaFin" class="form-label text-muted">Indique la fecha de cierre del Proyecto</label>
-                    <input asp-for="Proyecto.FechaFin" type="date" class="form-control" />
+                    <input asp-for="Proyecto.FechaFin" type="text" class="form-control" id="fechaFin" />
                     <span asp-validation-for="Proyecto.FechaFin" class="text-danger small"></span>
                 </div>
 
@@ -58,4 +58,26 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <script>
+        flatpickr("#fechaInicio", {
+            locale: "es",
+            dateFormat: "Y-m-d", // <-- esto envía yyyy-MM-dd
+            defaultDate: "today"
+        });
+
+        flatpickr("#fechaFin", {
+            locale: "es",
+            dateFormat: "Y-m-d", // <-- formato compatible con DateTime en .NET
+            defaultDate: "today"
+        });
+
+    </script>
+
 }
+

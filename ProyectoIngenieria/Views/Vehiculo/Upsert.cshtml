@@ -71,18 +71,10 @@
 
                         </div>
 
-                        <!-- Checkbox Placa -->
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="mostrarPlacaCheck" name="mostrarPlaca"
-                            @(string.IsNullOrEmpty(Model.Vehiculo.Placa) ? "" : "checked") />
-
-                            <label class="form-check-label" for="mostrarPlacaCheck">¿Tiene placa?</label>
-                        </div>
-
-                        <!-- Placa (condicional) -->
-                        <div id="placaContainer" class="mb-3 @(string.IsNullOrEmpty(Model.Vehiculo.Placa) ? "d-none" : "")">
+                        <!-- Placa -->
+                        <div id="placaContainer" class="mb-3">
                             <label asp-for="Vehiculo.Placa" class="form-label"></label>
-                            <input asp-for="Vehiculo.Placa" class="form-control" placeholder="Número de placa del vehículo" />
+                            <input asp-for="Vehiculo.Placa" class="form-control" placeholder="Número de placa o serie del vehículo" />
                             <span asp-validation-for="Vehiculo.Placa" class="text-danger small"></span>
 
                         </div>
@@ -126,18 +118,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function () {
-            $('#mostrarPlacaCheck').change(function () {
-                if (this.checked) {
-                    $('#placaContainer').removeClass('d-none').hide().slideDown();
-                } else {
-                    $('#placaContainer').slideUp(function () {
-                        $(this).addClass('d-none');
-                        $('#Vehiculo_Placa').val('');
-                    });
-                }
-            });
-        });
-    </script>
+   
 }

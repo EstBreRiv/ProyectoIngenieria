@@ -27,11 +27,11 @@
     <div class="row mb-3">
         <div class="col-md-3">
             <label for="filtroInicio" class="form-label">Fecha desde</label>
-            <input type="date" id="filtroInicio" class="form-control" />
+            <input type="text" id="filtroInicio" class="form-control" />
         </div>
         <div class="col-md-3">
             <label for="filtroFin" class="form-label">Fecha hasta</label>
-            <input type="date" id="filtroFin" class="form-control" />
+            <input type="text" id="filtroFin" class="form-control" />
         </div>
         <div class="col-md-3 d-flex align-items-end">
             <button id="btnFiltrar" class="btn btn-primary w-100">Filtrar</button>
@@ -46,6 +46,7 @@
         <table id="tablaHorasTrabajo" class="table table-bordered table-hover">
             <thead class="table-success text-dark text-center">
                 <tr>
+                    <th>Vehiculo</th>
                     <th>Fecha</th>
                     <th>Horómetro Inicial</th>
                     <th>Horómetro Final</th>
@@ -68,4 +69,24 @@
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
     <script src="/js/HorasTrabajo.js"></script>
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <script>
+        flatpickr("#filtroInicio", {
+            locale: "es",
+            dateFormat: "Y-m-d",
+            defaultDate: ""
+        });
+
+        flatpickr("#filtroFin", {
+            locale: "es",
+            dateFormat: "Y-m-d",
+            defaultDate: ""
+        });
+    </script>
 }
+
