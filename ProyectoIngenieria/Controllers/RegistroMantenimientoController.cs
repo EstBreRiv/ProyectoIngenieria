@@ -61,7 +61,9 @@ namespace ProyectoIngenieria.Controllers
 
                 RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
 
-                ListaVehiculos = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+                ListaVehiculos = _unitOfWork.Vehiculo
+                .GetAll(v => v.Estado == "Activo")
+                .Select(v => new SelectListItem
                 {
                     Text = v.Modelo + " - " + v.Placa,
                     Value = v.Id.ToString()
