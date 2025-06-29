@@ -36,7 +36,7 @@
     <script>
         // Este evento se dispara una vez que DataTables carga los datos por AJAX
         $('#notificacionesTable').on('xhr.dt', function () {
-            fetch("/Notificacion/MarcarTodasComoLeidas", {
+            fetch("/Admin/Notificacion/MarcarTodasComoLeidas", {
                 method: "POST"
             }).then(() => {
                 console.log("Notificaciones marcadas como leídas");

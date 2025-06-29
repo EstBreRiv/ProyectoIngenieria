@@ -106,7 +106,7 @@
             }
 
             $.ajax({
-                url: `/Reporte/GetReporteData?mes=${mes}`,
+                url: `/Admin/Reporte/GetReporteData?mes=${mes}`,
                 method: 'GET',
                 success: function (result) {
                     tabla.clear().rows.add(result.data).draw();
