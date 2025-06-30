@@ -47,7 +47,7 @@
             <table id="taskTable" class="table table-bordered table-hover">
                 <thead class="table-success text-dark">
                     <tr>
-                        <th>Numero de registro</th>
+                        <th>Vehiculo</th>
                         <th>Fecha de compra</th>
                         <th>Litros comprados</th>
                         <th>Precio por litro</th>
@@ -69,33 +69,35 @@
 
     </div>
 
-    @section Scripts {
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
-        <script src="/js/RegistroCombustible.js"></script>
-
-        <!-- Flatpickr -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-
-        <script>
-            flatpickr("#filtroInicio", {
-                locale: "es",
-                dateFormat: "Y-m-d",
-                defaultDate: ""
-            });
-
-            flatpickr("#filtroFin", {
-                locale: "es",
-                dateFormat: "Y-m-d",
-                defaultDate: ""
-            });
-        </script>
-    }
+  
    
 
 </body>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/js/RegistroCombustible.js"></script>
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <script>
+        flatpickr("#filtroInicio", {
+            locale: "es",
+            dateFormat: "Y-m-d",
+            defaultDate: ""
+        });
+
+        flatpickr("#filtroFin", {
+            locale: "es",
+            dateFormat: "Y-m-d",
+            defaultDate: ""
+        });
+    </script>
+}
 </html>
 

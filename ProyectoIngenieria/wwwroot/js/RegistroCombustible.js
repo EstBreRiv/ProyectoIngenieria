@@ -1,28 +1,47 @@
-﻿var dataTable;
+﻿let dataTable;
 
 $(document).ready(function () {
-    console.log("Task.js cargado y listo");
+    const vehiculoId = $("#VehiculoIdHidden").val();
 
-    var vehiculoId = $('#VehiculoIdHidden').val();
+    inicializarTabla(vehiculoId);
 
-    loadDataTable();
+    $("#btnFiltrar").on("click", function () {
+        const fechaInicio = $("#filtroInicio").val();
+        const fechaFin = $("#filtroFin").val();
+
+        if (!fechaInicio || !fechaFin) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fechas incompletas',
+                text: 'Debes seleccionar tanto la fecha de inicio como la fecha de fin.',
+            });
+            return;
+        }
+
+        dataTable.ajax.reload();
+    });
+
+    $("#btnLimpiar").on("click", function () {
+        $("#filtroInicio").val('');
+        $("#filtroFin").val('');
+        dataTable.ajax.reload();
+    });
 });
 
-function loadDataTable() {
-    var vehiculoId = $('#VehiculoIdHidden').val();
-
+function inicializarTabla(vehiculoId) {
     dataTable = $('#taskTable').DataTable({
         ajax: {
             url: "/RegistroCombustible/GetAll",
             data: function (d) {
                 d.id = vehiculoId;
-                d.fechaInicio = $('#fechaInicio').val();
-                d.fechaFin = $('#fechaFin').val();
-            }
+                d.fechaInicio = $("#filtroInicio").val(); // formato: YYYY-MM-DD
+                d.fechaFin = $("#filtroFin").val();
+            },
+            dataSrc: "data"
         },
         destroy: true,
         columns: [
-            { data: "id" },
+            { data: "nombreVehiculo", width: "16%" }, // Nombre del vehículo
             { data: "fechaCompra" },
             { data: "litrosComprados" },
             { data: "precioLitro" },
@@ -31,13 +50,15 @@ function loadDataTable() {
                 data: "id",
                 render: function (data) {
                     return `
-                        <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${vehiculoId}" class="btn btn-success btn-sm mx-2" title="Editar">
+                        <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
                             <i class="bi bi-trash"></i>
                         </a>`;
-                }
+                },
+                orderable: false,
+                searchable: false
             }
         ],
         language: {
@@ -45,31 +66,6 @@ function loadDataTable() {
         }
     });
 }
-
-$('#btnFiltrar').on('click', function () {
-    var fechaInicio = $('#fechaInicio').val();
-    var fechaFin = $('#fechaFin').val();
-
-    if (!fechaInicio || !fechaFin) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Fechas incompletas',
-            text: 'Debes seleccionar tanto la fecha de inicio como la fecha de fin.',
-        });
-        return;
-    }
-
-    dataTable.ajax.reload();
-});
-
-
-$('#btnLimpiar').click(function () {
-    $('#fechaInicio').val('');
-    $('#fechaFin').val('');
-    dataTable.ajax.reload();
-});
-
-
 
 function Delete(url) {
     Swal.fire({

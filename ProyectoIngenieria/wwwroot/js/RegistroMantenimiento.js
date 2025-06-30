@@ -1,8 +1,9 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
+    const vehiculoId = $("#VehiculoIdHidden").val();
     console.log("RegistroMantenimiento.js cargado y listo");
-    loadDataTable();
+    loadDataTable(vehiculoId);
 
     // Botón de filtro
     $('#btnFiltrar').on('click', function () {
@@ -17,11 +18,12 @@ $(document).ready(function () {
     });
 });
 
-function loadDataTable() {
+function loadDataTable(vehiculoId) {
     dataTable = $('#tablaMantenimiento').DataTable({
         ajax: {
             url: "/RegistroMantenimiento/GetAll",
             data: function (d) {
+                d.id = vehiculoId; // ID del vehículo
                 d.fechaInicio = $('#filtroInicio').val();
                 d.fechaFin = $('#filtroFin').val();
             }
