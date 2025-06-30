@@ -28,7 +28,8 @@ function inicializarTabla(vehiculoId) {
             dataSrc: "data"
         },
         columns: [
-            { data: "fecha" },
+            { data: "nombreVehiculo" , width: "16%" },
+            { data: "fecha", width: "9%" },
             { data: "horometroInicial" },
             { data: "horometroFinal" },
             { data: "precioHora" },
@@ -49,8 +50,7 @@ function inicializarTabla(vehiculoId) {
                         </button>
                     `;
                 },
-                orderable: false,
-                searchable: false
+             
             }
         ],
         language: {

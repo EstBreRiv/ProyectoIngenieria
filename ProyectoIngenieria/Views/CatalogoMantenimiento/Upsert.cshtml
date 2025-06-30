@@ -3,9 +3,11 @@
 <div class="container mt-5">
     <div class="card shadow border-0 mx-auto" style="max-width: 600px;">
         <div class="card-body">
-            <h2 class="card-title text-center h4 mb-4">
-                @(Model.Id == 0 ? "Nuevo Mantenimiento" : "Editar Mantenimiento")
-            </h2>
+            <div class="border-bottom pb-3 mb-4">
+                <h2 class="titulo-formulario">
+                    @(Model.Id == 0 ? "Nuevo Mantenimiento" : "Editar Mantenimiento")
+                </h2>
+            </div>
 
             <form asp-action="Upsert" method="post">
                 <input type="hidden" asp-for="Id" />
@@ -22,15 +24,17 @@
                     <span asp-validation-for="Descripcion" class="text-danger small"></span>
                 </div>
 
-                <div class="d-flex justify-content-center gap-3 pt-3">
-                    <button type="submit" class="btn btn-primary px-4">
+                <div class="d-flex justify-content-end gap-2 pt-3">
+                    <button type="submit" class="btn btn-success w-25">
                         Guardar
                     </button>
-                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
-                        Cancelar
-                    </a>
                 </div>
             </form>
         </div>
     </div>
+    <a asp-controller="CatalogoMantenimiento" asp-action="Index"
+       class="btn btn-outline-success rounded-circle shadow p-3"
+       style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+        <i class="bi bi-arrow-left"></i>
+    </a>
 </div>

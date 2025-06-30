@@ -18,7 +18,9 @@ public partial class Vehiculo
     [StringLength(100, ErrorMessage = "La descripción no puede tener más de cien caracteres.")]
     public string? Descripcion { get; set; }
 
-    public string? Placa { get; set; }
+    [Required(ErrorMessage = "Se debe ingresar el número de serie del vehículo.")]
+    [StringLength(20, ErrorMessage = "La placa no puede tener más de 20 caracteres.")]
+    public string Placa { get; set; }
 
     [Required(ErrorMessage = "Se debe seleccionar la empresa a la que pertenece el vehículo.")]
     public int EmpresaId { get; set; }

@@ -12,9 +12,12 @@ function loadDataTable() {
         },
         "columns": [
 
+            { "data": "marca", "width": "15%" },
             { "data": "modelo", "width": "15%" },
+            { "data": "placa", "width": "15%" },
             { "data": "estado", "width": "10%" },
-            { "data": "descripcion", "width": "30%" },
+            { "data": "tipoVehiculo", "width": "15%" },
+            { "data": "empresa", "width": "30%" },
 
             {
                 "data": "id",

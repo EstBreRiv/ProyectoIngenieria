@@ -16,34 +16,41 @@ namespace ProyectoIngenieria.Controllers
         }
 
         // Vista principal
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
+            ViewBag.VehiculoId = id; // Pasa el ID a la vista para que el JS lo use
             return View();
         }
 
         // Mostrar todos los registros (para DataTables)
         [HttpGet]
-        public IActionResult GetAll(DateOnly? fechaInicio, DateOnly? fechaFin)
+        public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var query = _unitOfWork.RegistroMantenimiento.GetAll();
-
-            if (fechaInicio.HasValue && fechaFin.HasValue)
-            {
-                query = query.Where(m => m.Fecha >= fechaInicio && m.Fecha <= fechaFin);
-            }
+            // Filtro base
+            var query = _unitOfWork.RegistroMantenimiento.GetAll()
+                .Where(m =>
+                    (!id.HasValue || id == 0 || m.VehiculoId == id) &&
+                    (!fechaInicio.HasValue || m.Fecha >= fechaInicio.Value) &&
+                    (!fechaFin.HasValue || m.Fecha <= fechaFin.Value)
+                );
 
             var mantenimientos = query
-                .Select(m => new
-                {
-                    m.Id,
-                    VehiculoModelo = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Modelo,
-                    m.Descripcion,
-                    Fecha = m.Fecha.ToString("dd/MM/yyyy"),
-                    Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
-                });
+                .Select(m => {
+                    var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == m.VehiculoId);
+
+                    return new
+                    {
+                        m.Id,
+                        VehiculoModelo = vehiculo != null ? vehiculo.Modelo + " - " + vehiculo.Placa : "",
+                        m.Descripcion,
+                        Fecha = m.Fecha.ToString("dd/MM/yyyy"),
+                        Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
+                    };
+                }).ToList();
 
             return Json(new { data = mantenimientos });
         }
+
 
 
 

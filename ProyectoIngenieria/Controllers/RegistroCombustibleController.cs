@@ -33,20 +33,34 @@ namespace ProyectoIngenieria.Controllers
         // GetAll: Devuelve todos los registros de
         // combustible para un vehículo específico en formato JSON
         [HttpGet]
-        public IActionResult GetAll(int id, DateOnly? fechaInicio, DateOnly? fechaFin)
+        public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var query = _unitOfWork.RegistroCombustible
-                .GetAll()
-                .Where(r => r.VehiculoId == id);
+            var registros = _unitOfWork.RegistroCombustible.GetAll(
+                    r =>
+                    (!id.HasValue || id == 0 || r.VehiculoId == id) &&
+                    (!fechaInicio.HasValue || r.FechaCompra >= fechaInicio.Value) &&
+                    (!fechaFin.HasValue || r.FechaCompra <= fechaFin.Value)
+            );
 
-            if (fechaInicio.HasValue && fechaFin.HasValue)
+            var data = registros.Select(r =>
             {
-                query = query.Where(r => r.FechaCompra >= fechaInicio.Value && r.FechaCompra <= fechaFin.Value);
-            }
+                var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == r.VehiculoId);
 
-            var resultado = query.ToList();
-            return Json(new { data = resultado });
+                return new
+                {
+                    id = r.Id,
+                    fechaCompra = r.FechaCompra.ToString("yyyy-MM-dd"),
+                    litrosComprados = r.LitrosComprados,
+                    precioLitro = r.PrecioLitro,
+                    totalPagado = r.TotalPagado,
+                    nombreVehiculo = vehiculo != null ? $"{vehiculo.Modelo} - {vehiculo.Placa}" : ""
+                };
+            }).ToList();
+
+            return Json(new { data });
         }
+
+
 
 
 

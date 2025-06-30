@@ -13,28 +13,23 @@
 
 
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<div class="row justify-content-center">
+    <div class="col-md-6">
         <div class="container py-5">
-            <div class="d-flex justify-content-end mt-3">
-                <a asp-controller="Vehiculo" asp-action="Index" class="btn btn-outline-secondary w-25">
-                    Volver
-                </a>
-            </div>
-
             <form method="post" asp-action="Upsert">
                 <input type="hidden" asp-for="Vehiculo.Id" />
                 <input type="hidden" asp-for="Vehiculo.Estado" />
-                
+
 
                 <div class="card shadow border">
-                    <div class="card-header bg-success text-white text-center">
-                        <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+                    <div class="border-bottom pb-3 mb-4">
+                        <h2 class="titulo-formulario">
+                            <h2 class="titulo-formulario">@ViewData["Title"]</h2>
+                        </h2>
                     </div>
 
                     <div class="card-body">
 
-                        <!-- Marcas -->
                         <div class="mb-4">
                             <label asp-for="Vehiculo.MarcaId" class="form-label">Seleccione la marca del vehiculo</label>
                             <select asp-for="Vehiculo.MarcaId" asp-items="@ViewBag.MarcaList" class="form-select">
@@ -43,14 +38,12 @@
                             <span asp-validation-for="Vehiculo.EmpresaId" class="text-danger small"></span>
                         </div>
 
-                        <!-- Modelo -->
                         <div class="mb-3">
                             <label asp-for="Vehiculo.Modelo" class="form-label"></label>
                             <input asp-for="Vehiculo.Modelo" class="form-control" placeholder="Ingrese el modelo del vehículo" />
                             <span asp-validation-for="Vehiculo.Modelo" class="text-danger small"></span>
                         </div>
 
-                        <!-- Tipo -->
                         <div class="mb-3">
                             <div class="mb-4">
                                 <label asp-for="Vehiculo.TipoVehiculoId" class="form-label">Seleccione el tipo de vehiculo</label>
@@ -62,32 +55,19 @@
 
                         </div>
 
-
-                        <!-- Descripción -->
                         <div class="mb-3">
-                            <label asp-for="Vehiculo.Descripcion" class="form-label"></label>
+                            <label asp-for="Vehiculo.Descripcion" class="form-label">Descripción</label>
                             <textarea asp-for="Vehiculo.Descripcion" rows="3" class="form-control" placeholder="Descripción del vehículo: Color, Característica"></textarea>
                             <span asp-validation-for="Vehiculo.Descripcion" class="text-danger small"></span>
-
                         </div>
 
-                        <!-- Checkbox Placa -->
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="mostrarPlacaCheck" name="mostrarPlaca"
-                            @(string.IsNullOrEmpty(Model.Vehiculo.Placa) ? "" : "checked") />
-
-                            <label class="form-check-label" for="mostrarPlacaCheck">¿Tiene placa?</label>
-                        </div>
-
-                        <!-- Placa (condicional) -->
-                        <div id="placaContainer" class="mb-3 @(string.IsNullOrEmpty(Model.Vehiculo.Placa) ? "d-none" : "")">
+                        <div id="placaContainer" class="mb-3">
                             <label asp-for="Vehiculo.Placa" class="form-label"></label>
-                            <input asp-for="Vehiculo.Placa" class="form-control" placeholder="Número de placa del vehículo" />
+                            <input asp-for="Vehiculo.Placa" class="form-control" placeholder="Número de placa o serie del vehículo" />
                             <span asp-validation-for="Vehiculo.Placa" class="text-danger small"></span>
 
                         </div>
 
-                        <!-- Empresa -->
                         <div class="mb-4">
                             <label asp-for="Vehiculo.EmpresaId" class="form-label">Seleccione la empresa asociada</label>
                             <select asp-for="Vehiculo.EmpresaId" asp-items="@ViewBag.EmpresaList" class="form-select">
@@ -96,48 +76,35 @@
                             <span asp-validation-for="Vehiculo.EmpresaId" class="text-danger small"></span>
                         </div>
 
-                        <!-- Botones -->
                         <div class="d-flex justify-content-end gap-2 pt-3">
                             <button type="submit" class="btn btn-success w-25">
                                 @(Model.Vehiculo.Id == 0 ? "Crear" : "Actualizar")
-
                             </button>
-
-                            @if (Model.Vehiculo.Id == 0 || estaVacio)
-                            {
-                                <a asp-controller="Vehiculo" asp-action="Index" class="btn btn-outline-secondary w-25">
-                                    Volver
-                                </a>
-                            }
-                            else
-                            {
-                                <a asp-controller="Vehiculo" asp-action="DetalleVehiculo" asp-route-id="@Model.Vehiculo.Id" class="btn btn-outline-secondary w-25">
-                                    Volver
-                                </a>
-
-                            }
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    @if (Model.Vehiculo.Id == 0 || estaVacio)
+    {
+        <a asp-controller="Vehiculo" asp-action="Index"
+           class="btn btn-outline-success rounded-circle shadow p-3"
+           style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Vehiculo" asp-action="DetalleVehiculo" asp-route-id="@Model.Vehiculo.Id"
+           class="btn btn-outline-success rounded-circle shadow p-3"
+           style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+    }
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function () {
-            $('#mostrarPlacaCheck').change(function () {
-                if (this.checked) {
-                    $('#placaContainer').removeClass('d-none').hide().slideDown();
-                } else {
-                    $('#placaContainer').slideUp(function () {
-                        $(this).addClass('d-none');
-                        $('#Vehiculo_Placa').val('');
-                    });
-                }
-            });
-        });
-    </script>
+
 }

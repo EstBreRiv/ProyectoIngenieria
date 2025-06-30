@@ -32,21 +32,19 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            // Obtiene todos los vehículos desde el repositorio y los
-            // transforma en un objeto anónimo
-            var vehiculos = _unitOfWork.Vehiculo.GetAll()
-            
+            //crea una lista de vehiculos utilizando el view model VehiculoVM
+            var vehiculos = _unitOfWork.Vehiculo.GetAll(includeProperties: "Empresa,Marca,TipoVehiculo")
                 .Select(v => new
                 {
                     v.Id,
                     v.Modelo,
                     v.Estado,
-                    v.Descripcion,
                     v.Placa,
-                    //v.Tipo,
-                    EmpresaNombre = _unitOfWork.Empresa.Get(x => x.Id == v.EmpresaId).Nombre
-                })
-                .ToList();
+                    Empresa = v.Empresa.Nombre,
+                    Marca = v.Marca.NombreMarca,
+                    TipoVehiculo = v.TipoVehiculo.Tipo
+                }).ToList();
+
             // Retorna los vehículos en formato JSON
             return Json(new { data = vehiculos });
         }
@@ -113,12 +111,7 @@ namespace ProyectoIngenieria.Controllers
                 // Forzar estado como Activo
                 vehiculoVM.Vehiculo.Estado = "Activo";
 
-                //Si en la vista se indica que no tiene placa, se asigna null a la propiedad Placa
-                var tienePlaca = Request.Form["mostrarPlaca"].Count > 0;
-                if (!tienePlaca)
-                {
-                    vehiculoVM.Vehiculo.Placa = null;
-                }
+               
 
                 // Si el id es 0, se trata de una creación
                 if (vehiculoVM.Vehiculo.Id == 0)

@@ -11,7 +11,7 @@ function loadDataTable() {
             "url": "/Empresa/GetAll"
         },
         "columns": [
-            { "data": "nombre", "width": "30%" },
+            { "data": "nombre", "width": "35%" },
             
             {
                 "data": "id",
@@ -22,7 +22,7 @@ function loadDataTable() {
                                 </a>
                           `
                 },
-                "width": "25%"
+                "width": "20%"
             }
         ],
         language: {
