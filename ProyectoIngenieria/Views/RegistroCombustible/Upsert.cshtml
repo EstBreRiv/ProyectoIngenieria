@@ -20,7 +20,7 @@
                         <!-- Fecha de compra -->
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.FechaCompra" class="form-label text-muted">Fecha de compra</label>
-                            <input asp-for="RegistroCombustible.FechaCompra" type="date" class="form-control"/>
+                            <input asp-for="RegistroCombustible.FechaCompra" type="date" class="form-control" id="fechaCompra"/>
                             <span asp-validation-for="RegistroCombustible.FechaCompra" class="text-danger small"></span>
                         </div>
 
@@ -65,6 +65,13 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
+    <!-- Flatpickr JS + idioma español -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
     <!-- Calcula el precio del total pagado -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -81,6 +88,13 @@
 
             litrosInput.addEventListener("input", calcularTotal);
             precioInput.addEventListener("input", calcularTotal);
+
+
+            flatpickr("#fechaCompra", {
+                locale: "es",
+                dateFormat: "Y-m-d",
+                defaultDate: "today"
+            });
         });
     </script>
 }
