@@ -53,18 +53,27 @@ namespace ProyectoIngenieria.Controllers
             return Json(new { data });
         }
 
-
-
         [HttpGet]
         public IActionResult Upsert(int? id, int? vehiculoId)
         {
+            var horasTrabajo = new HorasTrabajo
+            {
+                Fecha = DateOnly.FromDateTime(DateTime.Today),
+                VehiculoId = vehiculoId ?? 0
+            };
+
+            if (id != null && id != 0)
+            {
+                horasTrabajo = _unitOfWork.HorasTrabajo.Get(h => h.Id == id);
+                if (horasTrabajo == null)
+                    return NotFound();
+            }
+
             var horasTrabajoVM = new HorasTrabajoVM
             {
-                HorasTrabajo = new HorasTrabajo
-                {
-                    Fecha = System.DateOnly.FromDateTime(System.DateTime.Today),
-                    VehiculoId = vehiculoId ?? 0
-                },
+                HorasTrabajo = horasTrabajo,
+
+
                 LugarTrabajoList = _unitOfWork.LugarTrabajo.GetAll().Select(l => new SelectListItem
                 {
                     Text = l.Nombre,
@@ -79,19 +88,17 @@ namespace ProyectoIngenieria.Controllers
                 {
                     Text = p.NombreProyecto,
                     Value = p.Id.ToString()
+                }),
+                VehiculoList = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+                {
+                    Text = v.Modelo + " - " + v.Placa,
+                    Value = v.Id.ToString()
                 })
             };
 
-            if (id != null && id != 0)
-            {
-                horasTrabajoVM.HorasTrabajo = _unitOfWork.HorasTrabajo.Get(h => h.Id == id);
-                if (horasTrabajoVM.HorasTrabajo == null)
-                    return NotFound();
-            }
-
-            ViewBag.VehiculoId = horasTrabajoVM.HorasTrabajo.VehiculoId;
             return View(horasTrabajoVM);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -124,6 +131,7 @@ namespace ProyectoIngenieria.Controllers
 
             if (!ModelState.IsValid)
             {
+
                 horasVM.LugarTrabajoList = _unitOfWork.LugarTrabajo.GetAll().Select(l => new SelectListItem
                 {
                     Text = l.Nombre,
@@ -142,6 +150,12 @@ namespace ProyectoIngenieria.Controllers
                     Value = p.Id.ToString()
                 });
 
+                horasVM.VehiculoList = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+                {
+                    Text = v.Modelo + " - " + v.Placa,
+                    Value = v.Id.ToString()
+                });
+
                 return View(horasVM);
             }
 
@@ -157,6 +171,7 @@ namespace ProyectoIngenieria.Controllers
 
             return RedirectToAction("Index", new { id = horasVM.HorasTrabajo.VehiculoId });
         }
+
 
 
         [HttpDelete]

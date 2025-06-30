@@ -50,8 +50,7 @@ function inicializarTabla(vehiculoId) {
                         </button>
                     `;
                 },
-                orderable: false,
-                searchable: false
+             
             }
         ],
         language: {

@@ -17,5 +17,8 @@ namespace ProyectoIngenieria.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> ProyectoList { get; set; } = new List<SelectListItem>();
+
+        public IEnumerable<SelectListItem> VehiculoList { get; set; } = new List<SelectListItem>();
+
     }
 }

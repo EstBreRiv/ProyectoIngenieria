@@ -14,7 +14,7 @@ function loadDataTable() {
         },
         "columns": [
             { "data": "cedula", "width": "15%" },
-            { "data": "nombre", "width": "15%" },
+            { "data": "nombre", "width": "25%" },
             { "data": "telefono", "width": "15%" },
             { "data": "tipoColaborador", "width": "15%" },
             {
@@ -25,16 +25,14 @@ function loadDataTable() {
                                 <i class="bi bi-folder2-open"></i>
                             </a>
 
-                            <a href="/Operador/Upsert/${data}" class="btn btn-primary btn-sm mx-2" title="Editar">
+                            <a href="/Operador/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
 
-                            <a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                                <i class="bi bi-trash"></i>
-                            </a>
+                            
                           `
                 },
-                "width": "25%"
+                "width": "20%"
             }
         ],
         language: {
@@ -44,6 +42,10 @@ function loadDataTable() {
     });
 }
 
+//Opcion eliminar se quita de las opciones por conveniencia
+//<a onClick="Delete(${data})" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+//    <i class="bi bi-trash"></i>
+//</a>
 
 function Delete(id) {
     Swal.fire({

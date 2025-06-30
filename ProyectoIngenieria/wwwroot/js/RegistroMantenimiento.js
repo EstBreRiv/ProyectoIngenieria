@@ -32,17 +32,17 @@ function loadDataTable(vehiculoId) {
             { data: "vehiculoModelo", width: "15%", title: "Vehículo" },
             { data: "descripcion", width: "25%", title: "Descripción" },
             { data: "fecha", width: "25%", title: "Fecha" },
-            { data: "precio", width: "10%", title: "Precio" },
+            { data: "precio", width: "20%", title: "Precio" },
             {
                 data: "id",
                 render: function (data) {
                     return `
-                        <a href="/RegistroMantenimiento/Details/${data}" class="btn btn-sm bg-blue-600 text-white rounded px-3 py-1 hover:bg-blue-700" title="Editar">
-                            <i class="bi bi-pencil-square"></i> Detalles
+                        <a href="/RegistroMantenimiento/Details/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                             <i class="bi bi-info-circle"></i>
                         </a>
                     `;
                 },
-                width: "15%", title: "Acciones"
+                width: "10%"
             }
         ],
         language: {
