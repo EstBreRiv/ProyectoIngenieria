@@ -1,24 +1,24 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .card-link {
@@ -26,14 +26,177 @@ body {
     color: inherit;
 }
 
-.card-link .card {
-    transition: all 0.3s ease-in-out;
-    border: 1px solid #198754;
+
+:root {
+    /* Paleta personalizada Excavaciones Rivera */
+    --color-principal: #bb8fce;
+    --color-secundario: #d2b4de;
+    --color-icono: #d7bde2;
+    --color-principal: #bb8fce;
+    --color-hover: #a974c1;
 }
 
-    .card-link .card:hover {
-        background-color: #d1e7dd; /* Verde clarito */
-        border-color: #145c35; /* Verde más oscuro */
-        box-shadow: 0 0 12px rgba(25, 135, 84, 0.5);
+/* Botones principales */
+.btn-success {
+    background-color: var(--color-principal) !important;
+    border-color: var(--color-principal) !important;
+    color: white !important;
+}
+
+    .btn-success:hover {
+        background-color: #a974c1 !important;
+        border-color: #a974c1 !important;
+    }
+.btn-outline-success {
+    background-color: var(--color-principal) !important;
+    border-color: var(--color-principal) !important;
+    color: white !important;
+}
+
+    .btn-outline-success :hover {
+        background-color: #a974c1 !important;
+        border-color: #a974c1 !important;
+    }
+
+/* Botón secundario */
+.btn-outline-secondary {
+    background-color: #e0e0e0;
+    color: #6c6c6c;
+    border: 1px solid #cccccc;
+    transition: all 0.3s ease-in-out;
+}
+
+    /* Hover del botón secundario */
+    .btn-outline-secondary:hover {
+        background-color: #cccccc;
+        color: #333333;
+        border-color: #bbbbbb;
+    }
+.btn-extra {
+    background-color: #a9cce3;
+    color: #fff;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .btn-extra:hover {
+        background-color: #85c1e9; /* tono más oscuro al pasar el mouse */
+        color: white;
         transform: scale(1.02);
+    }
+
+    .btn-extra:disabled {
+        background-color: #d6eaf8;
+        color: #fff;
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+
+/* Títulos generales */
+h1, h2, h3, h4, h5, h6 {
+    color: #bb8fce !important;
+}
+
+/* Textos destacados y subtítulos Bootstrap */
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
+.card-title, .text-title, .fw-bold, .fw-semibold, .navbar-brand,
+.nav-link.active, .nav-link:hover, .dropdown-item:hover {
+    color: #bb8fce !important;
+}
+
+
+.navbar-brand {
+    color: #bb8fce !important;
+}
+
+
+
+
+/* Íconos */
+i.text-success {
+    color: var(--color-icono) !important;
+}
+
+/* Cards */
+.card-link .card {
+    background-color: #fff;
+    border: 1px solid var(--color-principal);
+    transition: all 0.3s ease-in-out;
+    color: var(--color-principal);
+}
+
+    /* Texto e íconos dentro de la card */
+    .card-link .card .card-title,
+    .card-link .card .card-text,
+    .card-link .card i {
+        color: var(--color-principal);
+    }
+
+    /* Hover */
+    .card-link .card:hover {
+        border-color: var(--color-hover);
+        box-shadow: 0 0 12px rgba(187, 143, 206, 0.5);
+        transform: scale(1.02);
+    }
+
+        /* Hover en textos e íconos */
+        .card-link .card:hover .card-title,
+        .card-link .card:hover .card-text,
+        .card-link .card:hover i {
+            color: var(--color-hover);
+        }
+
+
+/* ENCABEZADOS */
+table.dataTable thead {
+    background-color: #bb8fce; /* Lavanda pastel */
+    color: white;
+    font-weight: bold;
+}
+
+/* FILAS AL PASAR EL CURSOR */
+table.dataTable tbody tr:hover {
+    background-color: #f4ecf7; /* Lavanda claro */
+}
+
+/* PAGINACIÓN */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #bb8fce !important;
+    background-color: transparent;
+    border: none;
+    margin: 0 2px;
+}
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background-color: #bb8fce !important;
+        color: white !important;
+        border-radius: 4px;
+    }
+
+/* BÚSQUEDA Y SELECT DE CANTIDAD */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #bb8fce;
+    padding: 6px;
+    border-radius: 5px;
+    color: #6c3483;
+}
+
+/* MENSAJE DE INFORMACIÓN ("Mostrando X de Y") */
+.dataTables_wrapper .dataTables_info {
+    color: #6c3483;
+}
+
+/* BOTONES DE EXPORTACIÓN (si usás DataTables Buttons) */
+.dt-button {
+    background-color: #a9cce3 !important; /* Botón extra */
+    color: white !important;
+    border: none !important;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+    .dt-button:hover {
+        background-color: #85c1e9 !important;
     }

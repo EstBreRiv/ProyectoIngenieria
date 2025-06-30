@@ -97,5 +97,19 @@ namespace ProyectoIngenieria.Controllers
             return View(proyectoVM);
         }
 
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var proyectos = _unitOfWork.Proyecto.Get(h => h.Id == id);
+            if (proyectos == null)
+            {
+                return Json(new { success = false, message = "No se encontró el proyecto." });
+            }
+
+            _unitOfWork.Proyecto.Remove(proyectos);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Proyecto eliminado exitosamente." });
+        }
     }
 }

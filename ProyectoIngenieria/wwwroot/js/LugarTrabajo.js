@@ -20,17 +20,12 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
-
-                        <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
-                            <i class="bi bi-info-circle"></i>
-
-                        <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-info btn-sm mx-2" title="Ver detalles">
-                            <i class="bi bi-info-circle"></i> Detalles
-
+                          <a href="/LugarTrabajo/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
+                            <i class="bi bi-pencil-square"></i> 
                         </a>
                     `;
                 },
-                "width": "20%"
+                "width": "50%"
             }
         ],
         language: {
@@ -38,4 +33,3 @@ function loadDataTable() {
         }
     });
 }
-

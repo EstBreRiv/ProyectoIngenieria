@@ -111,12 +111,7 @@ namespace ProyectoIngenieria.Controllers
                 // Forzar estado como Activo
                 vehiculoVM.Vehiculo.Estado = "Activo";
 
-                //Si en la vista se indica que no tiene placa, se asigna null a la propiedad Placa
-                var tienePlaca = Request.Form["mostrarPlaca"].Count > 0;
-                if (!tienePlaca)
-                {
-                    vehiculoVM.Vehiculo.Placa = null;
-                }
+               
 
                 // Si el id es 0, se trata de una creación
                 if (vehiculoVM.Vehiculo.Id == 0)
