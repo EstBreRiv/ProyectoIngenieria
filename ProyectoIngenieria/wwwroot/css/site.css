@@ -200,3 +200,10 @@ table.dataTable tbody tr:hover {
     .dt-button:hover {
         background-color: #85c1e9 !important;
     }
+
+h2.titulo-formulario {
+    color: var(--color-principal);
+    font-weight: bold;
+    text-align: center;
+}
+
