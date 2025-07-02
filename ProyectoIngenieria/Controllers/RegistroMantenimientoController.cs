@@ -67,8 +67,9 @@ namespace ProyectoIngenieria.Controllers
 
                 RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
 
+                //Solo permite utilizar los vehiculos activos y que no sean de tipo "Automovil"
                 ListaVehiculos = _unitOfWork.Vehiculo
-                .GetAll(v => v.Estado == "Activo")
+                .GetAll(v => v.Estado == "Activo" && v.TipoVehiculoId != 2)
                 .Select(v => new SelectListItem
                 {
                     Text = v.Modelo + " - " + v.Placa,

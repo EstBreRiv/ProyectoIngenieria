@@ -8,8 +8,10 @@ namespace ProyectoIngenieria.Models.ViewModels
         [ValidateNever]
         public RegistroCombustible RegistroCombustible { get; set; }
 
-
         [ValidateNever]
         public IEnumerable<SelectListItem> RegistroCombustibleList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ListaVehiculos { get; set; }
     }
 }

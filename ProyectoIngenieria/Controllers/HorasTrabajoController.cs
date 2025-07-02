@@ -89,7 +89,9 @@ namespace ProyectoIngenieria.Controllers
                     Text = p.NombreProyecto,
                     Value = p.Id.ToString()
                 }),
-                VehiculoList = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+                VehiculoList = _unitOfWork.Vehiculo
+                .GetAll(v => v.Estado == "Activo" && v.TipoVehiculoId != 2)
+                .Select(v => new SelectListItem
                 {
                     Text = v.Modelo + " - " + v.Placa,
                     Value = v.Id.ToString()

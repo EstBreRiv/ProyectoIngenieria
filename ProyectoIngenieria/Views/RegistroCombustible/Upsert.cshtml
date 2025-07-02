@@ -16,10 +16,16 @@
 
             <form method="post">
                 <input asp-for="RegistroCombustible.Id" type="hidden" />
-                <input hidden asp-for="RegistroCombustible.VehiculoId" value="@ViewBag.VehiculoId"/>
-
+@*                 <input hidden asp-for="RegistroCombustible.VehiculoId" value="@ViewBag.VehiculoId"/>
+ *@
                 <div class="card shadow border">
                     <div class="card-body">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Vehículo</label>
+                            <select asp-for="RegistroCombustible.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                        </div>
+
 
                         <div class="mb-3">
                             <label asp-for="RegistroCombustible.FechaCompra" class="form-label text-muted">Fecha de compra</label>
