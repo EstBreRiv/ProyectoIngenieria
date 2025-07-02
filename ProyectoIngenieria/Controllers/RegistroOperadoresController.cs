@@ -84,6 +84,13 @@ namespace ProyectoIngenieria.Controllers
             if (id != null && viewModel.RegistroOperador == null)
                 return NotFound();
 
+            if (id == null)
+            {
+                ModelState.Clear(); // Borra los valores previos que podrían quedar en la sesión
+                viewModel.RegistroOperador = new RegistroOperadore();
+            }
+
+
             return View(viewModel);
         }
 
