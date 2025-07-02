@@ -11,5 +11,11 @@ namespace ProyectoIngenieria.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> RegistroOperadores { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ListaVehiculos { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ListaOperadores { get; set; }
     }
 }

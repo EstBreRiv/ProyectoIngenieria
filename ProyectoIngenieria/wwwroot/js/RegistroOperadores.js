@@ -1,37 +1,52 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
-    console.log("Task.js cargado y listo");
-    loadDataTable();
-});
-
-function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/Operador/GetRegistroOperadores",
+            url: '/RegistroOperadores/GetAll',
             "type": "GET",
-            "datatype": "json"
+            dataSrc: 'data'
         },
-        "columns": [
-            { "data": "operadorCedula", "width": "15%" },
-            { "data": "operadorNombre", "width": "15%" },
-            { "data": "vehiculoModelo", "width": "15%" },
-            { "data": "fecha", "width": "15%" },
+        columns: [
+            { data: 'fechaFin', title: 'Fecha Fin' },
+            { data: 'fechaInicio', title: 'Fecha Inicio' },
+            { data: 'nombreVehiculo', title: 'Vehículo' },
+            { data: 'placaVehiculo', title: 'Placa'},
+            { data: 'nombreOperador', title: 'Operador' },
             {
-                "data": "vehiculoId",
-                "render": function (data) {
+                data: 'id',
+                render: function (data) {
                     return `
-                            <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver Vehiculo">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                          `
+                        <a href="/RegistroOperadores/Upsert/${data}" class="btn btn-sm btn-primary me-1">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a onclick="eliminar('/RegistroOperadores/Delete/${data}')" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </a>`;
                 },
-                "width": "25%"
+                orderable: false,
+                searchable: false,
+                title: 'Acciones'
             }
         ],
         language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         }
-
     });
+});
+
+function eliminar(url) {
+    if (confirm("¿Deseas eliminar esta asignación de operador?")) {
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function (data) {
+                if (data.success) {
+                    dataTable.ajax.reload();
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
+    }
 }

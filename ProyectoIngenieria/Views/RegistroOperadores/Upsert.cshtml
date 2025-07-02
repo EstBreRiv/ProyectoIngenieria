@@ -1,0 +1,57 @@
+﻿@model ProyectoIngenieria.Models.ViewModels.RegistroOperadoresVM
+@{
+    ViewData["Title"] = "Asignar Operador";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white fw-bold">
+            Asignar Operador a Vehículo
+        </div>
+        <div class="card-body">
+
+
+            <form asp-action="Upsert" method="post">
+                <input asp-for="RegistroOperador.Id" type="hidden" />
+                <input asp-for="RegistroOperador.VehiculoId" type="hidden" value="@ViewBag.VehiculoId" />
+
+                <div class="mb-3">
+                    <label asp-for="RegistroOperador.OperadorCedula" class="form-label">Operador</label>
+                    <select asp-for="RegistroOperador.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select"></select>
+                    <span asp-validation-for="RegistroOperador.OperadorCedula" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RegistroOperador.VehiculoId" class="form-label">Vehículo</label>
+                    <select asp-for="RegistroOperador.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                    <span asp-validation-for="RegistroOperador.VehiculoId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RegistroOperador.FechaInicio" class="form-label">Fecha</label>
+                    <input asp-for="RegistroOperador.FechaInicio" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="RegistroOperador.FechaInicio" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="RegistroOperador.FechaFin" class="block font-semibold mb-1">Fecha Fin (opcional)</label>
+                    <input asp-for="RegistroOperador.FechaFin" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="RegistroOperador.FechaFin" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">← Cancelar</a>
+                    <button type="submit" class="btn btn-success">Guardar Asignación</button>
+                </div>
+
+                
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
