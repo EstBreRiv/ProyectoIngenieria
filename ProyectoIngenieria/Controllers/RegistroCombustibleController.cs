@@ -75,12 +75,15 @@ namespace ProyectoIngenieria.Controllers
             string culturaActual = CultureInfo.CurrentCulture.Name;
             RegistroCombustibleVM registroCombustibleVM = new()
             {
-                RegistroCombustible = new RegistroCombustible()
-                //RegistroCombustibleList = _unitOfWork.RegistroCombustible.GetAll().Select(i => new SelectListItem
-                //{
-                //    Text = i.FechaCompra.ToString(),
-                //    Value = i.Id.ToString()
-                //}).ToList()
+                RegistroCombustible = new RegistroCombustible(),
+
+                ListaVehiculos = _unitOfWork.Vehiculo
+                .GetAll(v => v.Estado == "Activo" && v.TipoVehiculoId != 2)
+                .Select(v => new SelectListItem
+                {
+                    Text = v.Modelo + " - " + v.Placa,
+                    Value = v.Id.ToString()
+                }),
             };
 
             if (id == null || id == 0)
