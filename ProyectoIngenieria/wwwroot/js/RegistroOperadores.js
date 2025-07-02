@@ -4,7 +4,6 @@ $(document).ready(function () {
     dataTable = $('#taskTable').DataTable({
         ajax: {
             url: '/RegistroOperadores/GetAll',
-            "type": "GET",
             dataSrc: 'data'
         },
         columns: [

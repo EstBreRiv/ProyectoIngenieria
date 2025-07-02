@@ -49,50 +49,59 @@ namespace ProyectoIngenieria.Controllers
             return Json(new { data });
         }
 
-
+        [HttpGet]
         public IActionResult Upsert(int? id)
         {
-            var viewModel = new RegistroOperadoresVM
-            {
-                RegistroOperador = id == null ? new RegistroOperadore() : _unitOfWork.RegistroOperadores.Get(x => x.Id == id),
+            // Obtener la entidad si se trata de una edición
+            RegistroOperadore registro = id == null ? new RegistroOperadore() : _unitOfWork.RegistroOperadores.Get(x => x.Id == id);
 
-                ListaVehiculos = _unitOfWork.Vehiculo
-                    .GetAll(v => v.Estado == "Activo")
-                    .Select(v => new SelectListItem
-                    {
-                        Text = v.Modelo + " - " + v.Placa,
-                        Value = v.Id.ToString()
-                    }),
-
-                ListaOperadores = _unitOfWork.Operador
-                    .GetAll()
-                    .Select(o => new SelectListItem
-                    {
-                        Text = o.Nombre,
-                        Value = o.Cedula.ToString()
-                    }),
-
-                RegistroOperadores = _unitOfWork.RegistroOperadores
-                    .GetAll()
-                    .Select(r => new SelectListItem
-                    {
-                        Text = $"Op: {r.OperadorCedula} - Veh: {r.VehiculoId}",
-                        Value = r.Id.ToString()
-                    })
-            };
-
-            if (id != null && viewModel.RegistroOperador == null)
+            if (id != null && registro == null)
                 return NotFound();
 
-            if (id == null)
+            // Obtener vehículos activos + el actual si no está activo
+            var vehiculos = _unitOfWork.Vehiculo.GetAll(v => v.Estado == "Activo").ToList();
+            if (registro.VehiculoId != 0 && !vehiculos.Any(v => v.Id == registro.VehiculoId))
             {
-                ModelState.Clear(); // Borra los valores previos que podrían quedar en la sesión
-                viewModel.RegistroOperador = new RegistroOperadore();
+                var vehiculoActual = _unitOfWork.Vehiculo.Get(v => v.Id == registro.VehiculoId);
+                if (vehiculoActual != null)
+                {
+                    vehiculos.Add(vehiculoActual);
+                }
             }
 
+            var listaVehiculos = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Seleccione un vehículo", Value = "0" }
+    };
+            listaVehiculos.AddRange(vehiculos.Select(v => new SelectListItem
+            {
+                Text = $"{v.Modelo} - {v.Placa}",
+                Value = v.Id.ToString()
+            }));
+
+            // Obtener operadores
+            var operadores = _unitOfWork.Operador.GetAll().ToList();
+            var listaOperadores = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Seleccione un operador", Value = "" }
+    };
+            listaOperadores.AddRange(operadores.Select(o => new SelectListItem
+            {
+                Text = o.Nombre,
+                Value = o.Cedula.ToString()
+            }));
+
+            var viewModel = new RegistroOperadoresVM
+            {
+                RegistroOperador = registro,
+                ListaVehiculos = listaVehiculos,
+                ListaOperadores = listaOperadores,
+                RegistroOperadores = new List<SelectListItem>() // opcional, si lo usás en algún lugar
+            };
 
             return View(viewModel);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

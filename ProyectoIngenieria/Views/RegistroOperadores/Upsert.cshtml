@@ -11,7 +11,7 @@
         <div class="card-body">
 
 
-            <form asp-action="Upsert" method="post">
+            <form method="post" asp-action="Upsert">
                 <input asp-for="RegistroOperador.Id" type="hidden" />
                 <input asp-for="RegistroOperador.VehiculoId" type="hidden" value="@ViewBag.VehiculoId" />
 
