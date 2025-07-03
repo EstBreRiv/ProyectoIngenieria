@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Proyecto.NombreProyecto" class="form-label text-muted"></label>
+                    <label asp-for="Proyecto.NombreProyecto" class="form-label text-muted">Nombre</label>
                     <input asp-for="Proyecto.NombreProyecto" type="text" class="form-control" placeholder="Ingrese el nombre del proyecto" />
                     <span asp-validation-for="Proyecto.NombreProyecto" class="form-text text-danger"></span>
                 </div>
@@ -27,13 +27,13 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Proyecto.FechaInicio" class="form-label text-muted">Indique la fecha de Inicio del Proyecto</label>
+                    <label asp-for="Proyecto.FechaInicio" class="form-label text-muted">Indique la fecha de Inicio del proyecto</label>
                     <input asp-for="Proyecto.FechaInicio" type="text" class="form-control" id="fechaInicio" />
                     <span asp-validation-for="Proyecto.FechaInicio" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Proyecto.FechaFin" class="form-label text-muted">Indique la fecha de cierre del Proyecto</label>
+                    <label asp-for="Proyecto.FechaFin" class="form-label text-muted">Indique la fecha de cierre del proyecto</label>
                     <input asp-for="Proyecto.FechaFin" type="text" class="form-control" id="fechaFin" />
                     <span asp-validation-for="Proyecto.FechaFin" class="text-danger small"></span>
                 </div>

@@ -53,9 +53,7 @@ function inicializarTabla(vehiculoId) {
                         <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </a>`;
+                        `;
                 },
                 orderable: false,
                 searchable: false
@@ -66,6 +64,12 @@ function inicializarTabla(vehiculoId) {
         }
     });
 }
+
+/*
+<a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
+    <i class="bi bi-trash"></i>
+</a>
+*/
 
 function Delete(url) {
     Swal.fire({

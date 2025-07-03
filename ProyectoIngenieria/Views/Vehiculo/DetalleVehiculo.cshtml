@@ -13,6 +13,9 @@
 
         <div class="card-body">
             <dl class="row">
+                <dt class="col-sm-3">Marca</dt>
+                <dd class="col-sm-9">@Model.Vehiculo.Marca.NombreMarca</dd>
+
                 <dt class="col-sm-3">Modelo</dt>
                 <dd class="col-sm-9">@Model.Vehiculo.Modelo</dd>
 
@@ -26,7 +29,7 @@
                 <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Vehiculo.Placa) ? Model.Vehiculo.Placa : "-")</dd>
 
                 <dt class="col-sm-3">Tipo</dt>
-                <dd class="col-sm-9">@Model.Vehiculo.TipoVehiculo</dd>
+                <dd class="col-sm-9">@Model.Vehiculo.TipoVehiculo.Tipo</dd>
 
                 <dt class="col-sm-3">Empresa</dt>
                 <dd class="col-sm-9">@Model.Vehiculo.Empresa?.Nombre</dd>

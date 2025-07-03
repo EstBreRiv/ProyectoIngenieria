@@ -38,3 +38,13 @@ function loadDataTable() {
 
     });
 }
+
+$('#empresaFilter').on('change', function () {
+    const empresa = $(this).val();
+
+    if (empresa) {
+        dataTable.column(5).search(empresa).draw();
+    } else {
+        dataTable.column(5).search('').draw();
+    }
+});

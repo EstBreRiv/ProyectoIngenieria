@@ -12,20 +12,18 @@ function loadDataTable() {
         },
         "columns": [
 
-            { "data": "nombreProyecto", "width": "40%" },
+            { "data": "nombreProyecto", "width": "30%" },
             { "data": "cliente", "width": "30%" },
-            { "data": "fechaInicio", "width": "30%" },
+            { "data": "fechaInicio", "width": "20%" },
+            { "data": "fechaFin", "width": "20%" },
 
             {
                 "data": "id",
                 "render": function (data, type, row) {
                     return `
-                        <a href="/Proyecto/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-sm btn-warning me-1">
-                            <i class="bi bi-pencil-square"></i> Editar
+                        <a href="/Proyecto/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-success btn-sm mx-2" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
                         </a>
-                        <button onclick="Delete(${data})" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i> Eliminar
-                        </button>
                     `;
                 },
                 "width": "20%"
@@ -36,6 +34,12 @@ function loadDataTable() {
         }
     });
 }
+
+/*
+<button onclick="Delete(${data})" class="btn btn-sm btn-danger" title="Eliminar">
+    <i class="bi bi-trash"></i> 
+</button>
+*/
 
 function Delete(id) {
     Swal.fire({

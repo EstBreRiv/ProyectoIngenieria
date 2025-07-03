@@ -7,7 +7,7 @@
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-10">
             <div class="border-bottom pb-3 mb-4">
                 <h2 class="titulo-formulario">
                     @ViewData["Title"]
@@ -16,42 +16,40 @@
 
             <form method="post">
                 <input asp-for="RegistroCombustible.Id" type="hidden" />
-@*                 <input hidden asp-for="RegistroCombustible.VehiculoId" value="@ViewBag.VehiculoId"/>
- *@
                 <div class="card shadow border">
                     <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Vehículo</label>
+                                <select asp-for="RegistroCombustible.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Vehículo</label>
-                            <select asp-for="RegistroCombustible.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                            <div class="col-md-6">
+                                <label asp-for="RegistroCombustible.FechaCompra" class="form-label text-muted">Fecha de compra</label>
+                                <input asp-for="RegistroCombustible.FechaCompra" type="date" class="form-control" id="fechaCompra" />
+                                <span asp-validation-for="RegistroCombustible.FechaCompra" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="RegistroCombustible.LitrosComprados" class="form-label text-muted">Litros comprados</label>
+                                <input asp-for="RegistroCombustible.LitrosComprados" type="number" step="0.01" class="form-control" placeholder="Litros" />
+                                <span asp-validation-for="RegistroCombustible.LitrosComprados" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="RegistroCombustible.PrecioLitro" class="form-label text-muted">Precio por litro</label>
+                                <input asp-for="RegistroCombustible.PrecioLitro" type="number" step="0.01" class="form-control" placeholder="₡ por litro" />
+                                <span asp-validation-for="RegistroCombustible.PrecioLitro" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="RegistroCombustible.TotalPagado" class="form-label text-muted">Total pagado</label>
+                                <input asp-for="RegistroCombustible.TotalPagado" type="number" step="0.01" class="form-control" readonly />
+                                <span asp-validation-for="RegistroCombustible.TotalPagado" class="text-danger small"></span>
+                            </div>
                         </div>
 
-
-                        <div class="mb-3">
-                            <label asp-for="RegistroCombustible.FechaCompra" class="form-label text-muted">Fecha de compra</label>
-                            <input asp-for="RegistroCombustible.FechaCompra" type="date" class="form-control" id="fechaCompra"/>
-                            <span asp-validation-for="RegistroCombustible.FechaCompra" class="text-danger small"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="RegistroCombustible.LitrosComprados" class="form-label text-muted">Litros comprados</label>
-                            <input asp-for="RegistroCombustible.LitrosComprados" type="number" step="0.01" class="form-control" placeholder="Ingrese los litros comprados" />
-                            <span asp-validation-for="RegistroCombustible.LitrosComprados" class="text-danger small"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="RegistroCombustible.PrecioLitro" class="form-label text-muted">Precio por litro</label>
-                            <input asp-for="RegistroCombustible.PrecioLitro" type="number" step="0.01" class="form-control" placeholder="Ingrese el precio por litro" />
-                            <span asp-validation-for="RegistroCombustible.PrecioLitro" class="text-danger small"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="RegistroCombustible.TotalPagado" class="form-label text-muted">Total pagado</label>
-                            <input asp-for="RegistroCombustible.TotalPagado" type="number" step="0.01" class="form-control" readonly/>
-                            <span asp-validation-for="RegistroCombustible.TotalPagado" class="text-danger small"></span>
-                        </div>
-
-                        <div class="d-flex justify-content-end gap-2 pt-3">
+                        <div class="d-flex justify-content-end gap-2 pt-4">
                             <button type="submit" class="btn btn-success w-25">
                                 Guardar
                             </button>
@@ -61,6 +59,7 @@
             </form>
         </div>
     </div>
+
     @if (Model.RegistroCombustible.VehiculoId != 0)
     {
         <a asp-controller="RegistroCombustible" asp-action="Index" asp-route-id="@Model.RegistroCombustible.VehiculoId"
@@ -89,7 +88,6 @@
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
-    <!-- Calcula el precio del total pagado -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const litrosInput = document.querySelector("[name='RegistroCombustible.LitrosComprados']");
@@ -106,7 +104,6 @@
             litrosInput.addEventListener("input", calcularTotal);
             precioInput.addEventListener("input", calcularTotal);
 
-
             flatpickr("#fechaCompra", {
                 locale: "es",
                 dateFormat: "Y-m-d",
@@ -115,6 +112,3 @@
         });
     </script>
 }
-
-
-

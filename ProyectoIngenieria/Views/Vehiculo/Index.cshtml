@@ -8,15 +8,28 @@
 </head>
 
 <body class="bg-success py-5">
-    
+
 
     <div class="container bg-white p-4 rounded shadow">
         <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 text-success fw-bold">VEHÍCULOS</h1>
-                <a asp-controller="Vehiculo" asp-action="Upsert" class="btn btn-success">
-                    Agregar Vehículo
-                </a>
+            <h1 class="h3 text-success fw-bold">VEHÍCULOS</h1>
+            <a asp-controller="Vehiculo" asp-action="Upsert" class="btn btn-success">
+                Agregar Vehículo
+            </a>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="empresaFilter" class="form-label fw-semibold">Filtrar por Empresa:</label>
+                <select id="empresaFilter" class="form-select">
+                    <option value="">Todas las empresas</option>
+                    @foreach (var empresa in ViewBag.Empresas as List<SelectListItem>)
+                    {
+                        <option value="@empresa.Text">@empresa.Text</option>
+                    }
+                </select>
             </div>
+        </div>
 
         <div class="table-responsive">
             <table id="taskTable" class="table table-bordered table-hover table-sm align-middle text-center">
@@ -32,7 +45,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                   
                 </tbody>
             </table>
         </div>
@@ -42,14 +54,14 @@
             <i class="bi bi-arrow-left"></i>
         </a>
     </div>
-    
+
 
 
     <!-- jQuery y DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
-    
+
     <script src="/js/Vehiculo.js"></script>
 
 </body>

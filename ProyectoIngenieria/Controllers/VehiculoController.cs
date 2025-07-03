@@ -25,6 +25,13 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            var empresas = _unitOfWork.Empresa.GetAll().Select(e => new SelectListItem
+            {
+                Text = e.Nombre,
+                Value = e.Nombre
+            }).ToList();
+
+            ViewBag.Empresas = empresas;
             return View();
         }
 
@@ -178,7 +185,7 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult DetalleVehiculo(int id)
         {
             // obtiene la informacion del vehiculo a ver detalles
-            var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == id, includeProperties: "Empresa");
+            var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == id, includeProperties: "Empresa,Marca,TipoVehiculo");
 
             // Crea una instancia del ViewModel VehiculoVM para pasar a la vista
             var vehiculoVM = new VehiculoVM
@@ -187,7 +194,6 @@ namespace ProyectoIngenieria.Controllers
                 Vehiculo = vehiculo
             };
 
-            // Cargar empresas para el dropdown
             return View(vehiculoVM);
         }
 
