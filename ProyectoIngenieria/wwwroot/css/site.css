@@ -1,4 +1,4 @@
-html {
+Ôªøhtml {
     font-size: 14px;
 }
 
@@ -58,7 +58,7 @@ body {
         border-color: #a974c1 !important;
     }
 
-/* BotÛn secundario */
+/* Bot√≥n secundario */
 .btn-outline-secondary {
     background-color: #e0e0e0;
     color: #6c6c6c;
@@ -66,7 +66,7 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
-    /* Hover del botÛn secundario */
+    /* Hover del bot√≥n secundario */
     .btn-outline-secondary:hover {
         background-color: #cccccc;
         color: #333333;
@@ -80,7 +80,7 @@ body {
 }
 
     .btn-extra:hover {
-        background-color: #85c1e9; /* tono m·s oscuro al pasar el mouse */
+        background-color: #85c1e9; /* tono m√°s oscuro al pasar el mouse */
         color: white;
         transform: scale(1.02);
     }
@@ -92,12 +92,12 @@ body {
         opacity: 0.65;
     }
 
-/* TÌtulos generales */
+/* T√≠tulos generales */
 h1, h2, h3, h4, h5, h6 {
     color: #bb8fce !important;
 }
 
-/* Textos destacados y subtÌtulos Bootstrap */
+/* Textos destacados y subt√≠tulos Bootstrap */
 .display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
 .card-title, .text-title, .fw-bold, .fw-semibold, .navbar-brand,
 .nav-link.active, .nav-link:hover, .dropdown-item:hover {
@@ -112,7 +112,7 @@ h1, h2, h3, h4, h5, h6 {
 
 
 
-/* Õconos */
+/* √çconos */
 i.text-success {
     color: var(--color-icono) !important;
 }
@@ -125,7 +125,7 @@ i.text-success {
     color: var(--color-principal);
 }
 
-    /* Texto e Ìconos dentro de la card */
+    /* Texto e √≠conos dentro de la card */
     .card-link .card .card-title,
     .card-link .card .card-text,
     .card-link .card i {
@@ -139,7 +139,7 @@ i.text-success {
         transform: scale(1.02);
     }
 
-        /* Hover en textos e Ìconos */
+        /* Hover en textos e √≠conos */
         .card-link .card:hover .card-title,
         .card-link .card:hover .card-text,
         .card-link .card:hover i {
@@ -159,7 +159,7 @@ table.dataTable tbody tr:hover {
     background-color: #f4ecf7; /* Lavanda claro */
 }
 
-/* PAGINACI”N */
+/* PAGINACI√ìN */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     color: #bb8fce !important;
     background-color: transparent;
@@ -173,7 +173,7 @@ table.dataTable tbody tr:hover {
         border-radius: 4px;
     }
 
-/* B⁄SQUEDA Y SELECT DE CANTIDAD */
+/* B√öSQUEDA Y SELECT DE CANTIDAD */
 .dataTables_wrapper .dataTables_filter input,
 .dataTables_wrapper .dataTables_length select {
     border: 1px solid #bb8fce;
@@ -182,14 +182,14 @@ table.dataTable tbody tr:hover {
     color: #6c3483;
 }
 
-/* MENSAJE DE INFORMACI”N ("Mostrando X de Y") */
+/* MENSAJE DE INFORMACI√ìN ("Mostrando X de Y") */
 .dataTables_wrapper .dataTables_info {
     color: #6c3483;
 }
 
-/* BOTONES DE EXPORTACI”N (si us·s DataTables Buttons) */
+/* BOTONES DE EXPORTACI√ìN (si us√°s DataTables Buttons) */
 .dt-button {
-    background-color: #a9cce3 !important; /* BotÛn extra */
+    background-color: #a9cce3 !important; /* Bot√≥n extra */
     color: white !important;
     border: none !important;
     padding: 6px 12px;
@@ -207,3 +207,106 @@ h2.titulo-formulario {
     text-align: center;
 }
 
+/* Estilo personalizado para el select de cantidad de registros en DataTable */
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #bb8fce;
+    border-radius: 5px;
+    padding: 6px 30px 6px 10px;
+    color: #6c3483;
+    background-color: #f4ecf7;
+    /* Personaliza la flechita del select */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%236c3483' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+/* Asegura que el contenedor no se corte */
+.dataTables_wrapper .dataTables_length {
+    position: relative;
+    overflow: visible;
+}
+
+/* Estilo general de celdas */
+table.dataTable tbody td {
+    background-color: #fff;
+    color: #4a235a;
+    border-bottom: 1px solid #e0d4ec;
+    vertical-align: middle;
+}
+
+/* Bordes generales de la tabla */
+table.dataTable {
+    border: 1px solid #d2b4de;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+    /* Ordenamiento de columnas */
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc {
+        background-color: #bb8fce;
+        background-image: none;
+        color: white;
+        cursor: pointer;
+        position: relative;
+    }
+
+        table.dataTable thead .sorting::after,
+        table.dataTable thead .sorting_asc::after,
+        table.dataTable thead .sorting_desc::after {
+            content: "‚ñæ";
+            position: absolute;
+            right: 8px;
+            color: white;
+            font-size: 0.7rem;
+        }
+
+/* Paginaci√≥n */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #6c3483 !important;
+    background-color: transparent;
+    border: none;
+    margin: 0 2px;
+    font-weight: bold;
+}
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background-color: #f4ecf7;
+        color: #a974c1 !important;
+    }
+
+/* Etiquetas de b√∫squeda y cantidad */
+.dataTables_wrapper label {
+    color: #6c3483;
+    font-weight: bold;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:focus,
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+    background-color: var(--color-principal) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.encabezado-personalizado {
+    background-color: #bb8fce !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+.card-header-principal {
+    background-color: var(--color-principal) !important;
+    color: white !important;
+}
+
+    .card-header-principal * {
+        color: white !important;
+    }

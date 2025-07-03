@@ -42,12 +42,9 @@ function inicializarTabla(vehiculoId) {
                 data: "id",
                 render: function (data, type, row) {
                     return `
-                        <a href="/HorasTrabajo/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-sm btn-warning me-1">
-                            <i class="bi bi-pencil-square"></i> Editar
+                        <a href="/HorasTrabajo/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-success btn-sm mx-2" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
                         </a>
-                        <button onclick="Delete(${data})" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i> Eliminar
-                        </button>
                     `;
                 },
              
@@ -58,6 +55,12 @@ function inicializarTabla(vehiculoId) {
         }
     });
 }
+
+/*
+<button onclick="Delete(${data})" class="btn btn-sm btn-danger" title="Eliminar">
+    <i class="bi bi-trash"></i> Eliminar
+</button>
+*/
 
 function Delete(id) {
     Swal.fire({
