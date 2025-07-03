@@ -8,8 +8,8 @@
 }
 
 
-<div class="container mt-5">
-    <div class="card shadow border-0 mx-auto" style="max-width: 800px;">
+<div class="container-fluid mt-5">
+    <div class="card shadow border-0 mx-auto" style="max-width: 100%; width: 95%;">
         <div class="card-body">
             <div class="border-bottom pb-3 mb-4">
                 <h2 class="titulo-formulario">
@@ -19,100 +19,172 @@
 
             <form asp-action="Upsert" method="post">
                 <input asp-for="RegistroMantenimiento.Id" type="hidden" />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Vehículo</label>
-                    <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                <!-- Encabezado con datos generales -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Vehículo</label>
+                        <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Fecha</label>
+                        <input asp-for="RegistroMantenimiento.Fecha" type="date" class="form-control" id="fechaMantenimiento" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Precio</label>
+                        <input asp-for="RegistroMantenimiento.Precio" type="number" step="0.01" class="form-control" />
+                        @Html.ValidationMessage("RegistroMantenimiento.Precio", "", new { @class = "text-danger" })
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Fecha</label>
-                    <input asp-for="RegistroMantenimiento.Fecha" type="date" class="form-control" id="fechaMantenimiento"/>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Operarios y tareas realizadas</label>
-                    <div id="contenedor-operadores"></div>
-                    <button type="button" class="btn btn-outline-primary mt-2" id="btnAgregarOperador">Agregar Operador</button>
-                </div>
-
-                <div class="mb-3">
+                <!-- Descripción -->
+                <div class="mb-4">
                     <label class="form-label fw-semibold">Descripción (opcional)</label>
-                    <textarea asp-for="RegistroMantenimiento.Descripcion" class="form-control"></textarea>
+                    <textarea asp-for="RegistroMantenimiento.Descripcion" class="form-control" rows="2"></textarea>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Precio</label>
-                    <input asp-for="RegistroMantenimiento.Precio" type="number" step="0.01" class="form-control" />
-                </div>
+                <!-- Cuerpo dividido en dos columnas -->
+                <div class="row">
+                    <!-- Actividades y operadores -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Operarios y actividades realizadas</label>
+                            <br />
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModalActividades()">Agregar Actividades</button>
+                            @Html.ValidationMessage("DetallesOperadores", "", new { @class = "text-danger" })
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Repuestos utilizados</label>
-                    <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModal()">Agregar Repuestos</button>
-                    <table class="table table-sm table-bordered" id="tablaSeleccionados">
-                        <thead>
-                            <tr><th>Nombre</th><th>Acción</th></tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-
-                <div class="d-flex justify-content-end gap-2 pt-3">
-                    <button type="submit" class="btn btn-success w-25">
-                        Guardar
-                    </button>
-                </div>
-
-                <div class="modal fade" id="modalRepuestos" tabindex="-1">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5>Seleccionar Repuestos</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <table class="table table-bordered display" id="tablaRepuestos">
+                            <div style="max-height: 250px; overflow-y: auto;">
+                                <table class="table table-sm table-bordered" id="tablaActividadesSeleccionadas">
                                     <thead>
-                                        <tr><th style="width: 15px;">Seleccionar</th><th>Nombre</th></tr>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Operador</th>
+                                            <th>Horas</th>
+                                            <th>Acción</th>
+                                        </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach (var repuesto in Model.ListaRepuestos)
-                                        {
-                                            var partes = repuesto.Text.Split('|');
-                                            <tr>
-                                                <td class="text-center">
-                                                    <input type="checkbox" value="@repuesto.Value" data-nombre="@partes[0]" />
-                                                </td>
-                                                <td>@partes[0]</td>
-                                            </tr>
-                                        }
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success" onclick="guardarSeleccion()">Agregar Seleccionados</button>
+                        </div>
+
+                        <div class="modal fade" id="modalActividades" tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5>Seleccionar Actividades</h5>
+
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-bordered display" id="tablaActividades">
+                                            <thead>
+                                                <tr><th style="width: 15px;">Seleccionar</th><th>Nombre</th></tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var act in Model.ListaCatalogoMantenimiento)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" value="@act.Value" data-nombre="@act.Text" />
+                                                        </td>
+                                                        <td>@act.Text</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success" onclick="guardarActividades()">Agregar Seleccionadas</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Repuestos -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Repuestos utilizados</label>
+                            <br />
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModal()">Agregar Repuestos</button>
+                            @Html.ValidationMessage("RepuestosSeleccionados", "", new { @class = "text-danger" })
+
+                            <div class="border rounded" style="max-height: 200px; overflow-y: auto;">
+                                <table class="table table-sm table-bordered mb-0" id="tablaSeleccionados">
+                                    <thead class="table-light position-sticky top-0" style="z-index: 1;">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalRepuestos" tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5>Seleccionar Repuestos</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-bordered display" id="tablaRepuestos">
+                                            <thead>
+                                                <tr><th style="width: 15px;">Seleccionar</th><th>Nombre</th></tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var repuesto in Model.ListaRepuestos)
+                                                {
+                                                    var partes = repuesto.Text.Split('|');
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" value="@repuesto.Value" data-nombre="@partes[0]" />
+                                                        </td>
+                                                        <td>@partes[0]</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success" onclick="guardarSeleccion()">Agregar Seleccionados</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Botón guardar -->
+                <div class="d-flex justify-content-end gap-2 pt-3">
+                    <button type="submit" class="btn btn-success w-25">Guardar</button>
+                </div>
             </form>
+
         </div>
     </div>
-    @if (Model.RegistroMantenimiento.VehiculoId != 0)
-    {
-        <a asp-controller="RegistroMantenimiento" asp-action="Index" asp-route-id="@Model.RegistroMantenimiento.VehiculoId"
-           class="btn btn-outline-success rounded-circle shadow p-3"
-           style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
-            <i class="bi bi-arrow-left"></i>
-        </a>
-    }
-    else {
-        <a asp-controller="RegistroMantenimiento" asp-action="Index"
-           class="btn btn-outline-success rounded-circle shadow p-3"
-           style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
-            <i class="bi bi-arrow-left"></i>
-        </a>
-    }
+</div>
+@if (Model.RegistroMantenimiento.VehiculoId != 0)
+{
+    <a asp-controller="RegistroMantenimiento" asp-action="Index" asp-route-id="@Model.RegistroMantenimiento.VehiculoId"
+       class="btn btn-outline-success rounded-circle shadow p-3"
+       style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+}
+else
+{
+    <a asp-controller="RegistroMantenimiento" asp-action="Index"
+       class="btn btn-outline-success rounded-circle shadow p-3"
+       style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+}
 </div>
 
 @section Scripts {
@@ -130,6 +202,9 @@
 
     <script>
         let seleccionados = [];
+        let actividadesSeleccionadas = [];
+        const opcionesOperadoresHtml = `@Html.Raw(opcionesOperadores)`;
+
         const tareas = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ListaCatalogoMantenimiento));
         const opcionesOperadores = `@Html.Raw(opcionesOperadores)`;
 
@@ -137,6 +212,72 @@
             const modal = new bootstrap.Modal(document.getElementById("modalRepuestos"));
             modal.show();
         }
+
+
+        function abrirModalActividades() {
+            const modal = new bootstrap.Modal(document.getElementById("modalActividades"));
+            modal.show();
+        }
+
+        function guardarActividades() {
+            const checkboxes = document.querySelectorAll("#tablaActividades input[type=checkbox]:checked");
+            const tabla = document.querySelector("#tablaActividadesSeleccionadas tbody");
+            const rowsActuales = tabla.querySelectorAll("tr").length;
+            let index = rowsActuales;
+
+            checkboxes.forEach(cb => {
+                const id = parseInt(cb.value);
+                const nombre = cb.dataset.nombre;
+
+                if (!document.getElementById(`actividad-${id}-${index}`)) {
+                    const fila = document.createElement("tr");
+                    fila.id = `actividad-${id}-${index}`;
+                    fila.innerHTML = `
+                                <td>
+                                    ${nombre}
+                                    <input type="hidden" name="DetallesOperadores[${index}].CatalogoMantenimientoId" value="${id}" />
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" name="DetallesOperadores[${index}].OperadorCedula">
+                                        ${opcionesOperadoresHtml}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" name="DetallesOperadores[${index}].HorasTrabajo" class="form-control form-control-sm" min="0" step="0.1" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">Eliminar</button>
+                                </td>`;
+
+                    tabla.appendChild(fila);
+                    index++;
+                }
+            });
+
+            bootstrap.Modal.getInstance(document.getElementById("modalActividades")).hide();
+        }
+
+
+        function eliminarActividad(id, btn) {
+            actividadesSeleccionadas = actividadesSeleccionadas.filter(x => x !== id);
+            btn.closest("tr").remove();
+        }
+
+        $(document).ready(function () {
+            $('#tablaActividades').DataTable({
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ actividades",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ actividades",
+                    paginate: { next: "Siguiente", previous: "Anterior" },
+                    zeroRecords: "No se encontraron actividades"
+                },
+                pageLength: 10,
+                lengthChange: false,
+                autoWidth: false
+            });
+        });
+
 
         function guardarSeleccion() {
             const checkboxes = document.querySelectorAll("#tablaRepuestos input[type=checkbox]:checked");
@@ -147,8 +288,8 @@
                     seleccionados.push(id);
                     const fila = document.createElement("tr");
                     fila.innerHTML = `
-                                <td>${cb.dataset.nombre}<input type="hidden" name="RepuestosSeleccionados" value="${id}" /></td>
-                                <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarRepuesto(${id}, this)">Eliminar</button></td>`;
+                                        <td>${cb.dataset.nombre}<input type="hidden" name="RepuestosSeleccionados" value="${id}" /></td>
+                                        <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarRepuesto(${id}, this)">Eliminar</button></td>`;
                     tabla.appendChild(fila);
                 }
             });
@@ -167,31 +308,31 @@
             let tareasHtml = "";
             tareas.forEach((t, i) => {
                 tareasHtml += `
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input tarea-checkbox" type="checkbox" value="${t.Value}" data-text="${t.Text}" />
-                                    <label class="form-check-label">${t.Text}</label>
-                                </div>
-                            </div>`;
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input tarea-checkbox" type="checkbox" value="${t.Value}" data-text="${t.Text}" />
+                                            <label class="form-check-label">${t.Text}</label>
+                                        </div>
+                                    </div>`;
             });
             div.innerHTML = `
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <label class="form-label">Operador</label>
-                                <select class="form-select operador-select">${opcionesOperadores}</select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Horas trabajadas</label>
-                                <input type="number" step="0.1" min="0" class="form-control horas-input" />
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Tareas realizadas</label>
-                            <div class="row">${tareasHtml}</div>
-                        </div>
-                        <div class="text-end">
-                            <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.bloque-operador').remove()">Eliminar</button>
-                        </div>`;
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Operador</label>
+                                        <select class="form-select operador-select">${opcionesOperadores}</select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Horas trabajadas</label>
+                                        <input type="number" step="0.1" min="0" class="form-control horas-input" />
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Tareas realizadas</label>
+                                    <div class="row">${tareasHtml}</div>
+                                </div>
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.bloque-operador').remove()">Eliminar</button>
+                                </div>`;
             contenedor.appendChild(div);
         }
 
@@ -220,7 +361,7 @@
                 let globalIndex = 0;
 
                 // Validaciones generales
-                if (bloques.length === 0) {
+                if (bloques == null || bloques.length === 0) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Falta agregar operadores',
@@ -230,17 +371,30 @@
                     return;
                 }
 
-                if (tablaRepuestos.length === 0) {
+                const filasRepuestos = document.querySelectorAll("#tablaSeleccionados tbody tr");
+                if (filasRepuestos == null || filasRepuestos.length === 0) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Repuestos requeridos',
-                        text: 'Debe seleccionar al menos un repuesto para continuar.'
+                        text: 'Debe seleccionar al menos un repuesto antes de continuar.'
                     });
                     e.preventDefault();
                     return;
                 }
 
                 let algunError = false;
+
+                // Validar que haya al menos una actividad registrada (desde el modal de actividades)
+                const actividades = document.querySelectorAll("#tablaActividadesSeleccionadas tbody tr");
+                if (actividades == null || actividades.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Actividades requeridas',
+                        text: 'Debe agregar al menos una actividad antes de guardar.'
+                    });
+                    e.preventDefault();
+                    return;
+                }
 
                 bloques.forEach((bloque, bloqueIndex) => {
                     const operadorCedula = bloque.querySelector(".operador-select").value;
@@ -257,7 +411,7 @@
                         return;
                     }
 
-                    if (tareasMarcadas.length === 0) {
+                    if (tareasMarcadas == null || tareasMarcadas.length === 0) {
                         Swal.fire({
                             icon: 'warning',
                             title: `Tareas requeridas`,

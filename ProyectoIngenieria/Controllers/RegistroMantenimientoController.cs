@@ -27,25 +27,21 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
             // Filtro base
-            var query = _unitOfWork.RegistroMantenimiento.GetAll()
-                .Where(m =>
-                    (!id.HasValue || id == 0 || m.VehiculoId == id) &&
-                    (!fechaInicio.HasValue || m.Fecha >= fechaInicio.Value) &&
-                    (!fechaFin.HasValue || m.Fecha <= fechaFin.Value)
-                );
+            var query = _unitOfWork.RegistroMantenimiento.GetAll(includeProperties: "Vehiculo")
+            .Where(m =>
+                (!id.HasValue || id == 0 || m.VehiculoId == id) &&
+                (!fechaInicio.HasValue || m.Fecha >= fechaInicio.Value) &&
+                (!fechaFin.HasValue || m.Fecha <= fechaFin.Value)
+            );
 
             var mantenimientos = query
-                .Select(m => {
-                    var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == m.VehiculoId);
-
-                    return new
-                    {
-                        m.Id,
-                        VehiculoModelo = vehiculo != null ? vehiculo.Modelo + " - " + vehiculo.Placa : "",
-                        m.Descripcion,
-                        Fecha = m.Fecha.ToString("dd/MM/yyyy"),
-                        Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
-                    };
+                .Select(m => new
+                {
+                    m.Id,
+                    VehiculoModelo = m.Vehiculo.Modelo + " - " + m.Vehiculo.Placa,
+                    m.Descripcion,
+                    Fecha = m.Fecha.ToString("dd/MM/yyyy"),
+                    Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
                 }).ToList();
 
             return Json(new { data = mantenimientos });
@@ -100,42 +96,85 @@ namespace ProyectoIngenieria.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(RegistroMantenimientoVM viewModel)
         {
-            if (ModelState.IsValid)
+
+            if (viewModel.DetallesOperadores == null || viewModel.DetallesOperadores.Count == 0)
             {
-                if (viewModel.RegistroMantenimiento.Id == 0)
-                {
-                    _unitOfWork.RegistroMantenimiento.Add(viewModel.RegistroMantenimiento);
-                    TempData["success"] = "Mantenimiento creado exitosamente";
-                }
-                else
-                {
-                    _unitOfWork.RegistroMantenimiento.Update(viewModel.RegistroMantenimiento);
-                    TempData["success"] = "Mantenimiento actualizado exitosamente";
-                }
-
-                _unitOfWork.Save();
-
-                registroProductos(viewModel);
-
-                registroOperadorMantenimiento(viewModel);
-
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("DetallesOperadores", "Debe seleccionar al menos un operador.");
             }
 
-            // Si hay errores, volver a cargar los combos
-            viewModel.ListaVehiculos = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+            if (viewModel.RegistroMantenimiento.Precio <= 0)
             {
-                Text = v.Modelo + " - " + v.Placa,
-                Value = v.Id.ToString()
-            });
+                ModelState.AddModelError("RegistroMantenimiento.Precio", "El precio debe ser mayor a cero.");
+            }
 
-            viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+            if (viewModel.DetallesOperadores != null)
             {
-                Text = c.Nombre,
-                Value = c.Id.ToString()
-            });
 
-            return View(viewModel);
+                foreach (var detalle in viewModel.DetallesOperadores)
+                {
+                    if (detalle.HorasTrabajo <= 0)
+                    {
+                        ModelState.AddModelError("DetallesOperadores", "Las horas de trabajo deben ser mayores a cero.");
+                    }
+                }
+            }
+
+            if (viewModel.RepuestosSeleccionados == null || viewModel.RepuestosSeleccionados.Count == 0)
+            {
+                ModelState.AddModelError("RepuestosSeleccionados", "Debe seleccionar al menos un repuesto.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+
+                // Si hay errores, volver a cargar los combos
+                viewModel.ListaVehiculos = _unitOfWork.Vehiculo
+                .GetAll(v => v.Estado == "Activo" && v.TipoVehiculoId != 2)
+                .Select(v => new SelectListItem
+                {
+                    Text = v.Modelo + " - " + v.Placa,
+                    Value = v.Id.ToString()
+                });
+
+                viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                });
+
+                viewModel.ListaRepuestos = _unitOfWork.Repuesto.GetAll().Select(r => new SelectListItem
+                {
+                    Text = r.Nombre,
+                    Value = r.Id.ToString()
+                });
+
+                viewModel.ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
+                {
+                    Text = o.Nombre,
+                    Value = o.Cedula.ToString()
+                });
+
+                return View(viewModel);
+            }
+
+            if (viewModel.RegistroMantenimiento.Id == 0)
+            {
+                _unitOfWork.RegistroMantenimiento.Add(viewModel.RegistroMantenimiento);
+                TempData["success"] = "Mantenimiento creado exitosamente";
+            }
+            else
+            {
+                _unitOfWork.RegistroMantenimiento.Update(viewModel.RegistroMantenimiento);
+                TempData["success"] = "Mantenimiento actualizado exitosamente";
+            }
+
+            _unitOfWork.Save();
+
+            registroProductos(viewModel);
+
+            registroOperadorMantenimiento(viewModel);
+
+            return RedirectToAction(nameof(Index));
         }
 
         //Metodo que permite guardar los repuestos seleccionados en el mantenimiento
@@ -146,7 +185,14 @@ namespace ProyectoIngenieria.Controllers
 
             if (ModelState.IsValid)
             {
-                if (viewModel.RepuestosSeleccionados.Count == 0) { 
+                if (viewModel.RepuestosSeleccionados == null || viewModel.RepuestosSeleccionados.Count == 0)
+                {
+                    // Si no hay repuestos seleccionados, retornar un mensaje de error
+                    return Json(new { success = false, message = "Debe seleccionar al menos un repuesto." });
+                }
+
+                if (viewModel.RepuestosSeleccionados.Count == 0)
+                {
                     return Json(new { success = false, message = "Debe seleccionar al menos un repuesto." });
                 }
 
@@ -171,10 +217,20 @@ namespace ProyectoIngenieria.Controllers
             return Json(new { success = true, message = "Se guardaron correctamente la lista de productos" });
         }
 
-        public IActionResult registroOperadorMantenimiento(RegistroMantenimientoVM registroMantenimientoVM) {
+        public IActionResult registroOperadorMantenimiento(RegistroMantenimientoVM registroMantenimientoVM)
+        {
 
-            if (ModelState.IsValid) {
-                if (registroMantenimientoVM.DetallesOperadores.Count == 0) {
+            if (ModelState.IsValid)
+            {
+
+                if (registroMantenimientoVM.DetallesOperadores == null)
+                {
+                    // Si no hay operadores seleccionados, retornar un mensaje de error
+                    return Json(new { success = false, message = "Debe seleccionar al menos un operador." });
+                }
+
+                if (registroMantenimientoVM.DetallesOperadores.Count == 0)
+                {
                     return Json(new { success = false, message = "Debe seleccionar al menos un operador." });
 
                 }
@@ -185,7 +241,7 @@ namespace ProyectoIngenieria.Controllers
 
                 foreach (var detalle in registroMantenimientoVM.DetallesOperadores)
                 {
-                 
+
                     var operadorMantenimiento = new OperadorMantenimiento
                     {
                         HorasTrabajo = detalle.HorasTrabajo,

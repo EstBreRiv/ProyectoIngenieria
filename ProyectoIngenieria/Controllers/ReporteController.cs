@@ -35,48 +35,67 @@ namespace ProyectoIngenieria.Controllers
                 return BadRequest("La fecha de inicio no puede ser mayor que la fecha final.");
             }
 
-            List<ReporteVM> reportes = new List<ReporteVM>();
-
-            var vehiculos = _unitOfWork.Vehiculo.GetAll();
-
-            foreach (var vehiculo in vehiculos)
-            {
-                // Obtener mantenimientos dentro del rango
-                var totalMantenimientos = _unitOfWork.RegistroMantenimiento.GetAll()
-                    .Where(m => m.VehiculoId == vehiculo.Id && m.Fecha >= fechaInicio && m.Fecha <= fechaFin);
-
-                var costosMantenimientos = totalMantenimientos.Sum(m => m.Precio);
-
-                var gastoCombustible = _unitOfWork.RegistroCombustible.GetAll()
-                    .Where(c => c.VehiculoId == vehiculo.Id && c.FechaCompra >= fechaInicio && c.FechaCompra <= fechaFin)
-                    .Sum(c => c.TotalPagado);
-
-                var ingresoHoras = _unitOfWork.HorasTrabajo.GetAll()
-                    .Where(h => h.VehiculoId == vehiculo.Id && h.Fecha >= fechaInicio && h.Fecha <= fechaFin)
-                    .Sum(h => h.TotalGanancia);
-
-                var totalHoras = _unitOfWork.HorasTrabajo.GetAll()
-                    .Where(h => h.VehiculoId == vehiculo.Id && h.Fecha >= fechaInicio && h.Fecha <= fechaFin)
-                    .Sum(h => h.TotalHoras);
-
-                ReporteVM reporteVM = new ReporteVM
+            // 1. Obtener datos agrupados por vehículo
+            var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll()
+                .Where(m => m.Fecha >= fechaInicio && m.Fecha <= fechaFin)
+                .GroupBy(m => m.VehiculoId)
+                .Select(g => new
                 {
-                    modelo = vehiculo.Modelo,
-                    placa = vehiculo.Placa,
-                    mes = $"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}",  // Mostrar rango de fechas
-                    totalHoras = totalHoras,
-                    ingresoTotal = ingresoHoras,
-                    gastoCombustible = gastoCombustible,
-                    gastoMantenimiento = costosMantenimientos,
-                    totalGastos = gastoCombustible + costosMantenimientos,
-                    utilidad = ingresoHoras - (gastoCombustible + costosMantenimientos)
-                };
+                    VehiculoId = g.Key,
+                    CostoMantenimiento = g.Sum(x => x.Precio)
+                }).ToList();
 
-                reportes.Add(reporteVM);
-            }
+            var combustibles = _unitOfWork.RegistroCombustible.GetAll()
+                .Where(c => c.FechaCompra >= fechaInicio && c.FechaCompra <= fechaFin)
+                .GroupBy(c => c.VehiculoId)
+                .Select(g => new
+                {
+                    VehiculoId = g.Key,
+                    Gasto = g.Sum(x => x.TotalPagado)
+                }).ToList();
+
+            var horas = _unitOfWork.HorasTrabajo.GetAll()
+                .Where(h => h.Fecha >= fechaInicio && h.Fecha <= fechaFin)
+                .GroupBy(h => h.VehiculoId)
+                .Select(g => new
+                {
+                    VehiculoId = g.Key,
+                    TotalHoras = g.Sum(x => x.TotalHoras),
+                    Ingreso = g.Sum(x => x.TotalGanancia)
+                }).ToList();
+
+            // 2. Obtener todos los vehículos (puede incluir activos/inactivos según tus reglas)
+            var vehiculos = _unitOfWork.Vehiculo.GetAll().ToList();
+
+            // 3. Construir el reporte
+            var reportes = vehiculos.Select(v =>
+            {
+                var mantenimiento = mantenimientos.FirstOrDefault(m => m.VehiculoId == v.Id);
+                var combustible = combustibles.FirstOrDefault(c => c.VehiculoId == v.Id);
+                var hora = horas.FirstOrDefault(h => h.VehiculoId == v.Id);
+
+                var gastoMantenimiento = mantenimiento?.CostoMantenimiento ?? 0;
+                var gastoCombustible = combustible?.Gasto ?? 0;
+                var ingreso = hora?.Ingreso ?? 0;
+                var totalHoras = hora?.TotalHoras ?? 0;
+
+                return new ReporteVM
+                {
+                    modelo = v.Modelo,
+                    placa = v.Placa,
+                    mes = $"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}",
+                    totalHoras = totalHoras,
+                    ingresoTotal = ingreso,
+                    gastoCombustible = gastoCombustible,
+                    gastoMantenimiento = gastoMantenimiento,
+                    totalGastos = gastoCombustible + gastoMantenimiento,
+                    utilidad = ingreso - (gastoCombustible + gastoMantenimiento)
+                };
+            }).ToList();
 
             return Json(new { data = reportes });
         }
+
 
 
         [HttpGet]
