@@ -6,9 +6,11 @@
 
 <div class="container mt-4">
     <div class="card shadow-lg">
-        <div class="card-header bg-success text-white">
+        <div class="card-header card-header-principal">
             <h4 class="mb-0">Detalles del Vehículo</h4>
         </div>
+
+
         <div class="card-body">
             <dl class="row">
                 <dt class="col-sm-3">Modelo</dt>
@@ -26,13 +28,12 @@
                 <dt class="col-sm-3">Tipo</dt>
                 <dd class="col-sm-9">@Model.Vehiculo.TipoVehiculo</dd>
 
-
                 <dt class="col-sm-3">Empresa</dt>
                 <dd class="col-sm-9">@Model.Vehiculo.Empresa?.Nombre</dd>
             </dl>
 
             <div class="mt-4 d-flex flex-wrap gap-2">
-                <a asp-controller="Vehiculo" asp-action="Upsert" asp-route-id="@Model.Vehiculo.Id" class="btn btn-warning">
+                <a asp-controller="Vehiculo" asp-action="Upsert" asp-route-id="@Model.Vehiculo.Id" class="btn btn-success">
                     <i class="bi bi-pencil-square"></i> Editar
                 </a>
 
