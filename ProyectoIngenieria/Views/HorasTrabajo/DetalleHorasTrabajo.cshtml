@@ -14,11 +14,9 @@
 
                 <div class="card-body">
                     <dl class="row justify-content-center">
-                        <!-- Fecha -->
                         <dt class="col-12 col-sm-4 text-sm-end">Fecha</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.Fecha</dd>
 
-                        <!-- Proyecto -->
                         <dt class="col-12 col-sm-4 text-sm-end">Proyecto</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">
                             @(!string.IsNullOrWhiteSpace(Model.HorasTrabajo.Proyecto.NombreProyecto)
@@ -26,7 +24,6 @@
                                 : "-")
                         </dd>
 
-                        <!-- Tipo de trabajo -->
                         <dt class="col-12 col-sm-4 text-sm-end">Tipo de trabajo</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">
                             @(!string.IsNullOrWhiteSpace(Model.HorasTrabajo.TipoTrabajo.Nombre)
@@ -34,7 +31,6 @@
                                 : "-")
                         </dd>
 
-                        <!-- Lugar de trabajo -->
                         <dt class="col-12 col-sm-4 text-sm-end">Lugar de trabajo</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">
                             @(!string.IsNullOrWhiteSpace(Model.HorasTrabajo.LugarTrabajo.Nombre)
@@ -42,23 +38,18 @@
                                 : "-")
                         </dd>
 
-                        <!-- Horómetro inicial -->
                         <dt class="col-12 col-sm-4 text-sm-end">Horómetro inicial</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroInicial</dd>
 
-                        <!-- Horómetro final -->
                         <dt class="col-12 col-sm-4 text-sm-end">Horómetro final</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroFinal</dd>
 
-                        <!-- Total de horas -->
                         <dt class="col-12 col-sm-4 text-sm-end">Total de horas</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalHoras</dd>
 
-                        <!-- Precio por hora -->
                         <dt class="col-12 col-sm-4 text-sm-end">Precio por hora</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.PrecioHora</dd>
 
-                        <!-- Ganancia total -->
                         <dt class="col-12 col-sm-4 text-sm-end">Ganancia total</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalGanancia</dd>
                     </dl>

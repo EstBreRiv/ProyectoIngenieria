@@ -38,10 +38,11 @@ namespace ProyectoIngenieria.Controllers
                 .Select(m => new
                 {
                     m.Id,
-                    VehiculoModelo = m.Vehiculo.Modelo + " - " + m.Vehiculo.Placa,
-                    m.Descripcion,
                     Fecha = m.Fecha.ToString("dd/MM/yyyy"),
-                    Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
+                    marca = _unitOfWork.Marca.Get(x => x.Id == m.Vehiculo.MarcaId).NombreMarca ?? "",
+                    modelo = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Modelo,
+                    placa = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Placa,
+                    m.Descripcion
                 }).ToList();
 
             return Json(new { data = mantenimientos });

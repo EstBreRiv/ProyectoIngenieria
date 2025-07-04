@@ -41,11 +41,10 @@ function inicializarTabla(vehiculoId) {
         },
         destroy: true,
         columns: [
-            { data: "nombreVehiculo", width: "16%" }, // Nombre del vehículo
-            { data: "fechaCompra" },
-            { data: "litrosComprados" },
-            { data: "precioLitro" },
-            { data: "totalPagado" },
+            { data: "fechaCompra", width: "15%" },
+            { data: "marca", width: "15%" },
+            { data: "modelo", width: "15%" },
+            { data: "placa", width: "15%" },
             {
                 data: "id",
                 render: function (data) {
@@ -53,10 +52,13 @@ function inicializarTabla(vehiculoId) {
                         <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+
+                        <a href="/RegistroCombustible/DetalleRegistroCombustible/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                            <i class="bi bi-info-circle"></i>
+                        </a>
                         `;
                 },
-                orderable: false,
-                searchable: false
+                width: "10%"
             }
         ],
         language: {

@@ -29,10 +29,11 @@ function loadDataTable(vehiculoId) {
             }
         },
         columns: [
-            { data: "vehiculoModelo", width: "15%", title: "Vehículo" },
-            { data: "descripcion", width: "25%", title: "Descripción" },
-            { data: "fecha", width: "25%", title: "Fecha" },
-            { data: "precio", width: "20%", title: "Precio" },
+            { data: "fecha", width: "20%"  },
+            { data: "marca", width: "15%" },
+            { data: "modelo", width: "20%" },
+            { data: "placa", width: "20%" },
+            { data: "descripcion", width: "25%" },
             {
                 data: "id",
                 render: function (data) {

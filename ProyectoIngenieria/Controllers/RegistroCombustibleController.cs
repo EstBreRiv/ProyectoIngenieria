@@ -39,7 +39,8 @@ namespace ProyectoIngenieria.Controllers
                     r =>
                     (!id.HasValue || id == 0 || r.VehiculoId == id) &&
                     (!fechaInicio.HasValue || r.FechaCompra >= fechaInicio.Value) &&
-                    (!fechaFin.HasValue || r.FechaCompra <= fechaFin.Value)
+                    (!fechaFin.HasValue || r.FechaCompra <= fechaFin.Value),
+                    includeProperties: "Vehiculo"
             );
 
             var data = registros.Select(r =>
@@ -50,6 +51,9 @@ namespace ProyectoIngenieria.Controllers
                 {
                     id = r.Id,
                     fechaCompra = r.FechaCompra.ToString("yyyy-MM-dd"),
+                    marca = _unitOfWork.Marca.Get(x => x.Id == r.Vehiculo.MarcaId).NombreMarca ?? "",
+                    modelo = _unitOfWork.Vehiculo.Get(x => x.Id == r.VehiculoId).Modelo,
+                    placa = _unitOfWork.Vehiculo.Get(x => x.Id == r.VehiculoId).Placa,
                     litrosComprados = r.LitrosComprados,
                     precioLitro = r.PrecioLitro,
                     totalPagado = r.TotalPagado,
@@ -162,6 +166,19 @@ namespace ProyectoIngenieria.Controllers
             ViewBag.VehiculoId = registroCombustibleVM.RegistroCombustible.VehiculoId;
 
             return View(registroCombustibleVM);
+        }
+
+        [HttpGet]
+        public IActionResult DetalleRegistroCombustible(int id)
+        {
+            var registro = _unitOfWork.RegistroCombustible.Get(r => r.Id == id, includeProperties: "Vehiculo,Vehiculo.Marca");
+
+            var registroVM = new RegistroCombustibleVM
+            {
+                RegistroCombustible = registro
+            };
+
+            return View(registroVM);
         }
 
         // Delete: Elimina un registro de combustible por su ID
