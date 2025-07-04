@@ -28,22 +28,23 @@ function inicializarTabla(vehiculoId) {
             dataSrc: "data"
         },
         columns: [
-            { data: "nombreVehiculo" , width: "16%" },
-            { data: "fecha", width: "9%" },
-            { data: "horometroInicial" },
-            { data: "horometroFinal" },
-            { data: "precioHora" },
-            { data: "totalHoras" },
-            { data: "totalGanancia" },
-            { data: "lugar" },
-            { data: "tipo" },
-            { data: "proyecto" },
+            { data: "fecha", width: "12%" },
+            { data: "marca", width: "12%" },
+            { data: "modelo", width: "12%" },
+            { data: "placa", width: "12%" },
+            { data: "proyecto", width: "12%" },
+            { data: "tipo", width: "12%" },
+            { data: "lugar", width: "12%" },
             {
                 data: "id",
                 render: function (data, type, row) {
                     return `
                         <a href="/HorasTrabajo/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
+                        </a>
+
+                        <a href="/HorasTrabajo/DetalleHorasTrabajo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                            <i class="bi bi-info-circle"></i>
                         </a>
                     `;
                 },

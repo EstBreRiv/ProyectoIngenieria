@@ -23,10 +23,13 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
-                        <div class="text-center">
-                            <a href="/Repuesto/Upsert/${data}" class="text-blue-600 hover:underline mx-1">Editar</a>
-                            <a onclick=Eliminar("/Repuesto/Delete/${data}") class="text-red-600 hover:underline mx-1 cursor-pointer">Eliminar</a>
-                        </div>`;
+                        <a href="/Repuesto/Upsert?id=${data}" class="btn btn-success btn-sm mx-2" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a onClick="Eliminar("/Repuesto/Delete/${data}")" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                        `;
                 },
                 "width": "25%"
             }

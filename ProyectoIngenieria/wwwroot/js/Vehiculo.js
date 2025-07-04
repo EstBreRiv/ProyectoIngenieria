@@ -17,7 +17,7 @@ function loadDataTable() {
             { "data": "placa", "width": "15%" },
             { "data": "estado", "width": "10%" },
             { "data": "tipoVehiculo", "width": "15%" },
-            { "data": "empresa", "width": "30%" },
+            { "data": "empresa", "width": "25%" },
 
             {
                 "data": "id",
@@ -26,7 +26,7 @@ function loadDataTable() {
 
                         <a href="/Vehiculo/DetalleVehiculo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                             <i class="bi bi-info-circle"></i>
-
+                        </a>
                     `;
                 },
                 "width": "20%"

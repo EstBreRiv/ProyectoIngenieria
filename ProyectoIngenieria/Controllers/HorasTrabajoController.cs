@@ -31,15 +31,16 @@ namespace ProyectoIngenieria.Controllers
                 h => (!id.HasValue || id == 0 || h.VehiculoId == id) &&
                      (!fechaInicio.HasValue || h.Fecha >= fechaInicio.Value) &&
                      (!fechaFin.HasValue || h.Fecha <= fechaFin.Value),
-                includeProperties: "LugarTrabajo,TipoTrabajo,Proyecto"
+                includeProperties: "LugarTrabajo,TipoTrabajo,Proyecto,Vehiculo"
             );
 
             var data = horas.Select(h => new
             {
-                nombreVehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Modelo + " - " +
-                                 _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Placa,
                 id = h.Id,
                 fecha = h.Fecha.ToString("yyyy-MM-dd"),
+                marca = _unitOfWork.Marca.Get(m => m.Id == h.Vehiculo.MarcaId).NombreMarca ?? "",
+                modelo = _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Modelo,
+                placa = _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Placa,
                 horometroInicial = h.HorometroInicial,
                 horometroFinal = h.HorometroFinal,
                 precioHora = h.PrecioHora,
@@ -172,6 +173,19 @@ namespace ProyectoIngenieria.Controllers
             _unitOfWork.Save();
 
             return RedirectToAction("Index", new { id = horasVM.HorasTrabajo.VehiculoId });
+        }
+
+        [HttpGet]
+        public IActionResult DetalleHorasTrabajo(int id)
+        {
+            var horasTrabajo = _unitOfWork.HorasTrabajo.Get(h => h.Id == id, includeProperties: "LugarTrabajo,TipoTrabajo,Proyecto");
+
+            var horasTrabajoVM = new HorasTrabajoVM
+            {
+                HorasTrabajo = horasTrabajo
+            };
+
+            return View(horasTrabajoVM);
         }
 
 

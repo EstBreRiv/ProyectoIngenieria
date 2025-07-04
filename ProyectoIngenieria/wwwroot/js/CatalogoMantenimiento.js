@@ -12,9 +12,13 @@ $(document).ready(function () {
                 data: 'id',
                 render: function (data) {
                     return `
-                        <a href="/CatalogoMantenimiento/Upsert/${data}" class="text-blue-600 hover:underline mr-2">Editar</a>
-                        <a onclick="eliminar('/CatalogoMantenimiento/Delete/${data}')" class="text-red-600 hover:underline">Eliminar</a>
-                    `;
+                        <a href="/CatalogoMantenimiento/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a onClick="eliminar('/CatalogoMantenimiento/Delete/${data}')" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                        `;
                 },
                 width: '20%'
             }
