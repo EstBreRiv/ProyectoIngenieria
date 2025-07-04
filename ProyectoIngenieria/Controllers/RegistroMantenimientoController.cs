@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProyectoIngenieria.Controllers
 {
@@ -26,7 +27,6 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            // Filtro base
             var query = _unitOfWork.RegistroMantenimiento.GetAll(includeProperties: "Vehiculo")
             .Where(m =>
                 (!id.HasValue || id == 0 || m.VehiculoId == id) &&
@@ -38,17 +38,16 @@ namespace ProyectoIngenieria.Controllers
                 .Select(m => new
                 {
                     m.Id,
+                    modelo = m.Vehiculo.Modelo, 
+                    marca = m.Vehiculo.Placa,
+                    placa = m.Vehiculo.Placa,
+                    m.Descripcion,
                     Fecha = m.Fecha.ToString("dd/MM/yyyy"),
-                    marca = _unitOfWork.Marca.Get(x => x.Id == m.Vehiculo.MarcaId).NombreMarca ?? "",
-                    modelo = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Modelo,
-                    placa = _unitOfWork.Vehiculo.Get(x => x.Id == m.VehiculoId).Placa,
-                    m.Descripcion
+                    Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
                 }).ToList();
 
             return Json(new { data = mantenimientos });
         }
-
-
 
 
         // Crear / Editar
