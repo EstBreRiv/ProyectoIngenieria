@@ -6,14 +6,16 @@
 
 <div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+        <div class="col-12 col-lg-10 col-xl-10">
             <div class="card shadow-lg">
                 <div class="card-header card-header-principal text-center">
-                    <h4 class="mb-0">Detalles del registro</h4>
+                    <h2 class="titulo-formulario">DETALLES DEL REGISTRO </h2>
                 </div>
 
                 <div class="card-body">
                     <dl class="row justify-content-center">
+
+
                         <dt class="col-12 col-sm-4 text-sm-end">Fecha</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroCombustible.FechaCompra</dd>
 
@@ -50,7 +52,7 @@
 
                     <div class="mt-4 d-flex justify-content-center">
                         <a asp-controller="RegistroCombustible" asp-action="Upsert" asp-route-id="@Model.RegistroCombustible.Id" class="btn btn-success">
-                            <i class="bi bi-pencil-square"></i> Editar
+                            <i class="bi bi-pencil-square"></i> EDITAR
                         </a>
                     </div>
                 </div>
@@ -72,6 +74,7 @@
                     <i class="bi bi-arrow-left"></i>
                 </a>
             }
+            </div>
         </div>
     </div>
 </div>

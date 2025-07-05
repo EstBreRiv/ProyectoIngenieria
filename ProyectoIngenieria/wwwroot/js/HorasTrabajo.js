@@ -28,7 +28,7 @@ function inicializarTabla(vehiculoId) {
             dataSrc: "data"
         },
         columns: [
-            { data: "fecha", width: "12%" },
+            { data: "fecha", width: "10%" },
             { data: "marca", width: "12%" },
             { data: "modelo", width: "12%" },
             { data: "placa", width: "12%" },
@@ -46,9 +46,9 @@ function inicializarTabla(vehiculoId) {
                         <a href="/HorasTrabajo/DetalleHorasTrabajo/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                             <i class="bi bi-info-circle"></i>
                         </a>
-                    `;
+                   `;
                 },
-             
+                "width": "07%"
             }
         ],
         language: {

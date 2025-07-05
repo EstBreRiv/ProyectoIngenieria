@@ -10,18 +10,18 @@
 
                 <div class="border-bottom pb-3 mb-4">
                     <h2 class="titulo-formulario">
-                        @(Model.lugarTrabajo.Id == 0 ? "Agregar" : "Actualizar") Lugar de Trabajo
+                        @(Model.lugarTrabajo.Id == 0 ? "AGREGAR" : "ACTUALIZAR") LUGAR DE TRABAJO
                     </h2>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="lugarTrabajo.Nombre" class="form-label text-muted"></label>
+                    <label asp-for="lugarTrabajo.Nombre" class="form-label fw-semibold"></label>
                     <input asp-for="lugarTrabajo.Nombre" type="text" class="form-control" placeholder="Ingrese el nombre de la ubicacion" />
                     <span asp-validation-for="lugarTrabajo.Nombre" class="form-text text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="lugarTrabajo.Provincia" class="form-label text-muted"></label>
+                    <label asp-for="lugarTrabajo.Provincia" class="form-label fw-semibold"></label>
                     <select asp-for="lugarTrabajo.Provincia" class="form-select">
                         <option value="">Seleccione la provincia</option>
                         <option value="San Jose">San Jose</option>
@@ -36,14 +36,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="lugarTrabajo.Canton" class="form-label text-muted"></label>
-                    <input asp-for="lugarTrabajo.Canton" type="text" class="form-control" placeholder="Ingrese el nombre del canton" />
+                    <label asp-for="lugarTrabajo.Canton" class="form-label fw-semibold"> Cantón </label>
+                    <input asp-for="lugarTrabajo.Canton" type="text" class="form-control" placeholder="Ingrese el nombre del cantón" />
                     <span asp-validation-for="lugarTrabajo.Canton" class="form-text text-danger"></span>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 pt-3">
                     <button type="submit" class="btn btn-success w-25">
-                        Guardar
+                        GUARDAR
                     </button>
                 </div>
             </form>

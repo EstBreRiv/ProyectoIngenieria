@@ -13,55 +13,50 @@
 <body class="bg-light py-4">
 
     <input type="hidden" id="VehiculoIdHidden" value="@ViewBag.VehiculoId" />
-
-
     <div class="container bg-white p-4 rounded shadow">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
-            <h1 class="h3 mb-0">MANTENIMIENTOS</h1>
+            <h1 class="h3 text-success fw-bold">HISTORIAL DE MANTENIMIENTOS</h1>
 
             <div class="d-flex flex-wrap gap-2">
                 <a asp-controller="RegistroMantenimiento" asp-action="Upsert" class="btn btn-success">
-                    Registrar nuevo mantenimiento
+                    <i class="bi bi-plus-circle me-1"></i> NUEVO REGISTRO
                 </a>
                 <a asp-controller="Repuesto" asp-action="Index" class="btn btn-success">
-                    Ver repuestos
+                    <i class="bi bi-eye me-1"></i> REPUESTOS
                 </a>
                 <a asp-controller="CatalogoMantenimiento" asp-action="Index" class="btn btn-success">
-                    Ver catálogo de mantenimientos
+                    <i class="bi bi-eye me-1"></i>  CATÁLOGO DE MANTENIMIENTOS
                 </a>
             </div>
         </div>
 
         <div class="table-responsive">
-
-            @*             filtro por fecha
- *@
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label for="filtroInicio" class="form-label">Fecha desde</label>
+                    <label for="filtroInicio" class="form-label fw-semibold">Fecha desde</label>
                     <input type="text" id="filtroInicio" class="form-control" />
                 </div>
                 <div class="col-md-3">
-                    <label for="filtroFin" class="form-label">Fecha hasta</label>
+                    <label for="filtroFin" class="form-label fw-semibold">Fecha hasta</label>
                     <input type="text" id="filtroFin" class="form-control" />
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button id="btnFiltrar" class="btn btn-extra w-100">Filtrar</button>
+                    <button id="btnFiltrar" class="btn btn-extra w-100">FILTRAR</button>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button id="btnLimpiar" class="btn btn-outline-secondary w-100">Limpiar filtros</button>
+                    <button id="btnLimpiar" class="btn btn-outline-secondary w-100">LIMPIAR FILTROS</button>
                 </div>
             </div>
 
             <table id="tablaMantenimiento" class="table table-bordered table-hover table-sm align-middle text-center">
                 <thead class="table-success text-dark ">
                     <tr>
-                        <th class="text-center">Fecha</th>
-                        <th class="text-center">Marca</th>
-                        <th class="text-center">Modelo</th>
-                        <th class="text-center">Placa / Serie</th>
-                        <th class="text-center">Descripción</th>
-                        <th class="text-center">Acciones</th>
+                        <th class="text-center">FECHA</th>
+                        <th class="text-center">MARCA</th>
+                        <th class="text-center">MODELO</th>
+                        <th class="text-center">PLACA/SERIE</th>
+                        <th class="text-center">DESCRIPCIÓN</th>
+                        <th class="text-center">DETALLES</th>
                     </tr>
                 </thead>
                 <tbody>

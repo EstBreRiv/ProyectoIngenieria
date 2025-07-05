@@ -12,37 +12,39 @@
 
     <div class="container bg-white p-4 rounded shadow">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 text-success fw-bold">Registros de combustible</h1>
+            <h1 class="h3 text-success fw-bold">REGISTRO DE COMBUSTIBLE</h1>
 
             <a href="/RegistroCombustible/Upsert?vehiculoId=@ViewBag.VehiculoId" class="btn btn-success">
-                Agregar registro
+                <i class="bi bi-plus-circle me-1"></i> AGREGAR REGISTRO
             </a>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-3">
-                <label for="filtroInicio" class="form-label">Fecha desde</label>
+                <label for="filtroInicio" class="form-label fw-semibold">Fecha desde</label>
                 <input type="text" id="filtroInicio" class="form-control" />
             </div>
             <div class="col-md-3">
-                <label for="filtroFin" class="form-label">Fecha hasta</label>
+                <label for="filtroFin" class="form-label fw-semibold">Fecha hasta</label>
                 <input type="text" id="filtroFin" class="form-control" />
             </div>
-            <div class="col-md-3 align-self-end">
-                <button id="btnFiltrar" class="btn btn-primary">Filtrar</button>
-                <button id="btnLimpiar" class="btn btn-secondary">Limpiar</button>
+            <div class="col-md-3 d-flex align-items-end">
+                <button id="btnFiltrar" class="btn btn-extra w-100">FILTRAR</button>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button id="btnLimpiar" class="btn btn-outline-secondary w-100">LIMPIAR FILTROS</button>
             </div>
         </div>
 
         <div class="table-responsive">
             <table id="taskTable" class="table table-bordered table-hover table-sm align-middle text-center">
-                <thead class="table-success text-dark text-center">
+                <thead class="table-success text-dark ">
                     <tr>
-                        <th>Fecha de compra</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Placa / Serie</th>
-                        <th>Acciones</th>
+                        <th class="text-center">FECHA DE COMPRA</th>
+                        <th class="text-center">MARCA</th>
+                        <th class="text-center">MODELO</th>
+                        <th class="text-center">PLACA/SERIE</th>
+                        <th class="text-center">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>

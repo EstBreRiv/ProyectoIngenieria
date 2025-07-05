@@ -10,25 +10,25 @@
 
                 <div class="border-bottom pb-3 mb-4">
                     <h2 class="titulo-formulario">
-                        @(Model.tipoVehiculo.Id == 0 ? "Agregar" : "Actualizar") tipo de vehículo
+                        @(Model.tipoVehiculo.Id == 0 ? "AGREGAR" : "ACTUALIZAR") TIPO DE VEHÍCULO
                     </h2>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="tipoVehiculo.Tipo" class="form-label text-muted">Nombre</label>
+                    <label asp-for="tipoVehiculo.Tipo" class="form-label fw-semibold">Nombre</label>
                     <input asp-for="tipoVehiculo.Tipo" type="text" class="form-control" placeholder="Ingrese el nuevo tipo de vehiculo" />
                     <span asp-validation-for="tipoVehiculo.Tipo" class="form-text text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="tipoVehiculo.Descripcion" class="form-label">Descripción</label>
-                    <textarea asp-for="tipoVehiculo.Descripcion" rows="3" class="form-control" placeholder="Descripción del tipo de vehículo"></textarea>
+                    <label asp-for="tipoVehiculo.Descripcion" class="form-label fw-semibold">Descripción</label>
+                    <textarea asp-for="tipoVehiculo.Descripcion" rows="3" class="form-control" placeholder="Ingrese descripción detallada.."></textarea>
                     <span asp-validation-for="tipoVehiculo.Descripcion" class="text-danger small"></span>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 pt-3">
                     <button type="submit" class="btn btn-success w-25">
-                        Guardar
+                        GUARDAR
                     </button>
                 </div>
             </form>

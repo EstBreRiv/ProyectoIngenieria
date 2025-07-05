@@ -10,19 +10,19 @@
 
                 <div class="border-bottom pb-3 mb-4">
                     <h2 class="titulo-formulario">
-                        @(Model.marca.Id == 0 ? "Agregar" : "Actualizar") Marca
+                        @(Model.marca.Id == 0 ? "AGREGAR" : "ACTUALIZAR") MARCA
                     </h2>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="marca.NombreMarca" class="form-label text-muted">Nombre</label>
+                    <label asp-for="marca.NombreMarca" class="form-label fw-semibold">Nombre</label>
                     <input asp-for="marca.NombreMarca" type="text" class="form-control" placeholder="Ingrese el nombre de la marca" />
                     <span asp-validation-for="marca.NombreMarca" class="form-text text-danger"></span>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 pt-3">
                     <button type="submit" class="btn btn-success w-25">
-                        Guardar
+                        GUARDAR
                     </button>
                 </div>
             </form>

@@ -12,13 +12,15 @@
 
     <div class="container bg-white p-4 rounded shadow">
         <div class="d-flex justify-content-between align-items-start mb-4">
-            <h1 class="h3 text-success fw-bold">OPERADORES</h1>
-            <div class="d-flex flex-column align-items-end">
-                <a asp-controller="Operador" asp-action="Upsert" class="btn btn-success mb-2">
-                    Agregar Operador
+            <h1 class="h3 text-success fw-bold">HISTORIAL DE OPERADORES</h1>
+
+
+            <div class="d-flex flex-wrap gap-2">
+                <a asp-controller="Operador" asp-action="Upsert" class="btn btn-success">
+                    <i class="bi bi-plus-circle me-1"></i> NUEVO OPERADOR
                 </a>
                 <a asp-controller="RegistroOperadores" asp-action="Index" class="btn btn-success">
-                    Registro de Operadores
+                    <i class="bi bi-plus-circle me-1"></i> NUEVO REGISTRO
                 </a>
             </div>
         </div>
@@ -28,11 +30,11 @@
             <table id="taskTable" class="table table-bordered table-hover table-sm align-middle text-center">
                 <thead class="table-success text-dark ">
                     <tr >
-                        <th class="text-center">Cédula</th>
-                        <th class="text-center">Nombre</th>
-                        <th class="text-center">Teléfono</th>
-                        <th class ="text-center">Tipo de Operador</th>
-                        <th class="text-center">Opciones</th>
+                        <th class="text-center">CÉDULA</th>
+                        <th class="text-center">NOMBRE</th>
+                        <th class="text-center">TELÉFONO</th>
+                        <th class ="text-center">TIPO DE OPERADOR</th>
+                        <th class="text-center">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
