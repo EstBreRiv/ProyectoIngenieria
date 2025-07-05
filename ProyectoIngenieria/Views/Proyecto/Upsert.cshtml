@@ -10,30 +10,30 @@
 
                 <div class="border-bottom pb-3 mb-4">
                     <h2 class="titulo-formulario">
-                        @(Model.Proyecto.Id == 0 ? "Agregar" : "Actualizar") Proyecto
+                        @(Model.Proyecto.Id == 0 ? "AGREGAR" : "ACTUALIZAR") PROYECTO
                     </h2>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Proyecto.NombreProyecto" class="form-label text-muted">Nombre</label>
+                    <label asp-for="Proyecto.NombreProyecto" class="form-label fw-semibold">Nombre</label>
                     <input asp-for="Proyecto.NombreProyecto" type="text" class="form-control" placeholder="Ingrese el nombre del proyecto" />
                     <span asp-validation-for="Proyecto.NombreProyecto" class="form-text text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Proyecto.Cliente" class="form-label text-muted"></label>
+                    <label asp-for="Proyecto.Cliente" class="form-label fw-semibold"></label>
                     <input asp-for="Proyecto.Cliente" type="text" class="form-control" placeholder="Ingrese el nombre del cliente" />
                     <span asp-validation-for="Proyecto.Cliente" class="form-text text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Proyecto.FechaInicio" class="form-label text-muted">Indique la fecha de Inicio del proyecto</label>
+                    <label asp-for="Proyecto.FechaInicio" class="form-label fw-semibold">Indique la fecha de Inicio del proyecto</label>
                     <input asp-for="Proyecto.FechaInicio" type="text" class="form-control" id="fechaInicio" />
                     <span asp-validation-for="Proyecto.FechaInicio" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Proyecto.FechaFin" class="form-label text-muted">Indique la fecha de cierre del proyecto</label>
+                    <label asp-for="Proyecto.FechaFin" class="form-label fw-semibold">Indique la fecha de cierre del proyecto</label>
                     <input asp-for="Proyecto.FechaFin" type="text" class="form-control" id="fechaFin" />
                     <span asp-validation-for="Proyecto.FechaFin" class="text-danger small"></span>
                 </div>
@@ -41,7 +41,7 @@
 
                 <div class="d-flex justify-content-end gap-2 pt-3">
                     <button type="submit" class="btn btn-success w-25">
-                        Guardar
+                        GUARDAR
                     </button>
                 </div>
             </form>

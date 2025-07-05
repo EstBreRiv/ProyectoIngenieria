@@ -8,12 +8,15 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-10">
             <div class="card shadow-lg">
+
+
                 <div class="card-header card-header-principal text-center">
-                    <h4 class="mb-0">Detalles del Vehículo</h4>
+                    <h2 class="titulo-formulario" >DETALLES DEL VEHÍCULO</h2>
                 </div>
 
                 <div class="card-body">
                     <dl class="row justify-content-center">
+
                         <dt class="col-12 col-sm-4 text-sm-end">Marca</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.Vehiculo.Marca.NombreMarca</dd>
 
@@ -38,36 +41,36 @@
 
                     <div class="mt-4 d-flex justify-content-center gap-2 flex-nowrap">
                         <a asp-controller="Vehiculo" asp-action="Upsert" asp-route-id="@Model.Vehiculo.Id" class="btn btn-success">
-                            <i class="bi bi-pencil-square"></i> Editar
+                            <i class="bi bi-pencil-square"></i> EDITAR
                         </a>
 
                         @if (Model.Vehiculo.Estado == "Activo")
                         {
                             <button class="btn btn-danger" onclick="Delete(@Model.Vehiculo.Id)">
-                                <i class="bi bi-trash"></i> Desactivar
+                                <i class="bi bi-trash"></i> DESACTIVAR
                             </button>
                         }
                         else
                         {
                             <button class="btn btn-primary" onclick="Activar(@Model.Vehiculo.Id)">
-                                <i class="bi bi-check-circle"></i> Activar
+                                <i class="bi bi-check-circle"></i> ACTIVAR
                             </button>
                         }
 
                         <a href="/RegistroCombustible/Index/@Model.Vehiculo.Id" class="btn btn-outline-success">
-                            Registro Combustible
+                            REGISTRO COMBUSTIBLE
                         </a>
 
                         <a href="/RegistroMantenimiento/Index/@Model.Vehiculo.Id" class="btn btn-outline-success">
-                            Mantenimientos
+                            MANTENIMIENTO
                         </a>
 
                         <a href="/HorasTrabajo/Index/@Model.Vehiculo.Id" class="btn btn-outline-success">
-                            Horas de Trabajo
+                            HORAS DE TRABAJO
                         </a>
 
                         <a href="/Vehiculo/DocumentoVehiculo/@Model.Vehiculo.Id" class="btn btn-outline-success">
-                            Documentos
+                            DOCUMENTOS
                         </a>
                     </div>
                 </div>

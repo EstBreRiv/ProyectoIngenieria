@@ -20,7 +20,7 @@
                    asp-action="Upsert"
                    asp-route-vehiculoId="@ViewBag.VehiculoId"
                    class="btn btn-success mb-2">
-                    Agregar Horas
+                    <i class="bi bi-plus-circle me-1"></i> AGREGAR HORAS
                 </a>
 
             </div>
@@ -28,34 +28,34 @@
 
         <div class="row mb-3">
             <div class="col-md-3">
-                <label for="filtroInicio" class="form-label">Fecha desde</label>
+                <label for="filtroInicio" class="form-label fw-semibold">Fecha desde</label>
                 <input type="text" id="filtroInicio" class="form-control" />
             </div>
             <div class="col-md-3">
-                <label for="filtroFin" class="form-label">Fecha hasta</label>
+                <label for="filtroFin" class="form-label fw-semibold">Fecha hasta</label>
                 <input type="text" id="filtroFin" class="form-control" />
             </div>
             <div class="col-md-3 d-flex align-items-end">
-                <button id="btnFiltrar" class="btn btn-extra w-100">Filtrar</button>
+                <button id="btnFiltrar" class="btn btn-extra w-100">FILTRAR</button>
             </div>
             <div class="col-md-3 d-flex align-items-end">
-                <button id="btnLimpiar" class="btn btn-outline-secondary w-100">Limpiar filtros</button>
+                <button id="btnLimpiar" class="btn btn-outline-secondary w-100">LIMPIAR FILTROS</button>
             </div>
         </div>
 
 
         <div class="table-responsive">
-            <table id="tablaHorasTrabajo" class="table table-bordered table-hover">
-                <thead class="table-success text-dark text-center">
+            <table id="tablaHorasTrabajo" class="table table-bordered table-hover table-sm align-middle text-center">
+                <thead class="table-success text-dark ">
                     <tr>
-                        <th>Fecha</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Placa / Serie</th>
-                        <th>Proyecto</th>
-                        <th>Tipo de trabajo</th>
-                        <th>Lugar</th>
-                        <th>Acciones</th>
+                        <th class ="text-center">FECHA</th>
+                        <th class="text-center">MARCA</th>
+                        <th class="text-center">MODELO</th>
+                        <th class="text-center">PLACA/SERIE</th>
+                        <th class ="text-center">PROYECTO</th>
+                        <th class="text-center">TIPO DE TRABAJO</th>
+                        <th class="text-center">LUGAR</th>
+                        <th class="text-center">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody></tbody>

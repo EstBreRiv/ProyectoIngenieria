@@ -2,7 +2,7 @@
 @model VehiculoVM
 
 @{
-    ViewData["Title"] = Model.Vehiculo.Id == 0 ? "Crear Vehículo" : "Editar Vehículo";
+    ViewData["Title"] = Model.Vehiculo.Id == 0 ? "CREAR VEHÍCULO" : "EDITAR VEHÍCULO";
 
     bool estaVacio = string.IsNullOrWhiteSpace(Model.Vehiculo.Modelo)
         // && string.IsNullOrWhiteSpace(Model.Vehiculo.Tipo)
@@ -14,19 +14,25 @@
 <div class="row justify-content-center">
     <div class="col-md-10">
         <div class="container py-5">
+
+
             <form method="post" asp-action="Upsert">
                 <input type="hidden" asp-for="Vehiculo.Id" />
                 <input type="hidden" asp-for="Vehiculo.Estado" />
 
-                <div class="card shadow border">
-                    <div class="card-header card-header-principal">
-                        <h2 class="mb-0">@ViewData["Title"]</h2>
-                    </div>
-
+                <!-- Card contenedora -->
+                <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="row g-4">
+
+
+                            <div class="border-bottom pb-3 mb-4">
+                                <h2 class="titulo-formulario">@ViewData["Title"]</h2>
+                            </div>
+
+                    
                             <div class="col-md-6">
-                                <label asp-for="Vehiculo.MarcaId" class="form-label">Marca del vehículo</label>
+                                <label asp-for="Vehiculo.MarcaId" class="form-label fw-semibold">Marca del vehículo</label>
                                 <select asp-for="Vehiculo.MarcaId" asp-items="@ViewBag.MarcaList" class="form-select">
                                     <option value="">Seleccione una marca</option>
                                 </select>
@@ -34,13 +40,13 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Vehiculo.Modelo" class="form-label">Modelo</label>
+                                <label asp-for="Vehiculo.Modelo" class="form-label fw-semibold">Modelo</label>
                                 <input asp-for="Vehiculo.Modelo" class="form-control" placeholder="Modelo del vehículo" />
                                 <span asp-validation-for="Vehiculo.Modelo" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Vehiculo.TipoVehiculoId" class="form-label">Tipo de vehículo</label>
+                                <label asp-for="Vehiculo.TipoVehiculoId" class="form-label fw-semibold">Tipo de vehículo</label>
                                 <select asp-for="Vehiculo.TipoVehiculoId" asp-items="@ViewBag.TipoVehiculoList" class="form-select">
                                     <option value="">Seleccione tipo</option>
                                 </select>
@@ -48,13 +54,13 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Vehiculo.Placa" class="form-label">Placa / Serie</label>
+                                <label asp-for="Vehiculo.Placa" class="form-label fw-semibold">Placa/Serie</label>
                                 <input asp-for="Vehiculo.Placa" class="form-control" placeholder="Placa o serie" />
                                 <span asp-validation-for="Vehiculo.Placa" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Vehiculo.EmpresaId" class="form-label">Empresa asociada</label>
+                                <label asp-for="Vehiculo.EmpresaId" class="form-label fw-semibold">Empresa asociada</label>
                                 <select asp-for="Vehiculo.EmpresaId" asp-items="@ViewBag.EmpresaList" class="form-select">
                                     <option value="">Seleccione empresa</option>
                                 </select>
@@ -62,7 +68,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Vehiculo.Descripcion" class="form-label">Descripción</label>
+                                <label asp-for="Vehiculo.Descripcion" class="form-label fw-semibold">Descripción</label>
                                 <textarea asp-for="Vehiculo.Descripcion" rows="3" class="form-control" placeholder="Color, características, etc."></textarea>
                                 <span asp-validation-for="Vehiculo.Descripcion" class="text-danger small"></span>
                             </div>
@@ -70,7 +76,7 @@
 
                         <div class="d-flex justify-content-end gap-2 pt-4">
                             <button type="submit" class="btn btn-success w-25">
-                                @(Model.Vehiculo.Id == 0 ? "Crear" : "Actualizar")
+                                @(Model.Vehiculo.Id == 0 ? "CREAR" : "ACTUALIZAR")
                             </button>
                         </div>
                     </div>

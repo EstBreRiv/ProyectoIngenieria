@@ -7,11 +7,11 @@ $(document).ready(function () {
             dataSrc: 'data'
         },
         columns: [
-            { data: 'fechaInicio', title: 'Fecha Inicio' },
-            { data: 'fechaFin', title: 'Fecha Fin' },
-            { data: 'nombreVehiculo', title: 'Vehículo' },
-            { data: 'placaVehiculo', title: 'Placa'},
-            { data: 'nombreOperador', title: 'Operador' },
+            { data: 'fechaInicio'},
+            { data: 'fechaFin' },
+            { data: 'nombreVehiculo' },
+            { data: 'placaVehiculo'},
+            { data: 'nombreOperador'},
             {
                 data: 'id',
                 render: function (data) {
@@ -23,9 +23,6 @@ $(document).ready(function () {
                             <i class="bi bi-trash"></i> Eliminar
                         </a>`;
                 },
-                orderable: false,
-                searchable: false,
-                title: 'Acciones'
             }
         ],
         language: {

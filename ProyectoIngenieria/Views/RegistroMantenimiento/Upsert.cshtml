@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="border-bottom pb-3 mb-4">
                 <h2 class="titulo-formulario">
-                    Registrar Mantenimiento
+                    REGISTRAR MANTENIMIENTO
                 </h2>
             </div>
 
@@ -41,7 +41,7 @@
                 <!-- Descripción -->
                 <div class="mb-4">
                     <label class="form-label fw-semibold">Descripción (opcional)</label>
-                    <textarea asp-for="RegistroMantenimiento.Descripcion" class="form-control" rows="2"></textarea>
+                    <textarea asp-for="RegistroMantenimiento.Descripcion" class="form-control" rows="2" placeholder="Ingrese una descripción detallada..."></textarea>
                 </div>
 
                 <!-- Cuerpo dividido en dos columnas -->
@@ -51,17 +51,17 @@
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Operarios y actividades realizadas</label>
                             <br />
-                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModalActividades()">Agregar Actividades</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModalActividades()"><i class="bi bi-plus-circle me-1"></i>ACTIVIDADES</button>
                             @Html.ValidationMessage("DetallesOperadores", "", new { @class = "text-danger" })
 
                             <div style="max-height: 250px; overflow-y: auto;">
                                 <table class="table table-sm table-bordered" id="tablaActividadesSeleccionadas">
                                     <thead>
                                         <tr>
-                                            <th>Nombre</th>
-                                            <th>Operador</th>
-                                            <th>Horas</th>
-                                            <th>Acción</th>
+                                            <th>NOMBRE</th>
+                                            <th>OPERADOR</th>
+                                            <th>HORAS</th>
+                                            <th>ACCIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -73,7 +73,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5>Seleccionar Actividades</h5>
+                                        <h5>SELECCIONAR ACTIVIDADES</h5>
 
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
@@ -97,7 +97,7 @@
                                         </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-success" onclick="guardarActividades()">Agregar Seleccionadas</button>
+                                        <button type="button" class="btn btn-success" onclick="guardarActividades()">AGREGAR SELECCIONADAS</button>
                                     </div>
                                 </div>
                             </div>
@@ -109,15 +109,15 @@
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Repuestos utilizados</label>
                             <br />
-                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModal()">Agregar Repuestos</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModal()"> <i class="bi bi-plus-circle me-1"></i>REPUESTOS</button>
                             @Html.ValidationMessage("RepuestosSeleccionados", "", new { @class = "text-danger" })
 
                             <div class="border rounded" style="max-height: 200px; overflow-y: auto;">
                                 <table class="table table-sm table-bordered mb-0" id="tablaSeleccionados">
                                     <thead class="table-light position-sticky top-0" style="z-index: 1;">
                                         <tr>
-                                            <th>Nombre</th>
-                                            <th>Acción</th>
+                                            <th>NOMBRE</th>
+                                            <th>ACCIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -129,7 +129,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5>Seleccionar Repuestos</h5>
+                                        <h5>SELECCIONAR REPUESTOS</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
                                     <div class="modal-body">
@@ -152,7 +152,7 @@
                                         </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-success" onclick="guardarSeleccion()">Agregar Seleccionados</button>
+                                        <button type="button" class="btn btn-success" onclick="guardarSeleccion()">AGREGAR SELECCIONADOS</button>
                                     </div>
                                 </div>
                             </div>
@@ -162,7 +162,7 @@
 
                 <!-- Botón guardar -->
                 <div class="d-flex justify-content-end gap-2 pt-3">
-                    <button type="submit" class="btn btn-success w-25">Guardar</button>
+                    <button type="submit" class="btn btn-success w-25">GUARDAR</button>
                 </div>
             </form>
 

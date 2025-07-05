@@ -14,13 +14,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3 text-success fw-bold">VEHÍCULOS</h1>
             <a asp-controller="Vehiculo" asp-action="Upsert" class="btn btn-success">
-                Agregar Vehículo
+                <i class="bi bi-plus-circle me-1"></i> AGREGAR VEHÍCULO
             </a>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="empresaFilter" class="form-label fw-semibold">Filtrar por Empresa:</label>
+                <label for="empresaFilter" class="form-label fw-semibold">FILTRAR POR EMPRESA:</label>
                 <select id="empresaFilter" class="form-select">
                     <option value="">Todas las empresas</option>
                     @foreach (var empresa in ViewBag.Empresas as List<SelectListItem>)
@@ -35,13 +35,13 @@
             <table id="taskTable" class="table table-bordered table-hover table-sm align-middle text-center">
                 <thead class="table-success text-dark ">
                     <tr>
-                        <th class="text-center">Marca</th>
-                        <th class="text-center">Modelo</th>
-                        <th class="text-center">Placa</th>
-                        <th class="text-center">Estado</th>
-                        <th class="text-center">Tipo de vehiculo</th>
-                        <th class="text-center">Empresa</th>
-                        <th class="text-center">Detalles</th>
+                        <th class="text-center">MARCA</th>
+                        <th class="text-center">MODELO</th>
+                        <th class="text-center">PLACA</th>
+                        <th class="text-center">ESTADO</th>
+                        <th class="text-center">TIPO DE VEHÍCULO</th>
+                        <th class="text-center">EMPRESA</th>
+                        <th class="text-center">DETALLES</th>
                     </tr>
                 </thead>
                 <tbody>

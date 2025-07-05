@@ -8,7 +8,11 @@
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -26,14 +30,13 @@ body {
     color: inherit;
 }
 
-
 :root {
-    /* Paleta personalizada Excavaciones Rivera */
-    --color-principal: #bb8fce;
-    --color-secundario: #d2b4de;
-    --color-icono: #d7bde2;
-    --color-principal: #bb8fce;
-    --color-hover: #a974c1;
+    /* Nueva paleta personalizada */
+    --color-principal: #2980b9; /* Azul */
+    --color-secundario: #5dade2; /* Celeste */
+    --color-icono: #2980b9;
+    --color-hover: #2471a3; /* Azul más oscuro */
+    --color-extra: #aed6f1; /* Celeste más claro */
 }
 
 /* Botones principales */
@@ -44,43 +47,44 @@ body {
 }
 
     .btn-success:hover {
-        background-color: #a974c1 !important;
-        border-color: #a974c1 !important;
+        background-color: var(--color-hover) !important;
+        border-color: var(--color-hover) !important;
     }
+
 .btn-outline-success {
     background-color: var(--color-principal) !important;
     border-color: var(--color-principal) !important;
     color: white !important;
 }
 
-    .btn-outline-success :hover {
-        background-color: #a974c1 !important;
-        border-color: #a974c1 !important;
+    .btn-outline-success:hover {
+        background-color: var(--color-hover) !important;
+        border-color: var(--color-hover) !important;
     }
 
 /* Botón secundario */
 .btn-outline-secondary {
-    background-color: #e0e0e0;
-    color: #6c6c6c;
-    border: 1px solid #cccccc;
+    background-color: var(--color-secundario);
+    color: white;
+    border: none;
     transition: all 0.3s ease-in-out;
 }
 
-    /* Hover del botón secundario */
     .btn-outline-secondary:hover {
-        background-color: #cccccc;
-        color: #333333;
-        border-color: #bbbbbb;
+        background-color: #3498db;
+        color: white;
     }
+
+/* Botón extra */
 .btn-extra {
-    background-color: #a9cce3;
+    background-color: var(--color-extra);
     color: #fff;
     border: none;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
     .btn-extra:hover {
-        background-color: #85c1e9; /* tono más oscuro al pasar el mouse */
+        background-color: #85c1e9;
         color: white;
         transform: scale(1.02);
     }
@@ -94,23 +98,19 @@ body {
 
 /* Títulos generales */
 h1, h2, h3, h4, h5, h6 {
-    color: #bb8fce !important;
+    color: var(--color-principal) !important;
 }
 
 /* Textos destacados y subtítulos Bootstrap */
 .display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
 .card-title, .text-title, .fw-bold, .fw-semibold, .navbar-brand,
 .nav-link.active, .nav-link:hover, .dropdown-item:hover {
-    color: #bb8fce !important;
+    color: var(--color-principal) !important;
 }
-
 
 .navbar-brand {
-    color: #bb8fce !important;
+    color: var(--color-principal) !important;
 }
-
-
-
 
 /* Íconos */
 i.text-success {
@@ -125,71 +125,78 @@ i.text-success {
     color: var(--color-principal);
 }
 
-    /* Texto e íconos dentro de la card */
     .card-link .card .card-title,
     .card-link .card .card-text,
     .card-link .card i {
         color: var(--color-principal);
     }
 
-    /* Hover */
     .card-link .card:hover {
         border-color: var(--color-hover);
-        box-shadow: 0 0 12px rgba(187, 143, 206, 0.5);
+        box-shadow: 0 0 12px rgba(41, 128, 185, 0.5);
         transform: scale(1.02);
     }
 
-        /* Hover en textos e íconos */
         .card-link .card:hover .card-title,
         .card-link .card:hover .card-text,
         .card-link .card:hover i {
             color: var(--color-hover);
         }
 
-
 /* ENCABEZADOS */
 table.dataTable thead {
-    background-color: #bb8fce; /* Lavanda pastel */
+    background-color: var(--color-secundario);
     color: white;
     font-weight: bold;
 }
 
 /* FILAS AL PASAR EL CURSOR */
 table.dataTable tbody tr:hover {
-    background-color: #f4ecf7; /* Lavanda claro */
+    background-color: #d6eaf8;
 }
 
 /* PAGINACIÓN */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-    color: #bb8fce !important;
+    color: #1b4f72 !important;
     background-color: transparent;
     border: none;
     margin: 0 2px;
+    font-weight: bold;
 }
 
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-        background-color: #bb8fce !important;
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+    .dataTables_wrapper .dataTables_paginate .paginate_button:focus,
+    .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+        background-color: var(--color-secundario) !important;
         color: white !important;
-        border-radius: 4px;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background-color: #d6eaf8;
+        color: var(--color-hover) !important;
     }
 
 /* BÚSQUEDA Y SELECT DE CANTIDAD */
 .dataTables_wrapper .dataTables_filter input,
 .dataTables_wrapper .dataTables_length select {
-    border: 1px solid #bb8fce;
+    border: 1px solid var(--color-secundario);
     padding: 6px;
     border-radius: 5px;
-    color: #6c3483;
+    color: #1b4f72;
+    background-color: #ebf5fb;
 }
 
 /* MENSAJE DE INFORMACIÓN ("Mostrando X de Y") */
 .dataTables_wrapper .dataTables_info {
-    color: #6c3483;
+    color: #1b4f72;
 }
 
-/* BOTONES DE EXPORTACIÓN (si usás DataTables Buttons) */
+/* BOTONES DE EXPORTACIÓN */
 .dt-button {
-    background-color: #a9cce3 !important; /* Botón extra */
+    background-color: var(--color-extra) !important;
     color: white !important;
     border: none !important;
     padding: 6px 12px;
@@ -209,22 +216,20 @@ h2.titulo-formulario {
 
 /* Estilo personalizado para el select de cantidad de registros en DataTable */
 .dataTables_wrapper .dataTables_length select {
-    border: 1px solid #bb8fce;
+    border: 1px solid var(--color-secundario);
     border-radius: 5px;
     padding: 6px 30px 6px 10px;
-    color: #6c3483;
-    background-color: #f4ecf7;
-    /* Personaliza la flechita del select */
+    color: #1b4f72;
+    background-color: #f4faff;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='%236c3483' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%231b4f72' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px;
 }
 
-/* Asegura que el contenedor no se corte */
 .dataTables_wrapper .dataTables_length {
     position: relative;
     overflow: visible;
@@ -233,14 +238,14 @@ h2.titulo-formulario {
 /* Estilo general de celdas */
 table.dataTable tbody td {
     background-color: #fff;
-    color: #4a235a;
-    border-bottom: 1px solid #e0d4ec;
+    color: #154360;
+    border-bottom: 1px solid #aed6f1;
     vertical-align: middle;
 }
 
 /* Bordes generales de la tabla */
 table.dataTable {
-    border: 1px solid #d2b4de;
+    border: 1px solid #aed6f1;
     border-radius: 6px;
     overflow: hidden;
 }
@@ -249,7 +254,7 @@ table.dataTable {
     table.dataTable thead .sorting,
     table.dataTable thead .sorting_asc,
     table.dataTable thead .sorting_desc {
-        background-color: #bb8fce;
+        background-color: var(--color-secundario);
         background-image: none;
         color: white;
         cursor: pointer;
@@ -266,38 +271,15 @@ table.dataTable {
             font-size: 0.7rem;
         }
 
-/* Paginación */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    color: #6c3483 !important;
-    background-color: transparent;
-    border: none;
-    margin: 0 2px;
-    font-weight: bold;
-}
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        background-color: #f4ecf7;
-        color: #a974c1 !important;
-    }
-
 /* Etiquetas de búsqueda y cantidad */
 .dataTables_wrapper label {
-    color: #6c3483;
+    color: #1b4f72;
     font-weight: bold;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus,
-.dataTables_wrapper .dataTables_paginate .paginate_button:active {
-    background-color: var(--color-principal) !important;
-    color: white !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
+/* Encabezados personalizados */
 .encabezado-personalizado {
-    background-color: #bb8fce !important;
+    background-color: var(--color-principal) !important;
     color: white !important;
     font-weight: bold;
 }

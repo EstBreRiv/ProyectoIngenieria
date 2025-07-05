@@ -99,15 +99,16 @@ namespace ProyectoIngenieria.Controllers
                 }
 
                 // Crea un registro en el historial de los operadores y las maquinas
-                //RegistroOperadore registro = new RegistroOperadore
-                //{
-                //    OperadorCedula = operadorVM.Operador.Cedula,
-                //    FechaInicio = DateTime.Now,
-                //    VehiculoId = operadorVM.VehiculoId
-                //};
+                RegistroOperadore registro = new RegistroOperadore
+                {
+                    OperadorCedula = operadorVM.Operador.Cedula,
+                    FechaInicio = DateTime.Today,
+                    FechaFin = DateTime.Today, // Asigna una fecha de fin por defecto
+                    VehiculoId = operadorVM.VehiculoId
+                };
 
                 // Si el vehículo no es nulo, se asigna al registro y se guarda
-                //_unitOfWork.RegistroOperadores.Add(registro);
+                _unitOfWork.RegistroOperadores.Add(registro);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }

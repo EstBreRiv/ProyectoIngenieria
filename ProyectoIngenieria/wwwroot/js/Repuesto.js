@@ -26,9 +26,7 @@ function loadDataTable() {
                         <a href="/Repuesto/Upsert?id=${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a onClick="Eliminar("/Repuesto/Delete/${data}")" class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </a>
+                       
                         `;
                 },
                 "width": "25%"
