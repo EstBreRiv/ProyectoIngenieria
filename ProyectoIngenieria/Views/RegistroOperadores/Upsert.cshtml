@@ -27,14 +27,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="RegistroOperador.FechaInicio" class="form-label">Fecha</label>
-                    <input asp-for="RegistroOperador.FechaInicio" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <label asp-for="RegistroOperador.FechaInicio" class="form-label">Fecha Inicio</label>
+                    <input asp-for="RegistroOperador.FechaInicio" type="date" class="form-control" />
                     <span asp-validation-for="RegistroOperador.FechaInicio" class="text-danger"></span>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="RegistroOperador.FechaFin" class="block font-semibold mb-1">Fecha Fin (opcional)</label>
-                    <input asp-for="RegistroOperador.FechaFin" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <label asp-for="RegistroOperador.FechaFin" class="form-label">Fecha Fin (opcional)</label>
+                    <input asp-for="RegistroOperador.FechaFin" type="date" class="form-control" />
                     <span asp-validation-for="RegistroOperador.FechaFin" class="text-danger"></span>
                 </div>
 
@@ -42,9 +42,6 @@
                     <a asp-action="Index" class="btn btn-outline-secondary">← Cancelar</a>
                     <button type="submit" class="btn btn-success">Guardar Asignación</button>
                 </div>
-
-                
-
             </form>
 
         </div>

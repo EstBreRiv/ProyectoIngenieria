@@ -38,8 +38,8 @@ namespace ProyectoIngenieria.Controllers
                 return new
                 {
                     id = r.Id,
-                    fechaInicio = r.FechaInicio.ToString("yyyy-MM-dd"),
-                    fechaFin = r.FechaFin != DateTime.MinValue ? r.FechaFin.ToString("yyyy-MM-dd") : "",
+                    fechaInicio = r.FechaInicio.ToString("dd/MM/yyyy"),
+                    fechaFin = r.FechaFin != DateTime.MinValue ? r.FechaFin.ToString("dd/MM/yyyy") : "",
                     nombreVehiculo = vehiculo != null ? vehiculo.Modelo: "",
                     placaVehiculo = vehiculo != null ? vehiculo.Placa : "",
                     nombreOperador = operador != null ? operador.Nombre : ""
@@ -53,7 +53,13 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult Upsert(int? id)
         {
             // Obtener la entidad si se trata de una edición
-            RegistroOperadore registro = id == null ? new RegistroOperadore() : _unitOfWork.RegistroOperadores.Get(x => x.Id == id);
+            RegistroOperadore registro = id == null
+                ? new RegistroOperadore
+                {
+                    FechaInicio = DateTime.Today,
+                    FechaFin = DateTime.Today // Pone la fecha actual en ambos, para evitar errores de validación
+                }
+                : _unitOfWork.RegistroOperadores.Get(x => x.Id == id);
 
             if (id != null && registro == null)
                 return NotFound();
@@ -96,11 +102,12 @@ namespace ProyectoIngenieria.Controllers
                 RegistroOperador = registro,
                 ListaVehiculos = listaVehiculos,
                 ListaOperadores = listaOperadores,
-                RegistroOperadores = new List<SelectListItem>() // opcional, si lo usás en algún lugar
+                RegistroOperadores = new List<SelectListItem>() // opcional
             };
 
             return View(viewModel);
         }
+
 
 
         [HttpPost]
@@ -112,6 +119,17 @@ namespace ProyectoIngenieria.Controllers
                 viewModel.RegistroOperador.FechaFin < viewModel.RegistroOperador.FechaInicio)
             {
                 ModelState.AddModelError("RegistroOperador.FechaFin", "La fecha de finalización no puede ser anterior a la fecha de inicio.");
+            }
+
+            //alidación de campos requeridos
+            if (viewModel.RegistroOperador.VehiculoId == 0)
+            {
+                ModelState.AddModelError("RegistroOperador.VehiculoId", "Debe seleccionar un vehículo.");
+            }
+
+            if (viewModel.RegistroOperador.OperadorCedula == 0)
+            {
+                ModelState.AddModelError("RegistroOperador.OperadorCedula", "Debe seleccionar un operador.");
             }
 
             if (ModelState.IsValid)
