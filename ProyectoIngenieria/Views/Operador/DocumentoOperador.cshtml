@@ -9,18 +9,19 @@
     <div class="container bg-white p-4 rounded shadow">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <input type="hidden" id="operadorCedula" value="@Model.Operador.Cedula" />
-            <h1 class="h3 text-success fw-bold">Documentos del operador: @Model.Operador.Nombre (@Model.Operador.Cedula)</h1>
+            <h1 class="h3 text-success fw-bold">DOCUMENTOS DEL OPERADOR: @Model.Operador.Nombre (@Model.Operador.Cedula)</h1>
+
             <a asp-controller="Operador" asp-action="CargarDocumentoOperador" asp-route-id="@Model.Operador.Cedula" class="btn btn-success">
-                Cargar Documento
+                <i class="bi bi-plus-circle me-1"></i> CARGAR DOCUMENTO
             </a>
         </div>
 
         <div class="table-responsive">
-            <table id="taskTable" class="table table-bordered table-hover">
-                <thead class="table-success text-dark">
+            <table id="taskTable" class="table table-bordered table-hover table-sm align-middle text-center">
+                <thead class="table-success text-dark ">
                     <tr>
-                        <th>Título</th>
-                        <th>Acciones</th>
+                        <th class="text-center">TÍTULO</th>
+                        <th class="text-center">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>

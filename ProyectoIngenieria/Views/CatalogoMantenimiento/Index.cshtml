@@ -1,23 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "Catálogo de Mantenimientos";
+    ViewData["Title"] = "CATÁLOGO DE MANTENIMIENTOS";
 }
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">Catálogo de Mantenimientos</h1>
+<body class="bg-light py-4">
+    <div class="container bg-white p-4 rounded shadow">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <h1 class="h3 text-success fw-bold">CATÁLOGO DE MANTENIMIENTOS</h1>
         <a asp-controller="CatalogoMantenimiento" asp-action="Upsert"
            class="btn btn-success">
-            Nuevo Mantenimiento
+                <i class="bi bi-plus-circle me-1"></i> NUEVO MANTENIMIENTO
         </a>
     </div>
 
-    <div class="table-responsive border rounded p-2">
-        <table id="tablaCatalogo" class="table table-bordered table-striped">
-            <thead class="table-primary text-center">
+    <table id="tablaCatalogo" class="table table-bordered table-hover table-sm align-middle text-center">
+        <thead class="table-success text-dark ">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
+                    <th class="text-center">NOMBRE</th>
+                    <th class="text-center">DESCRIPCIÓN</th>
+                    <th class="text-center">ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,3 +38,4 @@
 <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
 
 <script src="~/js/CatalogoMantenimiento.js"></script>
+</body>

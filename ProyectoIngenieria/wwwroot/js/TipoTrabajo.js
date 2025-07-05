@@ -11,8 +11,8 @@ function loadDataTable() {
             "url": "/TipoTrabajo/GetAll"
         },
         "columns": [
-            { "data": "nombre", "width": "40%" },
-            { "data": "descripcion", "width": "40%" },
+            { "data": "nombre", "width": "30%" },
+            { "data": "descripcion", "width": "50%" },
 
             {
                 "data": "id",

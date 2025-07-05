@@ -15,9 +15,6 @@ $(document).ready(function () {
                         <a href="/CatalogoMantenimiento/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a onClick="eliminar('/CatalogoMantenimiento/Delete/${data}')" class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </a>
                         `;
                 },
                 width: '20%'

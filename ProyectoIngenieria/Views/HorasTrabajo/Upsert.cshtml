@@ -1,30 +1,34 @@
 ﻿@model ProyectoIngenieria.Models.ViewModels.HorasTrabajoVM
 
 @{
-    ViewData["Title"] = Model.HorasTrabajo.Id == 0 ? "Agregar Horas de Trabajo" : "Editar Horas de Trabajo";
+    ViewData["Title"] = Model.HorasTrabajo.Id == 0 ? "AGREGAR HORAS DE TRABAJO" : "EDITAR HORAS DE TRABAJO";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="border-bottom pb-3 mb-4">
-                <h2 class="titulo-formulario">
-                    @ViewData["Title"]
-                </h2>
-            </div>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="container py-5">
+            
 
             <form asp-action="Upsert" method="post">
                 @Html.AntiForgeryToken()
 
                 <input type="hidden" asp-for="HorasTrabajo.Id" />
 
-                <div class="card shadow border">
+                <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="row g-4">
 
+                            <div class="border-bottom pb-3 mb-4">
+                                <h2 class="titulo-formulario">
+                                    @ViewData["Title"]
+                                </h2>
+                            </div>
+
+
                             <!-- Vehículo -->
                             <div class="col-md-6">
-                                <label class="form-label">Vehículo</label>
+                                <label class="form-label fw-semibold">Vehículo</label>
                                 @if (Model.HorasTrabajo.Id == 0 && Model.HorasTrabajo.VehiculoId == 0)
                                 {
                                     <select asp-for="HorasTrabajo.VehiculoId"
@@ -48,14 +52,14 @@
 
                             <!-- Fecha -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.Fecha" class="form-label">Fecha del trabajo</label>
+                                <label asp-for="HorasTrabajo.Fecha" class="form-label fw-semibold">Fecha del trabajo</label>
                                 <input asp-for="HorasTrabajo.Fecha" type="text" class="form-control" id="fechaTrabajo" />
                                 <span asp-validation-for="HorasTrabajo.Fecha" class="text-danger small"></span>
                             </div>
                             
                             <!-- Proyecto -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.ProyectoId" class="form-label">Proyecto</label>
+                                <label asp-for="HorasTrabajo.ProyectoId" class="form-label fw-semibold">Proyecto</label>
                                 <select asp-for="HorasTrabajo.ProyectoId"
                                         asp-items="Model.ProyectoList"
                                         class="form-select"
@@ -68,7 +72,7 @@
 
                             <!-- Tipo de trabajo -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.TipoTrabajoId" class="form-label">Tipo de Trabajo</label>
+                                <label asp-for="HorasTrabajo.TipoTrabajoId" class="form-label fw-semibold">Tipo de Trabajo</label>
                                 <select asp-for="HorasTrabajo.TipoTrabajoId"
                                         asp-items="Model.TipoTrabajoList"
                                         class="form-select"
@@ -81,7 +85,7 @@
 
                             <!-- Lugar de trabajo -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.LugarTrabajoId" class="form-label">Lugar de Trabajo</label>
+                                <label asp-for="HorasTrabajo.LugarTrabajoId" class="form-label fw-semibold">Lugar de Trabajo</label>
                                 <select asp-for="HorasTrabajo.LugarTrabajoId"
                                         asp-items="Model.LugarTrabajoList"
                                         class="form-select"
@@ -94,21 +98,21 @@
 
                             <!-- Precio por hora -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.PrecioHora" class="form-label">Precio de la hora</label>
+                                <label asp-for="HorasTrabajo.PrecioHora" class="form-label fw-semibold">Precio de la hora</label>
                                 <input asp-for="HorasTrabajo.PrecioHora" class="form-control" type="number" step="0.01" />
                                 <span asp-validation-for="HorasTrabajo.PrecioHora" class="text-danger small"></span>
                             </div>
 
                             <!-- Horómetro Inicial -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.HorometroInicial" class="form-label">Horómetro Inicial</label>
+                                <label asp-for="HorasTrabajo.HorometroInicial" class="form-label fw-semibold">Horómetro Inicial</label>
                                 <input asp-for="HorasTrabajo.HorometroInicial" class="form-control" type="number" step="0.01" />
                                 <span asp-validation-for="HorasTrabajo.HorometroInicial" class="text-danger small"></span>
                             </div>
 
                             <!-- Horómetro Final -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.HorometroFinal" class="form-label">Horómetro Final</label>
+                                <label asp-for="HorasTrabajo.HorometroFinal" class="form-label fw-semibold">Horómetro Final</label>
                                 <input asp-for="HorasTrabajo.HorometroFinal" class="form-control" type="number" step="0.01" />
                                 <span asp-validation-for="HorasTrabajo.HorometroFinal" class="text-danger small"></span>
                             </div>
@@ -116,7 +120,7 @@
 
                         <div class="d-flex justify-content-end gap-2 pt-4">
                             <button type="submit" class="btn btn-success w-25">
-                                @(Model.HorasTrabajo.Id == 0 ? "Crear" : "Actualizar")
+                                @(Model.HorasTrabajo.Id == 0 ? "CREAR" : "ACTUALIZAR")
                             </button>
                         </div>
                     </div>
