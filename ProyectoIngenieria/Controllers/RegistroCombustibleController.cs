@@ -5,6 +5,7 @@ using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository;
 using ProyectoIngenieria.Repository.Interfaces;
 using System.Globalization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ProyectoIngenieria.Controllers
 {
@@ -35,39 +36,27 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var registros = _unitOfWork.RegistroCombustible.GetAll(
-                    r =>
-                    (!id.HasValue || id == 0 || r.VehiculoId == id) &&
-                    (!fechaInicio.HasValue || r.FechaCompra >= fechaInicio.Value) &&
-                    (!fechaFin.HasValue || r.FechaCompra <= fechaFin.Value),
-                    includeProperties: "Vehiculo"
+            var registros = _unitOfWork.RegistroCombustible.GetAll(includeProperties: "Vehiculo,Vehiculo.Marca")
+            .Where(r =>
+                (!id.HasValue || id == 0 || r.VehiculoId == id) &&
+                (!fechaInicio.HasValue || r.FechaCompra >= fechaInicio.Value) &&
+                (!fechaFin.HasValue || r.FechaCompra <= fechaFin.Value)
             );
 
-            var data = registros.Select(r =>
+            var data = registros.Select(r => new
             {
-                var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == r.VehiculoId);
-
-                return new
-                {
-                    id = r.Id,
-                    fechaCompra = r.FechaCompra.ToString("yyyy-MM-dd"),
-                    marca = _unitOfWork.Marca.Get(x => x.Id == r.Vehiculo.MarcaId).NombreMarca ?? "",
-                    modelo = _unitOfWork.Vehiculo.Get(x => x.Id == r.VehiculoId).Modelo,
-                    placa = _unitOfWork.Vehiculo.Get(x => x.Id == r.VehiculoId).Placa,
-                    litrosComprados = r.LitrosComprados,
-                    precioLitro = r.PrecioLitro,
-                    totalPagado = r.TotalPagado,
-                    nombreVehiculo = vehiculo != null ? $"{vehiculo.Modelo} - {vehiculo.Placa}" : ""
-                };
+                r.Id,
+                fechaCompra = r.FechaCompra.ToString("yyyy-MM-dd"),
+                marca = r.Vehiculo.Marca.NombreMarca,
+                modelo = r.Vehiculo.Modelo,
+                placa = r.Vehiculo.Placa,
+                litrosComprados = r.LitrosComprados,
+                precioLitro = r.PrecioLitro,
+                totalPagado = r.TotalPagado,
             }).ToList();
 
             return Json(new { data });
         }
-
-
-
-
-
 
         // Upsert: Permite crear o editar un registro de combustible
         // tiene un id opcional para editar o crear un nuevo registro y un id de vehiculo
@@ -159,7 +148,7 @@ namespace ProyectoIngenieria.Controllers
                 _unitOfWork.Save();
 
                 //Para que se redirija con la URL con id del vehiculo asociado
-                return RedirectToAction("Index", new { id = registroCombustibleVM.RegistroCombustible.VehiculoId }); 
+                return RedirectToAction("Index", new { id = registroCombustibleVM.RegistroCombustible.VehiculoId });
             }
 
             // Si el modelo no es válido, asegurarse de mantener el VehiculoId en ViewBag

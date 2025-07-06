@@ -29,21 +29,26 @@ function loadDataTable(vehiculoId) {
             }
         },
         columns: [
-            { data: "fecha", width: "20%"  },
+            { data: "fecha", width: "15%"  },
             { data: "marca", width: "15%" },
-            { data: "modelo", width: "20%" },
-            { data: "placa", width: "20%" },
+            { data: "modelo", width: "15%" },
+            { data: "placa", width: "15%" },
             { data: "descripcion", width: "25%" },
             {
                 data: "id",
                 render: function (data) {
                     return `
+
+                        <a href="/RegistroMantenimiento/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+
                         <a href="/RegistroMantenimiento/Details/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                              <i class="bi bi-info-circle"></i>
                         </a>
                     `;
                 },
-                width: "10%"
+                width: "15%"
             }
         ],
         language: {

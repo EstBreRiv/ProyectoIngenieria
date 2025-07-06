@@ -37,5 +37,11 @@ namespace ProyectoIngenieria.Models.ViewModels
 
         [ValidateNever]
         public List<String> nombresProductos { get; set; } = new List<String>();
+
+        [ValidateNever]
+        public int vehiculoId { get; set; }
+
+        [ValidateNever]
+        public virtual Vehiculo vehiculo { get; set; }
     }
 }

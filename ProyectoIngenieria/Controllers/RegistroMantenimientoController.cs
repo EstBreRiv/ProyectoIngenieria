@@ -27,7 +27,7 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var query = _unitOfWork.RegistroMantenimiento.GetAll(includeProperties: "Vehiculo")
+            var query = _unitOfWork.RegistroMantenimiento.GetAll(includeProperties: "Vehiculo,Vehiculo.Marca")
             .Where(m =>
                 (!id.HasValue || id == 0 || m.VehiculoId == id) &&
                 (!fechaInicio.HasValue || m.Fecha >= fechaInicio.Value) &&
@@ -39,7 +39,7 @@ namespace ProyectoIngenieria.Controllers
                 {
                     m.Id,
                     modelo = m.Vehiculo.Modelo, 
-                    marca = m.Vehiculo.Placa,
+                    marca = m.Vehiculo.Marca.NombreMarca,
                     placa = m.Vehiculo.Placa,
                     m.Descripcion,
                     Fecha = m.Fecha.ToString("dd/MM/yyyy"),
@@ -260,21 +260,31 @@ namespace ProyectoIngenieria.Controllers
         // Ver detalles de un mantenimiento incluyendo sus productos
         [HttpGet]
         public IActionResult Details(int id)
-        {
+        { 
             var mantenimiento = _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id);
-
             if (mantenimiento == null)
             {
                 return NotFound();
             }
 
+            var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId);
+            if (vehiculo == null)
+            {
+                return NotFound();
+            }
+
+            var vehiculoMarca = _unitOfWork.Marca.Get(m => m.Id == vehiculo.MarcaId);
+            if (vehiculoMarca == null)
+            {
+                return NotFound();
+            }
+            vehiculo.Marca = vehiculoMarca;
+
             var registroMantenimientoVM = new RegistroMantenimientoVM
             {
                 RegistroMantenimiento = mantenimiento,
 
-                nombreVehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Marca + "  " +
-                                 _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Modelo + " - " +
-                                 _unitOfWork.Vehiculo.Get(v => v.Id == mantenimiento.VehiculoId).Placa,
+                vehiculo = vehiculo,
 
                 nombresProductos = _unitOfWork.RepuestosMantenimiento
                     .GetAll(rm => rm.RegistroMantenimientoId == id)

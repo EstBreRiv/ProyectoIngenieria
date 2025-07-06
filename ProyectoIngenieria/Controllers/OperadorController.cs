@@ -96,6 +96,8 @@ namespace ProyectoIngenieria.Controllers
                 {
                     // Si ya existe, se actualiza el operador existente
                     operadorExistente.Nombre = operadorVM.Operador.Nombre;
+                    operadorExistente.Telefono = operadorVM.Operador.Telefono;
+                    operadorExistente.TipoColaborador = operadorVM.Operador.TipoColaborador;
                 }
 
                 // Crea un registro en el historial de los operadores y las maquinas

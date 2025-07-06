@@ -4,6 +4,7 @@ using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
 using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ProyectoIngenieria.Controllers
 {
@@ -27,25 +28,24 @@ namespace ProyectoIngenieria.Controllers
         public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
             // Si no se proporciona ID o es 0, no se filtra por vehículo
-            var horas = _unitOfWork.HorasTrabajo.GetAll(
-                h => (!id.HasValue || id == 0 || h.VehiculoId == id) &&
+            var horas = _unitOfWork.HorasTrabajo.GetAll(includeProperties: "LugarTrabajo,TipoTrabajo,Proyecto,Vehiculo,Vehiculo.Marca")
+            .Where(h => (!id.HasValue || id == 0 || h.VehiculoId == id) &&
                      (!fechaInicio.HasValue || h.Fecha >= fechaInicio.Value) &&
-                     (!fechaFin.HasValue || h.Fecha <= fechaFin.Value),
-                includeProperties: "LugarTrabajo,TipoTrabajo,Proyecto,Vehiculo"
+                     (!fechaFin.HasValue || h.Fecha <= fechaFin.Value)
             );
 
             var data = horas.Select(h => new
             {
-                id = h.Id,
+                h.Id,
                 fecha = h.Fecha.ToString("yyyy-MM-dd"),
-                marca = _unitOfWork.Marca.Get(m => m.Id == h.Vehiculo.MarcaId).NombreMarca ?? "",
-                modelo = _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Modelo,
-                placa = _unitOfWork.Vehiculo.Get(v => v.Id == h.VehiculoId).Placa,
-                horometroInicial = h.HorometroInicial,
-                horometroFinal = h.HorometroFinal,
-                precioHora = h.PrecioHora,
-                totalHoras = h.TotalHoras,
-                totalGanancia = h.TotalGanancia,
+                marca = h.Vehiculo.Marca.NombreMarca ?? "",
+                modelo = h.Vehiculo.Modelo,
+                placa = h.Vehiculo.Placa,
+                h.HorometroInicial,
+                h.HorometroFinal,
+                h.PrecioHora,
+                h.TotalHoras,
+                h.TotalGanancia,
                 lugar = h.LugarTrabajo?.Nombre ?? "",
                 tipo = h.TipoTrabajo?.Nombre ?? "",
                 proyecto = h.Proyecto?.NombreProyecto ?? ""
@@ -53,6 +53,7 @@ namespace ProyectoIngenieria.Controllers
 
             return Json(new { data });
         }
+
 
         [HttpGet]
         public IActionResult Upsert(int? id, int? vehiculoId)

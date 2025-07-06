@@ -20,8 +20,14 @@
 
         <div class="card-body">
             <dl class="row justify-content-center">
-                        <dt class="col-12 col-sm-4 text-sm-end">Vehículo-Placa</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.nombreVehiculo</dd>
+                        <dt class="col-12 col-sm-4 text-sm-end">Marca</dt>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.vehiculo.Marca.NombreMarca</dd>
+
+                        <dt class="col-12 col-sm-4 text-sm-end">Modelo</dt>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.vehiculo.Modelo</dd>
+
+                        <dt class="col-12 col-sm-4 text-sm-end">Placa/Serie</dt>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.vehiculo.Placa</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Fecha</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroMantenimiento.Fecha.ToString("dd/MM/yyyy")</dd>
