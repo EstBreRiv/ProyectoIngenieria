@@ -75,6 +75,11 @@ body {
         color: white;
     }
 
+th:last-child {
+    background-color: #5dade2; /* un color diferente */
+}
+
+
 /* Botón extra */
 .btn-extra {
     background-color: var(--color-extra);

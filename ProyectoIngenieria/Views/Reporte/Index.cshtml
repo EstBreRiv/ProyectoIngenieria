@@ -17,6 +17,8 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
+
+
 <div class="container-fluid mt-5">
     <div class="card shadow border-0 mx-auto" style="max-width: 1300px;">
         <div class="card-body">
@@ -49,6 +51,7 @@
                         <th class="text-center">Gastos por Mantenimiento</th>
                         <th class="text-center">Total de gastos</th>
                         <th class="text-center">Utilidad</th>
+                        <th class="text-center" style="color:white">Acciones</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -120,6 +123,14 @@
                 {
                     data: "utilidad", "width": "11%",
                     render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return `<button class="btn btn-outline-dark btn-sm btn-detalle-reporte" data-id="${row.vehiculoId}">Detalles</button>`;
+                    },
+                    width: "8%"
                 }
             ],
             scrollX: true,
@@ -163,6 +174,40 @@
                 });
                 return;
             }
+
+            $(document).on('click', '.btn-detalle-reporte', function () {
+                const id = $(this).data('id');
+                const fechaInicio = $('#fechaInicio').val();
+                const fechaFin = $('#fechaFin').val();
+
+                if (!fechaInicio || !fechaFin) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Fechas incompletas',
+                        text: 'Por favor, seleccione ambas fechas para ver el reporte detallado.'
+                    });
+                    return;
+                }
+
+                const partesInicio = fechaInicio.split('/');
+                const partesFin = fechaFin.split('/');
+
+                const fechaInicioISO = `${partesInicio[2]}-${partesInicio[1]}-${partesInicio[0]}`;
+                const fechaFinISO = `${partesFin[2]}-${partesFin[1]}-${partesFin[0]}`;
+
+                if (fechaInicioISO > fechaFinISO) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Rango inválido',
+                        text: 'La fecha de inicio no puede ser mayor que la fecha de fin.'
+                    });
+                    return;
+                }
+
+                const url = `/Reporte/ReporteDetallado?id=${id}&fechaInicio=${fechaInicioISO}&fechaFin=${fechaFinISO}`;
+                window.open(url, '_blank');
+            });
+
 
             $.ajax({
                 url: `/Reporte/GetReporteDataByFecha`,
@@ -298,3 +343,5 @@
 
     });
 </script>
+
+

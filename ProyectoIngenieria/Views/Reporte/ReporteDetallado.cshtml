@@ -1,0 +1,163 @@
+﻿@model ProyectoIngenieria.Models.ViewModels.ReporteDetalladoVM
+
+@{
+    ViewData["Title"] = "Reporte Detallado de Vehículo";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Cambia si usás otro layout
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
+<div class="container mt-5 mb-5" style="max-width: 1200px;">
+    <!-- Encabezado -->
+    <div class="text-center border-bottom pb-3 mb-4">
+        <h2 class="fw-bold text-primary">REPORTE DETALLADO DE VEHÍCULO</h2>
+        <p class="text-muted">Generado el @Model.Fecha_reporte</p>
+    </div>
+
+    <!-- Datos del vehículo -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <strong>Marca:</strong> @Model.Marca
+        </div>
+        <div class="col-md-4">
+            <strong>Modelo:</strong> @Model.Modelo
+        </div>
+        <div class="col-md-4">
+            <strong>Placa:</strong> @Model.Placa
+        </div>
+    </div>
+
+    <!-- Periodo del reporte -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <strong>Periodo analizado:</strong> @Model.Periodo
+        </div>
+    </div>
+
+    <!-- Totales -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-primary text-white fw-semibold">Resumen General</div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col">
+                    <h6>Total Horas</h6>
+                    <p>@Model.TotalHorasTrabajo</p>
+                </div>
+                <div class="col">
+                    <h6>Ingreso generado</h6>
+                    <p>₡@Model.TotalIngresos</p>
+                </div>
+                <div class="col">
+                    <h6>Gasto en Combustible</h6>
+                    <p>₡@Model.GastoCombustible</p>
+                </div>
+                <div class="col">
+                    <h6>Gasto en Mantenimiento</h6>
+                    <p>₡@Model.GastoMantenimiento</p>
+                </div>
+                <div class="col">
+                    <h6 class="text-success">Utilidad</h6>
+                    <p class="fw-bold text-success">₡@Model.Utilidad</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Sección de Horas de Trabajo -->
+    <div class="mb-5">
+        <h5 class="text-primary fw-bold mb-3">Horas de Trabajo</h5>
+        <table class="table table-bordered table-sm align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Proyecto</th>
+                    <th>Lugar</th>
+                    <th>Tipo</th>
+                    <th>Horas</th>
+                    <th>₡/Hora</th>
+                    <th>Ingreso</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var trabajo in Model.HorasTrabajos)
+                {
+                    <tr>
+                        <td>@trabajo.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@trabajo.Proyecto?.NombreProyecto</td>
+                        <td>@trabajo.LugarTrabajo?.Nombre</td>
+                        <td>@trabajo.TipoTrabajo?.Nombre</td>
+                        <td>@trabajo.TotalHoras</td>
+                        <td>₡@trabajo.PrecioHora</td>
+                        <td>₡@trabajo.TotalGanancia</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sección de Mantenimientos -->
+    <div class="mb-5">
+        <h5 class="text-primary fw-bold mb-3">Mantenimientos Realizados</h5>
+        <table class="table table-bordered table-sm align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Actividades y Colaborador</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var mantenimiento in Model.Mantenimientos)
+                {
+                    <tr>
+                        <td>@mantenimiento.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@mantenimiento.Descripcion</td>
+                        <td>₡@mantenimiento.Precio</td>
+                        <td>
+                            <ul class="mb-0">
+                                @foreach (var detalle in mantenimiento.OperadorMantenimientos)
+                                {
+                                    <li>
+                                        @detalle.CatalogoMantenimiento?.Nombre - Colaborador: @detalle.OperadorCedula
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sección de Combustibles -->
+    <div class="mb-5">
+        <h5 class="text-primary fw-bold mb-3">Compras de Combustible</h5>
+        <table class="table table-bordered table-sm align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Litros</th>
+                    <th>Precio por Litro</th>
+                    <th>Total Pagado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var combustible in Model.Combustibles)
+                {
+                    <tr>
+                        <td>@combustible.FechaCompra.ToString("dd/MM/yyyy")</td>
+                        <td>@combustible.LitrosComprados</td>
+                        <td>₡@combustible.PrecioLitro</td>
+                        <td>₡@combustible.TotalPagado</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-end mt-4">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Volver al inicio</a>
+    </div>
+</div>

@@ -2,7 +2,7 @@
 {
     public class ReporteVM
     {
-
+        public int vehiculoId { get; set; }
         public string modelo { get; set; }
 
         public string placa { get; set; }

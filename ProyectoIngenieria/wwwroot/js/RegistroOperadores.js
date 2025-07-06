@@ -19,9 +19,7 @@ $(document).ready(function () {
                         <a href="/RegistroOperadores/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                        <a onclick="eliminar('/RegistroOperadores/Delete/${data}')" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i> Eliminar
-                        </a>`;
+                        `;
                 },
             }
         ],

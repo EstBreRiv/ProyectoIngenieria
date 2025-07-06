@@ -81,6 +81,7 @@ namespace ProyectoIngenieria.Controllers
 
                 return new ReporteVM
                 {
+                    vehiculoId = v.Id,
                     modelo = v.Modelo,
                     placa = v.Placa,
                     mes = $"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}",
@@ -140,6 +141,88 @@ namespace ProyectoIngenieria.Controllers
 
             return File(buffer, "text/csv", $"ReporteVehiculos_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
         }
+
+        public IActionResult DetalleReporte()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ReporteDetallado(int? id, DateOnly fechaInicio, DateOnly fechaFin)
+        {
+            if (!id.HasValue || id <= 0)
+                return BadRequest("El ID del vehículo debe ser un número positivo mayor que cero.");
+
+            if (fechaInicio > fechaFin)
+                return BadRequest("La fecha de inicio no puede ser mayor que la fecha final.");
+
+            // Obtener vehículo con su marca incluida
+            var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == id, includeProperties: "Marca");
+            if (vehiculo == null)
+                return NotFound($"Vehículo con ID {id} no encontrado.");
+
+            // Mantenimientos
+            var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll(
+                m => m.VehiculoId == id && m.Fecha >= fechaInicio && m.Fecha <= fechaFin
+            ).ToList();
+
+            var operadorActividad = _unitOfWork.OperadorMantenimiento.GetAll(
+                               om => om.RegistroMantenimiento.Fecha >= fechaInicio && om.RegistroMantenimiento.Fecha <= fechaFin,
+                                              includeProperties: "CatalogoMantenimiento"
+                                                         ).ToList();
+
+            //Recorre los operadores actividad y agrega el nombre del operador y el tipo de mantenimiento a cada registro de mantenimiento
+            foreach (var mantenimiento in mantenimientos)
+            {
+                var operadores = operadorActividad.Where(om => om.RegistroMantenimientoId == mantenimiento.Id).ToList();
+                if (operadores.Any())
+                {
+                    mantenimiento.OperadorMantenimientos = operadores;
+                    
+                }
+            }
+
+            // Combustibles
+            var combustibles = _unitOfWork.RegistroCombustible.GetAll(
+                c => c.VehiculoId == id && c.FechaCompra >= fechaInicio && c.FechaCompra <= fechaFin
+            ).ToList();
+
+            // Horas trabajadas
+            var horas = _unitOfWork.HorasTrabajo.GetAll(
+                h => h.VehiculoId == id && h.Fecha >= fechaInicio && h.Fecha <= fechaFin,
+                includeProperties: "Proyecto,LugarTrabajo,TipoTrabajo"
+            ).ToList();
+
+            // Cálculos
+            decimal totalHoras = horas.Sum(h => h.TotalHoras);
+            decimal totalIngreso = horas.Sum(h => h.TotalGanancia);
+            decimal gastoMantenimiento = mantenimientos.Sum(m => m.Precio);
+            decimal gastoCombustible = combustibles.Sum(c => c.TotalPagado);
+            decimal utilidad = totalIngreso - (gastoCombustible + gastoMantenimiento);
+
+            // Crear ViewModel
+            var vm = new ReporteDetalladoVM
+            {
+                VehiculoId = vehiculo.Id,
+                Marca = vehiculo.Marca?.NombreMarca ?? "",
+                Modelo = vehiculo.Modelo,
+                Placa = vehiculo.Placa,
+                Fecha_reporte = DateTime.Now.ToString(),
+                Periodo = $"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}",
+                TotalHorasTrabajo = totalHoras,
+                TotalIngresos = totalIngreso,
+                GastoMantenimiento = gastoMantenimiento,
+                GastoCombustible = gastoCombustible,
+                Utilidad = utilidad,
+                Mantenimientos = mantenimientos,
+                Combustibles = combustibles,
+                HorasTrabajos = horas
+            };
+
+            return View(vm);
+        }
+
+
 
 
     }
