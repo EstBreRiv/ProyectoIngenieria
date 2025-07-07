@@ -168,7 +168,7 @@ namespace ProyectoIngenieria.Controllers
 
             var operadorActividad = _unitOfWork.OperadorMantenimiento.GetAll(
                                om => om.RegistroMantenimiento.Fecha >= fechaInicio && om.RegistroMantenimiento.Fecha <= fechaFin,
-                                              includeProperties: "CatalogoMantenimiento"
+                                              includeProperties: "CatalogoMantenimiento,OperadorCedulaNavigation"
                                                          ).ToList();
 
             //Recorre los operadores actividad y agrega el nombre del operador y el tipo de mantenimiento a cada registro de mantenimiento
