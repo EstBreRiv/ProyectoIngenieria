@@ -4,6 +4,7 @@ using ProyectoIngenieria.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ProyectoIngenieria.Utilities;
+using ProyectoIngenieria.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHostedService<NotificacionBackgroundService>();
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+builder.Services.AddScoped<PdfService>();
+
 
 var app = builder.Build();
 
