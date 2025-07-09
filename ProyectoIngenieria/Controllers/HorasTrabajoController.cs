@@ -133,47 +133,40 @@ namespace ProyectoIngenieria.Controllers
             if (horasVM.HorasTrabajo.ProyectoId == 0)
                 ModelState.AddModelError("HorasTrabajo.ProyectoId", "Debe seleccionar un proyecto.");
 
-            //Trae todos los registros de fechas anteriores a la que se quiere registrar en orden descendiente
-            var registrosAnteriores = _unitOfWork.HorasTrabajo
+            // Consulta por las fechas anteriores a la fecha ingresada, las ordena de forma descendiente
+            // y obtiene el último registro anterior a la fecha ingresada.
+            var registroAnterior = _unitOfWork.HorasTrabajo
                 .GetAll(h => h.VehiculoId == horasVM.HorasTrabajo.VehiculoId && h.Fecha <= horasVM.HorasTrabajo.Fecha)
                 .OrderByDescending(h => h.Fecha)
-                .ToList();
+                .FirstOrDefault();
 
-            //si es diferente a 0 es que no tiene fechas anteriores
-            if (registrosAnteriores.Count != 0)
+            //Valida si existen fechas anteriores y si el horometro proporcionado es menor que el horómetro final del último registro.
+            if (registroAnterior != null && horasVM.HorasTrabajo.HorometroInicial < registroAnterior.HorometroFinal)
             {
-                //Selecciona la mas reciente de todas las anteriores
-                var ultimoHorometro = registrosAnteriores.FirstOrDefault()?.HorometroFinal ?? 0;
-
-                var ultimaFecha = registrosAnteriores.FirstOrDefault()?.Fecha.ToString("dd/MM/yyyy");
-
-                //Valida si el horometro ingresado es menor al ultimo horometro registrado
-                if (horasVM.HorasTrabajo.HorometroInicial < ultimoHorometro)
-                    ModelState.AddModelError("HorasTrabajo.HorometroInicial",
-                        "El ultimo horometro registrado para esta maquina es de "
-                        + ultimoHorometro + " en la fecha: " + ultimaFecha + ".");
+                //En caso de que el horometro proporcionado sea menor que el horómetro final del último registro,
+                //se agrega un error al modelo indicando el último horómetro registrado y la fecha.
+                var ultimaFecha = registroAnterior.Fecha.ToString("dd/MM/yyyy");
+                ModelState.AddModelError("HorasTrabajo.HorometroInicial",
+                    $"El último horómetro registrado para esta máquina es de {registroAnterior.HorometroFinal} en la fecha: {ultimaFecha}.");
             }
 
-            //Trae todos los registros de fechas posteriores a la que se quiere registrar en orden descendiente
-            var registrosPosteriores = _unitOfWork.HorasTrabajo
+            // Consulta por las fechas posteriores a la fecha ingresada, las ordena de forma ascendente
+            // y obtiene el primer registro posterior a la fecha ingresada.
+            var registroPosterior = _unitOfWork.HorasTrabajo
                 .GetAll(h => h.VehiculoId == horasVM.HorasTrabajo.VehiculoId && h.Fecha >= horasVM.HorasTrabajo.Fecha)
-                .OrderByDescending(h => h.Fecha)
-                .ToList();
+                .OrderBy(h => h.Fecha)
+                .FirstOrDefault();
 
-            //si es diferente a 0 es que no tiene fechas posteriores
-            if (registrosPosteriores.Count != 0)
+            // Valida si existen fechas posteriores y si el horómetro proporcionado es mayor que el horómetro inicial del primer registro posterior.
+            if (registroPosterior != null && horasVM.HorasTrabajo.HorometroFinal > registroPosterior.HorometroInicial)
             {
-                //Selecciona la mas reciente de todas las posteriores
-                var primerHorometro = registrosPosteriores.FirstOrDefault()?.HorometroInicial ?? 0;
-
-                var primeraFecha = registrosPosteriores.FirstOrDefault()?.Fecha.ToString("dd/MM/yyyy");
-
-                //Valida si el horometro ingresado es mayor al primer horometro registrado
-                if (horasVM.HorasTrabajo.HorometroFinal > primerHorometro)
-                    ModelState.AddModelError("HorasTrabajo.HorometroFinal",
-                                               "No se puede registrar ya que se registro un horometro de "
-                                                                      + primerHorometro + " en la fecha: " + primeraFecha + ".");
+                // En caso de que el horómetro proporcionado sea mayor que el horómetro inicial del primer registro posterior,
+                // se agrega un error al modelo indicando el horómetro inicial del primer registro posterior y la fecha.
+                var primeraFecha = registroPosterior.Fecha.ToString("dd/MM/yyyy");
+                ModelState.AddModelError("HorasTrabajo.HorometroFinal",
+                    $"No se puede registrar ya que se registró un horómetro de {registroPosterior.HorometroInicial} en la fecha: {primeraFecha}.");
             }
+
 
             if (!ModelState.IsValid)
             {
