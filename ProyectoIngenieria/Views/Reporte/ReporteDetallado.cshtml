@@ -45,19 +45,26 @@
                 </div>
                 <div class="col">
                     <h6>Ingreso generado</h6>
-                    <p>₡@Model.TotalIngresos</p>
+                    <p>₡@Model.TotalIngresos.ToString("N2")</p>
                 </div>
                 <div class="col">
                     <h6>Gasto en Combustible</h6>
-                    <p>₡@Model.GastoCombustible</p>
+                    <p>₡@Model.GastoCombustible.ToString("N2")</p>
                 </div>
                 <div class="col">
                     <h6>Gasto en Mantenimiento</h6>
-                    <p>₡@Model.GastoMantenimiento</p>
+                    <p>₡@Model.GastoMantenimiento.ToString("N2")</p>
                 </div>
                 <div class="col">
-                    <h6 class="text-success">Utilidad</h6>
-                    <p class="fw-bold text-success">₡@Model.Utilidad</p>
+                    <h6>Utilidad</h6>
+                    @if (Model.Utilidad < 0)
+                    {
+                        <p class="fw-bold text-danger">₡@Model.Utilidad.ToString("N2")</p>
+                    }
+                    else
+                    {
+                        <p class="fw-bold text-success">₡@Model.Utilidad.ToString("N2")</p>
+                    }
                 </div>
             </div>
         </div>
@@ -75,7 +82,7 @@
                     <th>Lugar</th>
                     <th>Tipo</th>
                     <th>Horas</th>
-                    <th>₡/Hora</th>
+                    <th>₡/Precio por Hora</th>
                     <th>Ingreso</th>
                 </tr>
             </thead>
@@ -88,8 +95,8 @@
                         <td>@trabajo.LugarTrabajo?.Nombre</td>
                         <td>@trabajo.TipoTrabajo?.Nombre</td>
                         <td>@trabajo.TotalHoras</td>
-                        <td>₡@trabajo.PrecioHora</td>
-                        <td>₡@trabajo.TotalGanancia</td>
+                        <td>₡@trabajo.PrecioHora.ToString("N2")</td>
+                        <td>₡@trabajo.TotalGanancia.ToString("N2")</td>
                     </tr>
                 }
             </tbody>
@@ -114,7 +121,7 @@
                     <tr>
                         <td>@mantenimiento.Fecha.ToString("dd/MM/yyyy")</td>
                         <td>@mantenimiento.Descripcion</td>
-                        <td>₡@mantenimiento.Precio</td>
+                        <td>₡@mantenimiento.Precio.ToString("N2")</td>
                         <td>
                             <ul class="mb-0">
                                 @foreach (var detalle in mantenimiento.OperadorMantenimientos)
@@ -148,9 +155,9 @@
                 {
                     <tr>
                         <td>@combustible.FechaCompra.ToString("dd/MM/yyyy")</td>
-                        <td>@combustible.LitrosComprados</td>
-                        <td>₡@combustible.PrecioLitro</td>
-                        <td>₡@combustible.TotalPagado</td>
+                        <td>@combustible.LitrosComprados.ToString("N2")</td>
+                        <td>₡@combustible.PrecioLitro.ToString("N2")</td>
+                        <td>₡@combustible.TotalPagado.ToString("N2")</td>
                     </tr>
                 }
             </tbody>

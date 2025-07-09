@@ -70,7 +70,7 @@ namespace ProyectoIngenieria.Controllers
                 }).ToList();
 
             // 2. Obtener todos los vehículos (puede incluir activos/inactivos según tus reglas)
-            var vehiculos = _unitOfWork.Vehiculo.GetAll().ToList();
+            var vehiculos = _unitOfWork.Vehiculo.GetAll().Where(x => x.TipoVehiculoId != 2).ToList();
 
             // 3. Construir el reporte
             var reportes = vehiculos.Select(v =>
@@ -110,34 +110,36 @@ namespace ProyectoIngenieria.Controllers
             if (fechaInicio > fechaFin)
                 return BadRequest("La fecha de inicio no puede ser mayor que la fecha final.");
 
-            var vehiculos = _unitOfWork.Vehiculo.GetAll();
+            // 1. Cargar todos los datos filtrados por fecha de una sola vez
+            var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll()
+                .Where(m => m.Fecha >= fechaInicio && m.Fecha <= fechaFin)
+                .ToList();
+
+            var combustibles = _unitOfWork.RegistroCombustible.GetAll()
+                .Where(c => c.FechaCompra >= fechaInicio && c.FechaCompra <= fechaFin)
+                .ToList();
+
+            var horas = _unitOfWork.HorasTrabajo.GetAll()
+                .Where(h => h.Fecha >= fechaInicio && h.Fecha <= fechaFin)
+                .ToList();
+
+            var vehiculos = _unitOfWork.Vehiculo.GetAll().ToList();
 
             var sb = new System.Text.StringBuilder();
-
-            // Cabecera CSV
             sb.AppendLine("Modelo,Placa,Rango Fechas,Horas,Ingreso,Combustible,Mantenimiento,Total Gastos,Utilidad");
 
-            foreach (var vehiculo in vehiculos)
+            foreach (var v in vehiculos)
             {
-                var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll()
-                    .Where(m => m.VehiculoId == vehiculo.Id && m.Fecha >= fechaInicio && m.Fecha <= fechaFin);
-                var costosMantenimientos = mantenimientos.Sum(m => m.Precio);
+                var totalHoras = horas.Where(h => h.VehiculoId == v.Id).Sum(h => h.TotalHoras);
+                var ingresoHoras = horas.Where(h => h.VehiculoId == v.Id).Sum(h => h.TotalGanancia);
+                var gastoCombustible = combustibles.Where(c => c.VehiculoId == v.Id).Sum(c => c.TotalPagado);
+                var costoMantenimiento = mantenimientos.Where(m => m.VehiculoId == v.Id).Sum(m => m.Precio);
 
-                var gastoCombustible = _unitOfWork.RegistroCombustible.GetAll()
-                    .Where(c => c.VehiculoId == vehiculo.Id && c.FechaCompra >= fechaInicio && c.FechaCompra <= fechaFin)
-                    .Sum(c => c.TotalPagado);
+                var totalGastos = gastoCombustible + costoMantenimiento;
+                var utilidad = ingresoHoras - totalGastos;
 
-                var ingresoHoras = _unitOfWork.HorasTrabajo.GetAll()
-                    .Where(h => h.VehiculoId == vehiculo.Id && h.Fecha >= fechaInicio && h.Fecha <= fechaFin)
-                    .Sum(h => h.TotalGanancia);
-
-                var totalHoras = _unitOfWork.HorasTrabajo.GetAll()
-                    .Where(h => h.VehiculoId == vehiculo.Id && h.Fecha >= fechaInicio && h.Fecha <= fechaFin)
-                    .Sum(h => h.TotalHoras);
-
-                var fila = $"{vehiculo.Modelo},{vehiculo.Placa},\"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}\"," +
-                           $"{totalHoras},{ingresoHoras},{gastoCombustible},{costosMantenimientos}," +
-                           $"{gastoCombustible + costosMantenimientos},{ingresoHoras - (gastoCombustible + costosMantenimientos)}";
+                var fila = $"{v.Modelo},{v.Placa},\"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}\"," +
+                           $"{totalHoras},{ingresoHoras},{gastoCombustible},{costoMantenimiento},{totalGastos},{utilidad}";
 
                 sb.AppendLine(fila);
             }
@@ -146,6 +148,7 @@ namespace ProyectoIngenieria.Controllers
 
             return File(buffer, "text/csv", $"ReporteVehiculos_{fechaInicio:yyyyMMdd}_{fechaFin:yyyyMMdd}.csv");
         }
+
 
         public IActionResult DetalleReporte()
         {
@@ -234,76 +237,7 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult ReporteDetallado(int? id, DateOnly fechaInicio, DateOnly fechaFin)
         {
-            if (!id.HasValue || id <= 0)
-                return BadRequest("El ID del vehículo debe ser un número positivo mayor que cero.");
-
-            if (fechaInicio > fechaFin)
-                return BadRequest("La fecha de inicio no puede ser mayor que la fecha final.");
-
-            // Obtener vehículo con su marca incluida
-            var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == id, includeProperties: "Marca");
-            if (vehiculo == null)
-                return NotFound($"Vehículo con ID {id} no encontrado.");
-
-            // Mantenimientos
-            var mantenimientos = _unitOfWork.RegistroMantenimiento.GetAll(
-                m => m.VehiculoId == id && m.Fecha >= fechaInicio && m.Fecha <= fechaFin
-            ).ToList();
-
-            var operadorActividad = _unitOfWork.OperadorMantenimiento.GetAll(
-                               om => om.RegistroMantenimiento.Fecha >= fechaInicio && om.RegistroMantenimiento.Fecha <= fechaFin,
-                                              includeProperties: "CatalogoMantenimiento,OperadorCedulaNavigation"
-                                                         ).ToList();
-
-            //Recorre los operadores actividad y agrega el nombre del operador y el tipo de mantenimiento a cada registro de mantenimiento
-            foreach (var mantenimiento in mantenimientos)
-            {
-                var operadores = operadorActividad.Where(om => om.RegistroMantenimientoId == mantenimiento.Id).ToList();
-                if (operadores.Any())
-                {
-                    mantenimiento.OperadorMantenimientos = operadores;
-                    
-                }
-            }
-
-            // Combustibles
-            var combustibles = _unitOfWork.RegistroCombustible.GetAll(
-                c => c.VehiculoId == id && c.FechaCompra >= fechaInicio && c.FechaCompra <= fechaFin
-            ).ToList();
-
-            // Horas trabajadas
-            var horas = _unitOfWork.HorasTrabajo.GetAll(
-                h => h.VehiculoId == id && h.Fecha >= fechaInicio && h.Fecha <= fechaFin,
-                includeProperties: "Proyecto,LugarTrabajo,TipoTrabajo"
-            ).ToList();
-
-            // Cálculos
-            decimal totalHoras = horas.Sum(h => h.TotalHoras);
-            decimal totalIngreso = horas.Sum(h => h.TotalGanancia);
-            decimal gastoMantenimiento = mantenimientos.Sum(m => m.Precio);
-            decimal gastoCombustible = combustibles.Sum(c => c.TotalPagado);
-            decimal utilidad = totalIngreso - (gastoCombustible + gastoMantenimiento);
-
-            // Crear ViewModel
-            var vm = new ReporteDetalladoVM
-            {
-                VehiculoId = vehiculo.Id,
-                Marca = vehiculo.Marca?.NombreMarca ?? "",
-                Modelo = vehiculo.Modelo,
-                Placa = vehiculo.Placa,
-                Fecha_reporte = DateTime.Now.ToString(),
-                Periodo = $"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}",
-                fechaInicio = fechaInicio,
-                fechaFin = fechaFin,
-                TotalHorasTrabajo = totalHoras,
-                TotalIngresos = totalIngreso,
-                GastoMantenimiento = gastoMantenimiento,
-                GastoCombustible = gastoCombustible,
-                Utilidad = utilidad,
-                Mantenimientos = mantenimientos,
-                Combustibles = combustibles,
-                HorasTrabajos = horas
-            };
+            ReporteDetalladoVM vm = ConstructorReporte(id, fechaInicio, fechaFin);
 
             return View(vm);
         }
