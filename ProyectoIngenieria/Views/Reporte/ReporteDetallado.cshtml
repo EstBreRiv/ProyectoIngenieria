@@ -159,5 +159,14 @@
 
     <div class="text-end mt-4">
         <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Volver al inicio</a>
+        <a asp-controller="Reporte"
+           asp-action="DescargarPDF"
+           asp-route-id="@Model.VehiculoId"
+           asp-route-fechaInicio="@Model.fechaInicio"
+           asp-route-fechaFin="@Model.fechaFin"
+           class="btn btn-info"
+           target="_blank">
+            Descargar PDF
+        </a>
     </div>
 </div>
