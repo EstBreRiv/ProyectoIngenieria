@@ -76,7 +76,7 @@ namespace ProyectoIngenieria.Controllers
                     Text = c.Nombre,
                     Value = c.Id.ToString()
                 }),
-                ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
+                ListaOperadores = _unitOfWork.Operador.GetAll(o => o.TipoColaborador != "Inactivo").Select(o => new SelectListItem
                 {
                     Text = o.Nombre,
                     Value = o.Cedula.ToString()

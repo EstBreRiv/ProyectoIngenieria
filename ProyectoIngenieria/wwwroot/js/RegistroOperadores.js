@@ -9,8 +9,9 @@ $(document).ready(function () {
         columns: [
             { data: 'fechaInicio'},
             { data: 'fechaFin' },
-            { data: 'nombreVehiculo' },
-            { data: 'placaVehiculo'},
+            { data: 'marca' },
+            { data: 'modelo' },
+            { data: 'placa'},
             { data: 'nombreOperador'},
             {
                 data: 'id',

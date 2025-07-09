@@ -5,6 +5,7 @@
     <div class="col-md-10">
         <div class="container py-5">
             <form method="post">
+                <input type="hidden" id="redirigirAsignar" name="redirigirAsignar" value="false" />
 
                 <!-- Card contenedora -->
                 <div class="card shadow-sm">
@@ -36,15 +37,7 @@
                                 <input asp-for="Operador.Nombre" type="text" class="form-control" placeholder="Ingrese el nombre del operador" />
                                 <span asp-validation-for="Operador.Nombre" class="form-text text-danger"></span>
                             </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="VehiculoId" class="form-label fw-semibold">Vehículo que opera</label>
-                                <select asp-for="VehiculoId" asp-items="@ViewBag.VehiculosList" class="form-select" required data-val="true" data-val-required="Debe seleccionar un vehículo.">
-                                    <option value="">Seleccione vehículo</option>
-                                </select>
-                                <span asp-validation-for="VehiculoId" class="text-danger small"></span>
-                            </div>
-
+                            
                             <div class="col-md-6">
                                 <label asp-for="Operador.Telefono" class="form-label fw-semibold">Número de teléfono</label>
                                 <input asp-for="Operador.Telefono" type="number" class="form-control" placeholder="Ingrese el número de teléfono del colaborador" />
@@ -62,6 +55,10 @@
                             </div>
 
                             <div class="d-flex justify-content-end gap-2 pt-3">
+                                <button type="submit" class="btn btn-success w-15" onclick="document.getElementById('redirigirAsignar').value = 'true'">
+                                    GUARDAR Y ASIGNAR VEHÍCULO
+                                </button>
+
                                 <button type="submit" class="btn btn-success w-25">
                                     GUARDAR
                                 </button>

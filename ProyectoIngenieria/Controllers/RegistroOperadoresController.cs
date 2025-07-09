@@ -23,27 +23,21 @@ namespace ProyectoIngenieria.Controllers
         [HttpGet]
         public IActionResult GetAll(int? id, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var registros = _unitOfWork.RegistroOperadores.GetAll(
-                r =>
+            var registros = _unitOfWork.RegistroOperadores.GetAll(includeProperties: "Vehiculo,Vehiculo.Marca,OperadorCedulaNavigation").Where(r =>
                     (!id.HasValue || id == 0 || r.VehiculoId == id) &&
                     (!fechaInicio.HasValue || DateOnly.FromDateTime(r.FechaInicio) >= fechaInicio.Value) &&
                     (!fechaFin.HasValue || (r.FechaFin != DateTime.MinValue && DateOnly.FromDateTime(r.FechaFin) <= fechaFin.Value))
             );
 
-            var data = registros.Select(r =>
+            var data = registros.Select(r => new
             {
-                var vehiculo = _unitOfWork.Vehiculo.Get(v => v.Id == r.VehiculoId);
-                var operador = _unitOfWork.Operador.Get(o => o.Cedula == r.OperadorCedula);
-
-                return new
-                {
-                    id = r.Id,
-                    fechaInicio = r.FechaInicio.ToString("dd/MM/yyyy"),
-                    fechaFin = r.FechaFin != DateTime.MinValue ? r.FechaFin.ToString("dd/MM/yyyy") : "",
-                    nombreVehiculo = vehiculo != null ? vehiculo.Modelo: "",
-                    placaVehiculo = vehiculo != null ? vehiculo.Placa : "",
-                    nombreOperador = operador != null ? operador.Nombre : ""
-                };
+                r.Id,
+                fechaInicio = r.FechaInicio.ToString("dd/MM/yyyy"),
+                fechaFin = r.FechaFin != DateTime.MinValue ? r.FechaFin.ToString("dd/MM/yyyy") : "",
+                marca = r.Vehiculo.Marca.NombreMarca,
+                modelo = r.Vehiculo.Modelo,
+                placa = r.Vehiculo.Placa,
+                nombreOperador = r.OperadorCedulaNavigation.Nombre
             }).ToList();
 
             return Json(new { data });
@@ -85,8 +79,8 @@ namespace ProyectoIngenieria.Controllers
                 Value = v.Id.ToString()
             }));
 
-            // Obtener operadores
-            var operadores = _unitOfWork.Operador.GetAll().ToList();
+            // Obtener operadores que tengan tipo de colaborador distinto de Inactivo
+            var operadores = _unitOfWork.Operador.GetAll(o => o.TipoColaborador != "Inactivo").ToList();
             var listaOperadores = new List<SelectListItem>
     {
         new SelectListItem { Text = "Seleccione un operador", Value = "" }
