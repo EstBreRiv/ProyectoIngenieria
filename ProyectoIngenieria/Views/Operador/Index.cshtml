@@ -25,6 +25,16 @@
             </div>
         </div>
 
+        <div class="mb-3">
+            <label for="filtroTipo" class="form-label fw-semibold">Filtrar por tipo:</label>
+            <select id="filtroTipo" class="form-select w-auto d-inline-block">
+                <option value="">Internos y Externos</option>
+                <option value="Interno">Solo Internos</option>
+                <option value="Externo">Solo Externos</option>
+                <option value="Inactivo">Solo Inactivos</option>
+                <option value="Todos">Mostrar Todos</option>
+            </select>
+        </div>
 
         <div class="table-responsive">
             <table id="taskTable" class="table table-bordered table-hover table-sm align-middle text-center">

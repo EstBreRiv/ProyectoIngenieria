@@ -2,85 +2,73 @@
     ViewData["Title"] = "Reporte mensual por vehículo";
 }
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
+<body>
+    <div class="container-fluid mt-5">
+        <div class="card shadow border-0 mx-auto" style="max-width: 1300px;">
+            <div class="card-body">
+                <h1 class="h3 text-success fw-bold">REPORTES</h1>
 
-<!-- Flatpickr CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Flatpickr JS + locale español -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-
-
-
-<div class="container-fluid mt-5">
-    <div class="card shadow border-0 mx-auto" style="max-width: 1300px;">
-        <div class="card-body">
-            <h1 class="h3 text-success fw-bold">REPORTES</h1>
-
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">Fecha inicio:</label>
-                    <input type="text" id="fechaInicio" class="form-control" />
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Fecha inicio:</label>
+                        <input type="text" id="fechaInicio" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Fecha fin:</label>
+                        <input type="text" id="fechaFin" class="form-control" />
+                    </div>
+                    <div class="col-md-3 align-self-end">
+                        <button id="btnGenerar" class="btn btn-success mt-2">Generar Reporte</button>
+                        <button id="btnDescargarCsv" class="btn btn-secondary mt-2">Descargar Excel</button>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">Fecha fin:</label>
-                    <input type="text" id="fechaFin" class="form-control" />
-                </div>
-                <div class="col-md-3 align-self-end">
-                    <button id="btnGenerar" class="btn btn-success mt-2">Generar Reporte</button>
-                    <button id="btnDescargarCsv" class="btn btn-secondary mt-2">Descargar Excel</button>
-                </div>
+
+                <table id="tablaReporte" class="table table-bordered table-hover table-sm align-middle text-center">
+                    <thead class="table-success text-dark ">
+                        <tr>
+                            <th class="text-center">Modelo</th>
+                            <th class="text-center">Placa</th>
+                            <th class="text-center">Fechas</th>
+                            <th class="text-center">Horas de Trabajo</th>
+                            <th class="text-center">Ingreso</th>
+                            <th class="text-center">Gastos por Combustible</th>
+                            <th class="text-center">Gastos por Mantenimiento</th>
+                            <th class="text-center">Total de gastos</th>
+                            <th class="text-center">Utilidad</th>
+                            <th class="text-center" style="color:white">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <h4 class="text-center mt-5">Graficos sobre la utilidad</h4>
+                <canvas id="graficoUtilidad" height="120"></canvas>
             </div>
-
-            <table id="tablaReporte" class="table table-bordered table-hover table-sm align-middle text-center">
-                <thead class="table-success text-dark ">
-                    <tr>
-                        <th class="text-center">Modelo</th>
-                        <th class="text-center">Placa</th>
-                        <th class="text-center">Fechas</th>
-                        <th class="text-center">Horas de Trabajo</th>
-                        <th class="text-center">Ingreso</th>
-                        <th class="text-center">Gastos por Combustible</th>
-                        <th class="text-center">Gastos por Mantenimiento</th>
-                        <th class="text-center">Total de gastos</th>
-                        <th class="text-center">Utilidad</th>
-                        <th class="text-center" style="color:white">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-
-            <h4 class="text-center mt-5">Graficos sobre la utilidad</h4>
-            <canvas id="graficoUtilidad" height="120"></canvas>
         </div>
+
+        <a asp-controller="Home" asp-action="Index"
+           class="btn btn-outline-success rounded-circle shadow p-3"
+           style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+            <i class="bi bi-arrow-left"></i>
+        </a>
     </div>
 
-    <a asp-controller="Home" asp-action="Index"
-       class="btn btn-outline-success rounded-circle shadow p-3"
-       style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
-        <i class="bi bi-arrow-left"></i>
-    </a>
-</div>
 
-<style>
-    div.dataTables_length select {
-        width: auto !important;
-        padding-right: 1.5rem !important;
-        appearance: none !important; /* Oculta la flecha nativa */
-        -webkit-appearance: none !important;
-        background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%23000' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 0.75rem center;
-        background-size: 1rem;
-    }
-</style>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Flatpickr JS + locale español -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+</body>
+
 
 <script>
     let chart;

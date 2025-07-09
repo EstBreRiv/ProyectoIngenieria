@@ -5,6 +5,7 @@
     <div class="col-md-10">
         <div class="container py-5">
             <form method="post">
+                <input type="hidden" id="redirigirAsignar" name="redirigirAsignar" value="false" />
 
                 <!-- Card contenedora -->
                 <div class="card shadow-sm">
@@ -21,8 +22,8 @@
                             @if (Model.Operador.Cedula == 0)
                             {
                                 <div class="col-md-6">
-                                    <label asp-for="Operador.Cedula" class="form-label fw-semibold">CÈdula</label>
-                                    <input asp-for="Operador.Cedula" type="number" class="form-control" placeholder="Ingrese la cÈdula del operador" />
+                                    <label asp-for="Operador.Cedula" class="form-label fw-semibold">C√©dula</label>
+                                    <input asp-for="Operador.Cedula" type="number" class="form-control" placeholder="Ingrese la c√©dula del operador" />
                                     <span asp-validation-for="Operador.Cedula" class="form-text text-danger"></span>
                                 </div>
                             }
@@ -36,18 +37,10 @@
                                 <input asp-for="Operador.Nombre" type="text" class="form-control" placeholder="Ingrese el nombre del operador" />
                                 <span asp-validation-for="Operador.Nombre" class="form-text text-danger"></span>
                             </div>
-
+                            
                             <div class="col-md-6">
-                                <label asp-for="VehiculoId" class="form-label fw-semibold">VehÌculo que opera</label>
-                                <select asp-for="VehiculoId" asp-items="@ViewBag.VehiculosList" class="form-select" required data-val="true" data-val-required="Debe seleccionar un vehÌculo.">
-                                    <option value="">Seleccione vehÌculo</option>
-                                </select>
-                                <span asp-validation-for="VehiculoId" class="text-danger small"></span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="Operador.Telefono" class="form-label fw-semibold">N˙mero de telÈfono</label>
-                                <input asp-for="Operador.Telefono" type="number" class="form-control" placeholder="Ingrese el n˙mero de telÈfono del colaborador" />
+                                <label asp-for="Operador.Telefono" class="form-label fw-semibold">N√∫mero de tel√©fono</label>
+                                <input asp-for="Operador.Telefono" type="number" class="form-control" placeholder="Ingrese el n√∫mero de tel√©fono del colaborador" />
                                 <span asp-validation-for="Operador.Telefono" class="form-text text-danger"></span>
                             </div>
 
@@ -63,27 +56,9 @@
 
                             <div class="d-flex justify-content-end gap-2 pt-3">
 
-                                @* agrega un boton para llamar al metodo de desactivar y que pase por parametro la cedula del modelo *@
-                                @if (Model.Operador.Cedula != 0)
-                                {
-
-                                    if (Model.Operador.TipoColaborador == "Inactivo")
-                                    {
-                                        <button type="button" class="btn btn-success btn-desactivar" data-id="@Model.Operador.Cedula">
-                                           <i class="bi bi-check-circle"></i>  ACTIVAR
-                                        </button>
-
-                                    }
-                                    else
-                                    {
-                                        <button type="button" class="btn btn-danger btn-desactivar" data-id="@Model.Operador.Cedula">
-                                            <i class="bi bi-trash"></i>  DESACTIVAR
-                                        </button>
-                                    }
-
-
-
-                                }
+                              <button type="submit" class="btn btn-success w-15" onclick="document.getElementById('redirigirAsignar').value = 'true'">
+                                    GUARDAR Y ASIGNAR VEH√çCULO
+                                </button>
 
                                 <button type="submit" class="btn btn-success w-25">
                                     GUARDAR
@@ -96,7 +71,7 @@
         </div>
     </div>
 
-    <!-- BotÛn flotante de regreso -->
+    <!-- Bot√≥n flotante de regreso -->
     <a asp-controller="Operador" asp-action="Index"
        class="btn btn-outline-success rounded-circle shadow p-3"
        style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
@@ -114,16 +89,16 @@
             const id = $(this).data('id');
 
             Swal.fire({
-                title: 'øEst·s seguro?',
-                text: "Esta acciÛn puede afectar otras areas donde se involucra al colaborador.",
+                title: '¬øEst√°s seguro?',
+                text: "Esta acci√≥n puede afectar otras areas donde se involucra al colaborador.",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'SÌ',
+                confirmButtonText: 'S√≠',
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '/Operador/DesactivarOperador', // Aseg˙rate de que esta ruta sea correcta
+                        url: '/Operador/DesactivarOperador', // Aseg√∫rate de que esta ruta sea correcta
                         type: 'POST',
                         data: { id: id },
                         success: function (response) {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Repository.Interfaces;
@@ -28,13 +28,26 @@ namespace ProyectoIngenieria.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(string tipo)
         {
-            // Obtiene todos los operadores desde el repositorio
-            // y los devuelve en formato JSON
-            var operadores = _unitOfWork.Operador.GetAll();
+            var operadores = _unitOfWork.Operador.GetAll().ToList();
+
+            if (string.IsNullOrEmpty(tipo))
+            {
+                operadores = operadores.Where(o => o.TipoColaborador != "Inactivo").ToList();
+            }
+            else if (tipo == "Interno" || tipo == "Externo")
+            {
+                operadores = operadores.Where(o => o.TipoColaborador == tipo).ToList();
+            }
+            else if (tipo == "Inactivo")
+            {
+                operadores = operadores.Where(o => o.TipoColaborador == "Inactivo").ToList();
+            }
+
             return Json(new { data = operadores });
         }
+
 
         // Upsert: Permite crear o editar un operador
         //Recibe un id opcional para determinar si es una creación o edición
@@ -79,7 +92,7 @@ namespace ProyectoIngenieria.Controllers
 
         // Upsert: Maneja la creación o actualización del operador
         [HttpPost]
-        public IActionResult Upsert(OperadorVM operadorVM)
+        public IActionResult Upsert(OperadorVM operadorVM, bool redirigirAsignar)
         {
             // Verifica si el modelo es válido
             if (ModelState.IsValid)
@@ -101,17 +114,22 @@ namespace ProyectoIngenieria.Controllers
                 }
 
                 // Crea un registro en el historial de los operadores y las maquinas
-                RegistroOperadore registro = new RegistroOperadore
-                {
-                    OperadorCedula = operadorVM.Operador.Cedula,
-                    FechaInicio = DateTime.Today,
-                    FechaFin = DateTime.Today, // Asigna una fecha de fin por defecto
-                    VehiculoId = operadorVM.VehiculoId
-                };
+                //RegistroOperadore registro = new RegistroOperadore
+                //{
+                //    OperadorCedula = operadorVM.Operador.Cedula,
+                //    FechaInicio = DateTime.Today,
+                //    FechaFin = DateTime.Today, // Asigna una fecha de fin por defecto
+                //    VehiculoId = operadorVM.VehiculoId
+                //};
+                //_unitOfWork.RegistroOperadores.Add(registro);
 
-                // Si el vehículo no es nulo, se asigna al registro y se guarda
-                _unitOfWork.RegistroOperadores.Add(registro);
                 _unitOfWork.Save();
+
+                if (redirigirAsignar)
+                {
+                    return RedirectToAction("Upsert", "RegistroOperadores");
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -125,77 +143,60 @@ namespace ProyectoIngenieria.Controllers
             return View(operadorVM);
         }
 
-        //Desactivar operador
-        [HttpPost]
-        public IActionResult DesactivarOperador(int id)
+        [HttpDelete]
+        public IActionResult Delete(int? id)
         {
-            // Busca el operador por su cédula
-            var operador = _unitOfWork.Operador.Get(o => o.Cedula == id);
-
-            // Si no se encuentra el operador, retorna un mensaje de error
-            if (operador == null)
+            try
             {
-                return Json(new { success = false, message = "Error al desactivar el operador" });
+                if (id == null || id == 0)
+                {
+                    return NotFound();
+                }
+
+                var operador = _unitOfWork.Operador.Get(u => u.Cedula == id);
+                if (operador == null)
+                {
+                    return NotFound();
+                }
+
+                //soft delete
+                operador.TipoColaborador = "Inactivo"; // Cambiar estado a Inactivo
+                _unitOfWork.Operador.Update(operador);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Se ha inactivado exitosamente" });
             }
-
-            if (operador.TipoColaborador == "Inactivo")
+            catch
             {
-                operador.TipoColaborador = "Interno";
+                return Json(new { success = false, message = "No se pudo inactivar" });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Activar(int? id)
+        {
+            try
+            {
+                if (id == null || id == 0)
+                {
+                    return NotFound();
+                }
+
+                var operador = _unitOfWork.Operador.Get(u => u.Cedula == id);
+                if (operador == null)
+                {
+                    return NotFound();
+                }
+
+                operador.TipoColaborador = "Externo";
                 _unitOfWork.Operador.Update(operador);
                 _unitOfWork.Save();
 
-                // Retorna un mensaje de éxito al desactivar
-                return Json(new { success = true, message = "Operador desactivado correctamente" });
+                return Json(new { success = true, message = "Se ha activado exitosamente" });
             }
-            // Cambia el estado del operador a "Inactivo"
-            operador.TipoColaborador = "Inactivo";
-            _unitOfWork.Operador.Update(operador);
-            _unitOfWork.Save();
-
-            // Retorna un mensaje de éxito al desactivar
-            return Json(new { success = true, message = "Operador desactivado correctamente" });
-        }
-
-        // Elimina un operador por su ID
-        [HttpDelete]
-        public IActionResult Delete(int id)
-        {
-            // Busca el operador por su cédula
-            var operador = _unitOfWork.Operador.Get(o => o.Cedula == id);
-
-            // Si no se encuentra el operador, retorna un mensaje de error
-            if (operador == null)
+            catch
             {
-                return Json(new { success = false, message = "Error al borrar el operador" });
+                return Json(new { success = false, message = "No se pudo activar" });
             }
-
-            // Elimina los documentos asociados al operador
-            var documentos = _unitOfWork.DocumentoOperador.GetAll().Where(d => d.OperadorCedula == id).ToList();
-            // Elimina las rutas de los documentos del operador
-            foreach (var doc in documentos)
-            {
-                var rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", doc.Ruta.TrimStart('/'));
-                if (System.IO.File.Exists(rutaCompleta))
-                {
-                    System.IO.File.Delete(rutaCompleta);
-                }
-
-                _unitOfWork.DocumentoOperador.Remove(doc);
-            }
-
-            var registrosOperadores = _unitOfWork.RegistroOperadores.GetAll().Where(ro => ro.OperadorCedula == id).ToList();
-            // Elimina los registros de operadores asociados al operador
-            foreach (var registro in registrosOperadores)
-            {
-                _unitOfWork.RegistroOperadores.Remove(registro);
-            }
-
-            // Elimina el operador del repositorio y guarda los cambios
-            _unitOfWork.Operador.Remove(operador);
-            _unitOfWork.Save();
-
-            // Retorna un mensaje de éxito al eliminar
-            return Json(new { success = true, message = "Operador eliminado correctamente" });
         }
 
 
