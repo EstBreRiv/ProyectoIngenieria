@@ -14,6 +14,10 @@
 
         public string Periodo { get; set; } = string.Empty;
 
+        public DateOnly fechaInicio { get; set; }
+
+        public DateOnly fechaFin { get; set; }
+
         public decimal TotalIngresos { get; set; } = 0;
 
         public decimal TotalHorasTrabajo { get; set; }
