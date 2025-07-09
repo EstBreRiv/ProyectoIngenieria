@@ -41,13 +41,13 @@
                         </dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Litros comprados</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroCombustible.LitrosComprados</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroCombustible.LitrosComprados.ToString("N2")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Precio del litro</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroCombustible.PrecioLitro</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroCombustible.PrecioLitro.ToString("N2")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Total pagado</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroCombustible.TotalPagado</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.RegistroCombustible.TotalPagado.ToString("N2")</dd>
                     </dl>
 
                     <div class="mt-4 d-flex justify-content-center">

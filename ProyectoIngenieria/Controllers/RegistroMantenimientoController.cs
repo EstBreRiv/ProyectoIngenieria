@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models.ViewModels;
 using ProyectoIngenieria.Models;
@@ -148,7 +148,7 @@ namespace ProyectoIngenieria.Controllers
                     Value = r.Id.ToString()
                 });
 
-                viewModel.ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
+                viewModel.ListaOperadores = _unitOfWork.Operador.GetAll().Where(x => x.TipoColaborador != "Inactivo").Select(o => new SelectListItem
                 {
                     Text = o.Nombre,
                     Value = o.Cedula.ToString()

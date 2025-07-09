@@ -21,7 +21,7 @@
 
 
                         <dt class="col-12 col-sm-4 text-sm-end">Fecha</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.Fecha</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.Fecha.ToString("dd/MM/yyyy")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Proyecto</dt>
                         <dd class="col-12 col-sm-6 text-sm-start">
@@ -45,19 +45,19 @@
                         </dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Horómetro inicial</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroInicial</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroInicial.ToString("N2")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Horómetro final</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroFinal</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroFinal.ToString("N2")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Total de horas</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalHoras</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalHoras.ToString("N2")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Precio por hora</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.PrecioHora</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.PrecioHora.ToString("N2")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Ganancia total</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalGanancia</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalGanancia.ToString("N2")</dd>
                     </dl>
 
                     <div class="mt-4 d-flex justify-content-center">

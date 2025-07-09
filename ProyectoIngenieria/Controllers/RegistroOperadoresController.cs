@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoIngenieria.Models;
 using ProyectoIngenieria.Models.ViewModels;
@@ -81,6 +81,7 @@ namespace ProyectoIngenieria.Controllers
 
             // Obtener operadores que tengan tipo de colaborador distinto de Inactivo
             var operadores = _unitOfWork.Operador.GetAll(o => o.TipoColaborador != "Inactivo").ToList();
+
             var listaOperadores = new List<SelectListItem>
     {
         new SelectListItem { Text = "Seleccione un operador", Value = "" }
