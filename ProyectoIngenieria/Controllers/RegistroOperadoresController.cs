@@ -86,7 +86,7 @@ namespace ProyectoIngenieria.Controllers
             }));
 
             // Obtener operadores
-            var operadores = _unitOfWork.Operador.GetAll().ToList();
+            var operadores = _unitOfWork.Operador.GetAll().Where(x => x.TipoColaborador != "Inactivo").ToList();
             var listaOperadores = new List<SelectListItem>
     {
         new SelectListItem { Text = "Seleccione un operador", Value = "" }

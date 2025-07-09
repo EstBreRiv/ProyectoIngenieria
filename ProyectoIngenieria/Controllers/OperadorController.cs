@@ -125,6 +125,37 @@ namespace ProyectoIngenieria.Controllers
             return View(operadorVM);
         }
 
+        //Desactivar operador
+        [HttpPost]
+        public IActionResult DesactivarOperador(int id)
+        {
+            // Busca el operador por su cédula
+            var operador = _unitOfWork.Operador.Get(o => o.Cedula == id);
+
+            // Si no se encuentra el operador, retorna un mensaje de error
+            if (operador == null)
+            {
+                return Json(new { success = false, message = "Error al desactivar el operador" });
+            }
+
+            if (operador.TipoColaborador == "Inactivo")
+            {
+                operador.TipoColaborador = "Interno";
+                _unitOfWork.Operador.Update(operador);
+                _unitOfWork.Save();
+
+                // Retorna un mensaje de éxito al desactivar
+                return Json(new { success = true, message = "Operador desactivado correctamente" });
+            }
+            // Cambia el estado del operador a "Inactivo"
+            operador.TipoColaborador = "Inactivo";
+            _unitOfWork.Operador.Update(operador);
+            _unitOfWork.Save();
+
+            // Retorna un mensaje de éxito al desactivar
+            return Json(new { success = true, message = "Operador desactivado correctamente" });
+        }
+
         // Elimina un operador por su ID
         [HttpDelete]
         public IActionResult Delete(int id)

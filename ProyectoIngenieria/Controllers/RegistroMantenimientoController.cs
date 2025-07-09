@@ -76,7 +76,7 @@ namespace ProyectoIngenieria.Controllers
                     Text = c.Nombre,
                     Value = c.Id.ToString()
                 }),
-                ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
+                ListaOperadores = _unitOfWork.Operador.GetAll().Where(x => x.TipoColaborador != "Inactivo").Select(o => new SelectListItem
                 {
                     Text = o.Nombre,
                     Value = o.Cedula.ToString()
@@ -148,7 +148,7 @@ namespace ProyectoIngenieria.Controllers
                     Value = r.Id.ToString()
                 });
 
-                viewModel.ListaOperadores = _unitOfWork.Operador.GetAll().Select(o => new SelectListItem
+                viewModel.ListaOperadores = _unitOfWork.Operador.GetAll().Where(x => x.TipoColaborador != "Inactivo").Select(o => new SelectListItem
                 {
                     Text = o.Nombre,
                     Value = o.Cedula.ToString()

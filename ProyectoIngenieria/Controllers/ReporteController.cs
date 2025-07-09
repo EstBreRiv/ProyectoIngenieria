@@ -70,7 +70,7 @@ namespace ProyectoIngenieria.Controllers
                 }).ToList();
 
             // 2. Obtener todos los vehículos (puede incluir activos/inactivos según tus reglas)
-            var vehiculos = _unitOfWork.Vehiculo.GetAll().Where(x => x.TipoVehiculoId != 2).ToList();
+            var vehiculos = _unitOfWork.Vehiculo.GetAll().Where(x => x.TipoVehiculoId != 2 && x.Estado != "Inactivo").ToList();
 
             // 3. Construir el reporte
             var reportes = vehiculos.Select(v =>
