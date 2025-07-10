@@ -22,8 +22,7 @@ public class NotificacionBackgroundService : BackgroundService
             using (var scope = _serviceProvider.CreateScope())
             {
                 var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-                DateOnly hoy = new DateOnly(2025, 10, 5);
-                //DateOnly hoy = DateOnly.FromDateTime(DateTime.Today);
+                DateOnly hoy = DateOnly.FromDateTime(DateTime.Today);
                 var vehiculos = unitOfWork.Vehiculo.GetAll(includeProperties: "TipoVehiculo").ToList();
 
                 //BLOQUE DE NOTIFICACION DE INSPECCION VEHICULAR
