@@ -55,7 +55,11 @@ namespace ProyectoIngenieria.Services
             await browserFetcher.DownloadAsync();
             using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
             using var page = await browser.NewPageAsync();
-            await page.SetContentAsync(html);
+            await page.SetContentAsync(html, new NavigationOptions
+            {
+                WaitUntil = new[] { WaitUntilNavigation.Networkidle0 }
+            });
+
             return await page.PdfDataAsync(new PdfOptions
             {
                 Format = PaperFormat.A4,
