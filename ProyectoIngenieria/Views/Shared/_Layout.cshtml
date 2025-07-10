@@ -147,15 +147,20 @@
                                 </a>
                             </li>
 
-                            <!-- Agregar otro usuario Admin -->
-                            <li class="nav-item">
-                                <a class="nav-link dropdown-toggle text-muted" asp-area="Identity" asp-controller="Account" asp-action="Register">Agregar nuevo usuario</a>
-                            </li>
+                            
 
                         }
                     </ul>
 
-                    <div class="ms-auto">
+                    
+                    <div class="ms-auto d-flex align-items-center gap-3">
+                        @if (User.IsInRole(ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin))
+                        {
+                            <!-- Agregar otro usuario Admin -->
+                            <a class="nav-link text-muted" asp-area="Identity" asp-controller="Account" asp-action="Register">
+                                <i class="bi bi-person-plus"></i> Agregar nuevo Admin
+                            </a>
+                        }
                         <partial name="_LoginPartial" />
                     </div>
                 </div>
