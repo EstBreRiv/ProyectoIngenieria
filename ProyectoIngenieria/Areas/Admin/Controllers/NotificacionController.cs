@@ -39,9 +39,9 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     n.Titulo,
                     n.Descripcion,
                     Fecha = n.Fecha.ToString("dd/MM/yyyy"),
-                    n.Vehiculo.Placa,
-                    n.Vehiculo.Modelo,
-                    n.Leida
+                    Placa = n.Vehiculo.Placa,
+                    Modelo = n.Vehiculo.Modelo,
+                    Leida = n.Leida
                 })
                 .ToList();
 
