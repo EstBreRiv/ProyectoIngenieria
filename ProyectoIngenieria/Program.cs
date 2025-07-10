@@ -17,6 +17,11 @@ builder.Services.AddDbContext<ProyectoIngenieriaContext>(options =>
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ProyectoIngenieriaContext>().AddDefaultTokenProviders();
 
+//Este bloque es necesario para rutas de login correctas
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+});
 
 builder.Services.AddRazorPages();
 
