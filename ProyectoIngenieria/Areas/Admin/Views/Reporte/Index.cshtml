@@ -1,0 +1,335 @@
+﻿@{
+    ViewData["Title"] = "Reporte mensual por vehículo";
+}
+
+
+<body>
+    <div class="container-fluid mt-5">
+        <div class="card shadow border-0 mx-auto" style="max-width: 1300px;">
+            <div class="card-body">
+                <h1 class="h3 text-success fw-bold">REPORTES</h1>
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Fecha inicio:</label>
+                        <input type="text" id="fechaInicio" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Fecha fin:</label>
+                        <input type="text" id="fechaFin" class="form-control" />
+                    </div>
+                    <div class="col-md-3 align-self-end">
+                        <button id="btnGenerar" class="btn btn-success mt-2">Generar Reporte</button>
+                        <button id="btnDescargarCsv" class="btn btn-secondary mt-2">Descargar Excel</button>
+                    </div>
+                </div>
+
+                <table id="tablaReporte" class="table table-bordered table-hover table-sm align-middle text-center">
+                    <thead class="table-success text-dark ">
+                        <tr>
+                            <th class="text-center">Modelo</th>
+                            <th class="text-center">Placa</th>
+                            <th class="text-center">Fechas</th>
+                            <th class="text-center">Horas de Trabajo</th>
+                            <th class="text-center">Ingreso</th>
+                            <th class="text-center">Gastos por Combustible</th>
+                            <th class="text-center">Gastos por Mantenimiento</th>
+                            <th class="text-center">Total de gastos</th>
+                            <th class="text-center">Utilidad</th>
+                            <th class="text-center" style="color:white">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <h4 class="text-center mt-5">Graficos sobre la utilidad</h4>
+                <canvas id="graficoUtilidad" height="120"></canvas>
+            </div>
+        </div>
+
+        <a asp-controller="Home" asp-action="Index"
+           class="btn btn-outline-success rounded-circle shadow p-3"
+           style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+    </div>
+
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Flatpickr JS + locale español -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+</body>
+
+
+<script>
+    let chart;
+
+    $(document).ready(function () {
+
+        // Inicializar Flatpickr con idioma español y formato dd/mm/yyyy
+        flatpickr("#fechaInicio", {
+            locale: "es",
+            dateFormat: "d/m/Y"
+        });
+
+        flatpickr("#fechaFin", {
+            locale: "es",
+            dateFormat: "d/m/Y"
+        });
+
+        const tabla = $('#tablaReporte').DataTable({
+            columns: [
+                { data: "modelo", "width": "10%"},
+                { data: "placa", "width": "8%" },
+                { data: "mes", "width": "17%" },
+                { data: "totalHoras", "width": "7%" },
+                {
+                    data: "ingresoTotal", "width": "11%",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "gastoCombustible", "width": "11%",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "gastoMantenimiento", "width": "11%",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "totalGastos", "width": "11%",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: "utilidad", "width": "11%",
+                    render: $.fn.dataTable.render.number(',', '.', 2, '₡')
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return `<button class="btn btn-outline-dark btn-sm btn-detalle-reporte" data-id="${row.vehiculoId}">Detalles</button>`;
+                    },
+                    width: "8%"
+                }
+            ],
+            scrollX: true,
+            language: {
+                search: "Buscar:",
+                lengthMenu: "Mostrar _MENU_ registros",
+                info: "Mostrando _START_ a _END_ de _TOTAL_",
+                paginate: {
+                    previous: "Anterior",
+                    next: "Siguiente"
+                },
+                zeroRecords: "No hay datos para el mes seleccionado"
+            }
+        });
+
+        $('#btnGenerar').click(function () {
+            const fechaInicio = $('#fechaInicio').val();
+            const fechaFin = $('#fechaFin').val();
+
+            if (!fechaInicio || !fechaFin) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Fechas incompletas',
+                    text: 'Por favor, seleccione ambas fechas: inicio y fin.'
+                });
+                return;
+            }
+
+            // Convertir fechas d/m/Y a formato ISO yyyy-mm-dd para enviar al backend
+            const partesInicio = fechaInicio.split('/');
+            const partesFin = fechaFin.split('/');
+
+            const fechaInicioISO = `${partesInicio[2]}-${partesInicio[1]}-${partesInicio[0]}`;
+            const fechaFinISO = `${partesFin[2]}-${partesFin[1]}-${partesFin[0]}`;
+
+            if (fechaInicioISO > fechaFinISO) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Rango inválido',
+                    text: 'La fecha de inicio no puede ser mayor que la fecha de fin.'
+                });
+                return;
+            }
+
+            $(document).on('click', '.btn-detalle-reporte', function () {
+                const id = $(this).data('id');
+                const fechaInicio = $('#fechaInicio').val();
+                const fechaFin = $('#fechaFin').val();
+
+                if (!fechaInicio || !fechaFin) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Fechas incompletas',
+                        text: 'Por favor, seleccione ambas fechas para ver el reporte detallado.'
+                    });
+                    return;
+                }
+
+                const partesInicio = fechaInicio.split('/');
+                const partesFin = fechaFin.split('/');
+
+                const fechaInicioISO = `${partesInicio[2]}-${partesInicio[1]}-${partesInicio[0]}`;
+                const fechaFinISO = `${partesFin[2]}-${partesFin[1]}-${partesFin[0]}`;
+
+                if (fechaInicioISO > fechaFinISO) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Rango inválido',
+                        text: 'La fecha de inicio no puede ser mayor que la fecha de fin.'
+                    });
+                    return;
+                }
+
+                const url = `/Admin/Reporte/ReporteDetallado?id=${id}&fechaInicio=${fechaInicioISO}&fechaFin=${fechaFinISO}`;
+                window.location.href = url;
+            });
+
+
+            $.ajax({
+                url: `/Admin/Reporte/GetReporteDataByFecha`,
+                method: 'GET',
+                data: {
+                    fechaInicio: fechaInicioISO,
+                    fechaFin: fechaFinISO
+                },
+                success: function (result) {
+                    tabla.clear().rows.add(result.data).draw();
+                    actualizarGrafico(result.data);
+                },
+                error: function (xhr) {
+                    console.error("Error:", xhr);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al cargar',
+                        text: 'No se pudieron obtener los datos del servidor.'
+                    });
+                }
+            });
+        });
+
+        $('#btnDescargarCsv').click(function () {
+            const fechaInicio = $('#fechaInicio').val();
+            const fechaFin = $('#fechaFin').val();
+
+            if (!fechaInicio || !fechaFin) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Fechas incompletas',
+                    text: 'Por favor, seleccione ambas fechas para descargar el reporte.'
+                });
+                return;
+            }
+
+            // Convertir fechas d/m/Y a formato ISO yyyy-mm-dd para enviar al backend
+            const partesInicio = fechaInicio.split('/');
+            const partesFin = fechaFin.split('/');
+
+            const fechaInicioISO = `${partesInicio[2]}-${partesInicio[1]}-${partesInicio[0]}`;
+            const fechaFinISO = `${partesFin[2]}-${partesFin[1]}-${partesFin[0]}`;
+
+            if (fechaInicioISO > fechaFinISO) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Rango inválido',
+                    text: 'La fecha de inicio no puede ser mayor que la fecha de fin.'
+                });
+                return;
+            }
+
+            const url = `/Admin/Reporte/DescargarReporteCsv?fechaInicio=${fechaInicioISO}&fechaFin=${fechaFinISO}`;
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `ReporteVehiculos_${fechaInicioISO}_${fechaFinISO}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        function actualizarGrafico(data) {
+            const top10 = [...data]
+                .sort((a, b) => b.utilidad - a.utilidad)
+                .slice(0, 10);
+
+            const labels = top10.map(r => `${r.modelo} (${r.placa})`);
+            const utilidades = top10.map(r => r.utilidad);
+            const ingresos = top10.map(r => r.ingresoTotal);
+            const gastos = top10.map(r => r.totalGastos);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            const ctx = document.getElementById('graficoUtilidad').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Utilidad (₡)',
+                            data: utilidades,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Ingreso Total (₡)',
+                            data: ingresos,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Gastos Totales (₡)',
+                            data: gastos,
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ₡${ctx.raw.toLocaleString()}`
+                            }
+                        },
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Top 10 vehículos - Comparación de Utilidad, Ingresos y Gastos'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => '₡' + value.toLocaleString()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+    });
+</script>
+
+

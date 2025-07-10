@@ -3,7 +3,7 @@
 $(document).ready(function () {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            url: '/RegistroOperadores/GetAll',
+            url: '/Admin/RegistroOperadores/GetAll',
             dataSrc: 'data'
         },
         columns: [
@@ -17,7 +17,7 @@ $(document).ready(function () {
                 data: 'id',
                 render: function (data) {
                     return `
-                        <a href="/RegistroOperadores/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
+                        <a href="/Admin/RegistroOperadores/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                         `;

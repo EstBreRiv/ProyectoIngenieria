@@ -8,7 +8,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            "url": "/Proyecto/GetAll"
+            "url": "/Admin/Proyecto/GetAll"
         },
         "columns": [
 
@@ -21,7 +21,7 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data, type, row) {
                     return `
-                        <a href="/Proyecto/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-success btn-sm mx-2" title="Editar">
+                        <a href="/Admin/Proyecto/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                     `;
@@ -53,7 +53,7 @@ function Delete(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/Proyecto/Delete/${id}`,
+                url: `/Admin/Proyecto/Delete/${id}`,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {

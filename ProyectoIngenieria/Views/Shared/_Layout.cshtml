@@ -25,7 +25,7 @@
     <header class="sticky-top">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
             <div class="container">
-                <a class="navbar-brand fw-bold text-success" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand fw-bold text-success" asp-area="Admin" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-tools me-1"></i> EXCAVACIONES Y TRANSPORTES RIVERA
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -37,109 +37,114 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-success fw-semibold" : "text-muted")"
-                               asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-house-door-fill me-1"></i> Inicio
-                            </a>
-                        </li>
+                        <!-- Se muestra solo al usuario Admin -->
+                        @if (User.IsInRole(ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin))
+                        {
 
-                        <!-- Administración -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-briefcase-fill me-1"></i> Administración
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Empresa" asp-action="Index">
-                                        <i class="bi bi-building me-1"></i> Empresas
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Proyecto" asp-action="Index">
-                                        <i class="bi bi-kanban me-1"></i> Proyectos
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="LugarTrabajo" asp-action="Index">
-                                        <i class="bi bi-geo-alt me-1"></i> Lugares de trabajo
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="TipoTrabajo" asp-action="Index">
-                                        <i class="bi bi-list-check me-1"></i> Categorías de trabajo
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-success fw-semibold" : "text-muted")"
+                                   asp-area="Admin" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-house-door-fill me-1"></i> Inicio
+                                </a>
+                            </li>
+
+                            <!-- Administración -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-muted" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-briefcase-fill me-1"></i> Administración
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Empresa" asp-action="Index">
+                                            <i class="bi bi-building me-1"></i> Empresas
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Proyecto" asp-action="Index">
+                                            <i class="bi bi-kanban me-1"></i> Proyectos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="LugarTrabajo" asp-action="Index">
+                                            <i class="bi bi-geo-alt me-1"></i> Lugares de trabajo
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="TipoTrabajo" asp-action="Index">
+                                            <i class="bi bi-list-check me-1"></i> Categorías de trabajo
+                                        </a>
+                                    </li>
                                
-                                <li>
-                                    <a class="dropdown-item" asp-controller="HorasTrabajo" asp-action="Index">
-                                        <i class="bi bi-clock-history me-1"></i> Horas de trabajo
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="HorasTrabajo" asp-action="Index">
+                                            <i class="bi bi-clock-history me-1"></i> Horas de trabajo
+                                        </a>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Reporte" asp-action="Index">
-                                        <i class="bi bi-file-earmark-bar-graph me-1"></i> Reportes
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Reporte" asp-action="Index">
+                                            <i class="bi bi-file-earmark-bar-graph me-1"></i> Reportes
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <!-- Flota -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted" href="#" id="fleetDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-truck me-1"></i> Flota
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="fleetDropdown">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Vehiculo" asp-action="Index">
-                                        <i class="bi bi-truck-front me-1"></i> Vehículos
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Marca" asp-action="Index">
-                                        <i class="bi bi-tags me-1"></i> Marcas de vehículos
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="TipoVehiculo" asp-action="Index">
-                                        <i class="bi bi-truck-flatbed me-1"></i> Tipos de vehículos
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="RegistroMantenimiento" asp-action="Index">
-                                        <i class="bi bi-wrench-adjustable-circle me-1"></i> Mantenimientos
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <!-- Flota -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-muted" href="#" id="fleetDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-truck me-1"></i> Flota
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="fleetDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Vehiculo" asp-action="Index">
+                                            <i class="bi bi-truck-front me-1"></i> Vehículos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Marca" asp-action="Index">
+                                            <i class="bi bi-tags me-1"></i> Marcas de vehículos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="TipoVehiculo" asp-action="Index">
+                                            <i class="bi bi-truck-flatbed me-1"></i> Tipos de vehículos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="RegistroMantenimiento" asp-action="Index">
+                                            <i class="bi bi-wrench-adjustable-circle me-1"></i> Mantenimientos
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <!-- Personal -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted" href="#" id="staffDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-fill me-1"></i> Personal
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="staffDropdown">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Operador" asp-action="Index">
-                                        <i class="bi bi-person-workspace me-1"></i> Operadores
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <!-- Personal -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-muted" href="#" id="staffDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-fill me-1"></i> Personal
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="staffDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Operador" asp-action="Index">
+                                            <i class="bi bi-person-workspace me-1"></i> Operadores
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                       
-                          <!-- Notificacion -->
-                        <li class="nav-item position-relative">
-                            <a class="nav-link text-muted" asp-controller="Notificacion" asp-action="Index" id="notificacionLink">
-                                <i class="bi bi-bell-fill"></i>
-                                <span class="position-absolute top-60 translate-middle-y p-1 bg-danger border border-light rounded-circle"
-                                      id="puntoRojo"
-                                      style="right: 6px; display: none;">
-                                    <span class="visually-hidden">Nueva notificación</span>
-                                </span>
-                            </a>
-                        </li>
+                              <!-- Notificacion -->
+                            <li class="nav-item position-relative">
+                                <a class="nav-link text-muted" asp-area="Admin" asp-controller="Notificacion" asp-action="Index" id="notificacionLink">
+                                    <i class="bi bi-bell-fill"></i>
+                                    <span class="position-absolute top-60 translate-middle-y p-1 bg-danger border border-light rounded-circle"
+                                          id="puntoRojo"
+                                          style="right: 6px; display: none;">
+                                        <span class="visually-hidden">Nueva notificación</span>
+                                    </span>
+                                </a>
+                            </li>
 
+                        }
                     </ul>
 
                     <div class="ms-auto">
@@ -191,7 +196,7 @@
 
     <!-- Si hay notificaciones sin leer, el punto rojo de la campana se muestra -->
     <script>
-        fetch("/Notificacion/HayNotificaciones")
+        fetch("/Admin/Notificacion/HayNotificaciones")
             .then(response => response.json())
             .then(data => {
                 if (data.hay) {

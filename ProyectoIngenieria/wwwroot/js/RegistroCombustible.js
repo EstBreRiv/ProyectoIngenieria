@@ -31,7 +31,7 @@ $(document).ready(function () {
 function inicializarTabla(vehiculoId) {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            url: "/RegistroCombustible/GetAll",
+            url: "/Admin/RegistroCombustible/GetAll",
             data: function (d) {
                 d.id = vehiculoId;
                 d.fechaInicio = $("#filtroInicio").val(); // formato: YYYY-MM-DD
@@ -49,11 +49,11 @@ function inicializarTabla(vehiculoId) {
                 data: "id",
                 render: function (data) {
                     return `
-                        <a href="/RegistroCombustible/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
+                        <a href="/Admin/RegistroCombustible/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
 
-                        <a href="/RegistroCombustible/DetalleRegistroCombustible/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                        <a href="/Admin/RegistroCombustible/DetalleRegistroCombustible/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                             <i class="bi bi-info-circle"></i>
                         </a>
                         `;

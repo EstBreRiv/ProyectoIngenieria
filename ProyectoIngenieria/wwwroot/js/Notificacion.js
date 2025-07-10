@@ -3,7 +3,7 @@
 $(document).ready(function () {
     dataTable = $('#notificacionesTable').DataTable({
         ajax: {
-            url: "/Notificacion/GetAll",
+            url: "/Admin/Notificacion/GetAll",
             dataSrc: "data"
         },
         columns: [
@@ -63,7 +63,7 @@ $('#btnEliminarSeleccionadas').on('click', function () {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch("/Notificacion/EliminarSeleccionadas", {
+            fetch("/Admin/Notificacion/EliminarSeleccionadas", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

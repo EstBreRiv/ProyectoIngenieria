@@ -20,23 +20,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\HorasTrabajo\DetalleHorasTrabajo.cshtml">
+    <Content Update="Areas\Admin\Views\HorasTrabajo\DetalleHorasTrabajo.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Views\Operador\DocumentoOperador.cshtml">
+    <Content Update="Areas\Admin\Views\Operador\DocumentoOperador.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Views\Operador\Index.cshtml">
+    <Content Update="Areas\Admin\Views\Operador\Index.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Views\RegistroCombustible\DetalleRegistroCombustible.cshtml">
+    <Content Update="Areas\Admin\Views\RegistroCombustible\DetalleRegistroCombustible.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Views\Vehiculo\DocumentoVehiculo.cshtml">
+    <Content Update="Areas\Admin\Views\Vehiculo\DocumentoVehiculo.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

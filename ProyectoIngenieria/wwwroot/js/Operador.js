@@ -10,7 +10,7 @@
 function loadDataTable() {
     dataTable = $('#taskTable').DataTable({
         ajax: {
-            url: "/Operador/GetAll",
+            url: "/Admin/Operador/GetAll",
             type: "GET",
             datatype: "json",
             data: function (d) {
@@ -31,11 +31,11 @@ function loadDataTable() {
                     const funcion = esInactivo ? `Activar('${data}')` : `Delete('${data}')`;
 
                     return `
-                        <a href="/Operador/DocumentoOperador/${data}" class="btn btn-secondary btn-sm mx-2" title="Documentos">
+                        <a href="/Admin/Operador/DocumentoOperador/${data}" class="btn btn-secondary btn-sm mx-2" title="Documentos">
                             <i class="bi bi-folder2-open"></i>
                         </a>
 
-                        <a href="/Operador/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
+                        <a href="/Admin/Operador/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
 
@@ -67,14 +67,14 @@ function Delete(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Operador/Delete/" + id,
+                url: "/Admin/Operador/Delete/" + id,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
                         toastr.success(data.message);
                         setTimeout(() => {
-                            window.location.href = '/Operador/Index';
+                            window.location.href = '/Admin/Operador/Index';
                         }, 20);
                     } else {
                         toastr.error(data.message);
@@ -99,12 +99,12 @@ function Activar(id) {
         confirmButtonText: 'Sí, activar'
     }).then((result) => {
         if (result.isConfirmed) {
-            $.post("/Operador/Activar", { id: id })
+            $.post("/Admin/Operador/Activar", { id: id })
                 .done(function (data) {
                     if (data.success) {
                         toastr.success(data.message);
                         setTimeout(() => {
-                            window.location.href = '/Operador/Index';
+                            window.location.href = '/Admin/Operador/Index';
                         }, 20);
                     } else {
                         toastr.error(data.message);

@@ -21,7 +21,7 @@ $(document).ready(function () {
 function loadDataTable(vehiculoId) {
     dataTable = $('#tablaMantenimiento').DataTable({
         ajax: {
-            url: "/RegistroMantenimiento/GetAll",
+            url: "/Admin/RegistroMantenimiento/GetAll",
             data: function (d) {
                 d.id = vehiculoId; // ID del vehículo
                 d.fechaInicio = $('#filtroInicio').val();
@@ -39,11 +39,11 @@ function loadDataTable(vehiculoId) {
                 render: function (data) {
                     return `
 
-                        <a href="/RegistroMantenimiento/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
+                        <a href="/Admin/RegistroMantenimiento/Upsert/${data}?vehiculoId=${$("#VehiculoIdHidden").val()}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
 
-                        <a href="/RegistroMantenimiento/Details/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
+                        <a href="/Admin/RegistroMantenimiento/Details/${data}" class="btn btn-success btn-sm mx-2" title="Ver detalles">
                              <i class="bi bi-info-circle"></i>
                         </a>
                     `;
