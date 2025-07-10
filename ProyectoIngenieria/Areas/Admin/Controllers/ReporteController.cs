@@ -226,6 +226,8 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                 Placa = vehiculo.Placa,
                 Fecha_reporte = DateTime.Now.ToString(),
                 Periodo = $"{fechaInicio:dd/MM/yyyy} - {fechaFin:dd/MM/yyyy}",
+                fechaInicio = fechaInicio,
+                fechaFin = fechaFin,
                 TotalHorasTrabajo = totalHoras,
                 TotalIngresos = totalIngreso,
                 GastoMantenimiento = gastoMantenimiento,
