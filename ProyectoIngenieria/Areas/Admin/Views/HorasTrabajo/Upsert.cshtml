@@ -116,7 +116,15 @@
                                 <input asp-for="HorasTrabajo.HorometroFinal" class="form-control" type="number" step="0.01" />
                                 <span asp-validation-for="HorasTrabajo.HorometroFinal" class="text-danger small"></span>
                             </div>
+
+                            <!-- Ingreso estimado (calculado automáticamente) -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Ingreso estimado</label>
+                                <input type="text" class="form-control" id="ingresoCalculado" readonly />
+                            </div>
                         </div>
+
+                       
 
                         <div class="d-flex justify-content-end gap-2 pt-4">
                             <button type="submit" class="btn btn-success w-25">
@@ -163,5 +171,26 @@
             dateFormat: "Y-m-d",
             defaultDate: "@Model.HorasTrabajo.Fecha.ToString("yyyy-MM-dd")"
         });
+
+
+
+        function calcularIngreso() {
+            const precioHora = parseFloat(document.getElementById("HorasTrabajo_PrecioHora").value) || 0;
+            const horometroInicial = parseFloat(document.getElementById("HorasTrabajo_HorometroInicial").value) || 0;
+            const horometroFinal = parseFloat(document.getElementById("HorasTrabajo_HorometroFinal").value) || 0;
+
+            const horasTrabajadas = horometroFinal - horometroInicial;
+            const ingreso = horasTrabajadas > 0 ? horasTrabajadas * precioHora : 0;
+
+            document.getElementById("ingresoCalculado").value = `₡${ingreso.toFixed(2)}`;
+        }
+
+        // Detectar cambios en los campos y recalcular
+        document.getElementById("HorasTrabajo_PrecioHora").addEventListener("input", calcularIngreso);
+        document.getElementById("HorasTrabajo_HorometroInicial").addEventListener("input", calcularIngreso);
+        document.getElementById("HorasTrabajo_HorometroFinal").addEventListener("input", calcularIngreso);
+
+        // Cálculo inicial al cargar la vista
+        window.addEventListener("DOMContentLoaded", calcularIngreso);
     </script>
 }
