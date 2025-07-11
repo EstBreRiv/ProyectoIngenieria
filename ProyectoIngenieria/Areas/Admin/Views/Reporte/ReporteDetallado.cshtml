@@ -14,13 +14,11 @@
 }
 
 <div class="container mt-5 mb-5" style="max-width: 1200px;">
-    <!-- Encabezado -->
     <div class="text-center border-bottom pb-3 mb-4">
         <h2 class="fw-bold text-primary">REPORTE DETALLADO DE VEHÍCULO</h2>
         <p class="text-muted">Generado el @Model.Fecha_reporte</p>
     </div>
 
-    <!-- Datos del vehículo -->
     <div class="row mb-4">
         <div class="col-md-4">
             <strong>Marca:</strong> @Model.Marca
@@ -33,14 +31,12 @@
         </div>
     </div>
 
-    <!-- Periodo del reporte -->
     <div class="row mb-4">
         <div class="col-md-12">
             <strong>Periodo analizado:</strong> @Model.Periodo
         </div>
     </div>
 
-    <!-- Totales -->
     <div class="card shadow-sm mb-5">
         <div class="card-header bg-primary text-white fw-semibold">Resumen General</div>
         <div class="card-body">
@@ -76,8 +72,6 @@
         </div>
     </div>
 
-
-    <!-- Sección de Horas de Trabajo -->
     <div class="mb-5">
         <h5 class="text-primary fw-bold mb-3">Horas de Trabajo</h5>
         <table class="table table-bordered table-sm align-middle">
@@ -109,7 +103,6 @@
         </table>
     </div>
 
-    <!-- Sección de Mantenimientos -->
     <div class="mb-5">
         <h5 class="text-primary fw-bold mb-3">Mantenimientos Realizados</h5>
         <table class="table table-bordered table-sm align-middle">
@@ -144,7 +137,6 @@
         </table>
     </div>
 
-    <!-- Sección de Combustibles -->
     <div class="mb-5">
         <h5 class="text-primary fw-bold mb-3">Compras de Combustible</h5>
         <table class="table table-bordered table-sm align-middle">
@@ -181,6 +173,11 @@
             Descargar PDF
         </a>
     </div>
+    <a asp-controller="Reporte" asp-action="Index"
+       class="btn btn-outline-success rounded-circle shadow p-3"
+       style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+        <i class="bi bi-arrow-left"></i>
+    </a>
 </div>
 
 

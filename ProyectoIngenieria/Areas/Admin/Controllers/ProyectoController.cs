@@ -58,9 +58,11 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             // Si el id es nulo o 0, se trata de una creación
             if (id == null || id == 0)
             {
-                // envia un modelo vacio a la vista
+                proyectoVM.Proyecto.FechaInicio = DateOnly.FromDateTime(DateTime.Today);
+                proyectoVM.Proyecto.FechaFin = DateOnly.FromDateTime(DateTime.Today);
                 return View(proyectoVM);
             }
+
             else
             {
                 // Si el id es válido, se trata de una edición
@@ -74,12 +76,19 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                 // Retorna la vista con el proyecto encontrado
                 return View(proyectoVM);
             }
+
         }
 
         //Upsert: Permite crear o editar una empresa, recibe el modelo de vista EmpresaVM
         [HttpPost]
         public IActionResult Upsert(ProyectoVM proyectoVM)
         {
+
+            if (proyectoVM.Proyecto.FechaInicio > proyectoVM.Proyecto.FechaFin)
+                ModelState.AddModelError("Proyecto.FechaInicio", "La fecha de inicio del proyecto no puede ser mayor a la fecha de cierre.");
+            else if (proyectoVM.Proyecto.FechaFin < proyectoVM.Proyecto.FechaInicio)
+                ModelState.AddModelError("Proyecto.FechaFin", "La fecha de cierre del proyecto no puede ser menor a la fecha de inicio.");
+
             //Valida el modelo recibido, si no es válido, devuelve la vista con los errores
             if (ModelState.IsValid)
             {
