@@ -24,6 +24,8 @@ using ProyectoIngenieria.Models;
 
 namespace ProyectoIngenieria.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles = ProyectoIngenieria.Utilities.RolesUsuario.Role_Admin)]
+
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

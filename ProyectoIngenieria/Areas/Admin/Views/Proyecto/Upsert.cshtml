@@ -28,13 +28,21 @@
 
                 <div class="mb-3">
                     <label asp-for="Proyecto.FechaInicio" class="form-label fw-semibold">Indique la fecha de Inicio del proyecto</label>
-                    <input asp-for="Proyecto.FechaInicio" type="text" class="form-control" id="fechaInicio" />
+                    <input name="Proyecto.FechaInicio"
+                           id="fechaInicio"
+                           class="form-control"
+                           type="text"
+                           value="@(Model.Proyecto.FechaInicio != DateOnly.MinValue ? Model.Proyecto.FechaInicio.ToString("yyyy-MM-dd") : "")" />
                     <span asp-validation-for="Proyecto.FechaInicio" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Proyecto.FechaFin" class="form-label fw-semibold">Indique la fecha de cierre del proyecto</label>
-                    <input asp-for="Proyecto.FechaFin" type="text" class="form-control" id="fechaFin" />
+                    <input name="Proyecto.FechaFin"
+                           id="fechaFin"
+                           class="form-control"
+                           type="text"
+                           value="@(Model.Proyecto.FechaFin != DateOnly.MinValue ? Model.Proyecto.FechaFin.ToString("yyyy-MM-dd") : "")" />
                     <span asp-validation-for="Proyecto.FechaFin" class="text-danger small"></span>
                 </div>
 
@@ -65,16 +73,13 @@
     <script>
         flatpickr("#fechaInicio", {
             locale: "es",
-            dateFormat: "Y-m-d", // <-- esto envía yyyy-MM-dd
-            defaultDate: "today"
+            dateFormat: "Y-m-d"
         });
 
         flatpickr("#fechaFin", {
             locale: "es",
-            dateFormat: "Y-m-d", // <-- formato compatible con DateTime en .NET
-            defaultDate: "today"
+            dateFormat: "Y-m-d"
         });
-
     </script>
 
 }

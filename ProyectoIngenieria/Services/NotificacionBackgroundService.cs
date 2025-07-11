@@ -23,8 +23,9 @@ public class NotificacionBackgroundService : BackgroundService
             {
                 var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                 DateOnly hoy = DateOnly.FromDateTime(DateTime.Today);
-                var vehiculos = unitOfWork.Vehiculo.GetAll().ToList();
+                var vehiculos = unitOfWork.Vehiculo.GetAll(includeProperties: "TipoVehiculo").ToList();
 
+                //BLOQUE DE NOTIFICACION DE INSPECCION VEHICULAR
                 foreach (var vehiculo in vehiculos)
                 {
                     if (string.IsNullOrEmpty(vehiculo.Placa))
@@ -65,6 +66,66 @@ public class NotificacionBackgroundService : BackgroundService
 
                 unitOfWork.Save();
 
+                //BLOQUE DE NOTIFICACION DE CAMBIO DE ACEITE
+                foreach (var vehiculo in vehiculos)
+                {
+                    //Solo aplicar lógica de cambio de aceite si es tipo "Maquinaria"
+                    if (vehiculo.TipoVehiculo.Tipo != "Maquinaria")
+                        continue;
+
+                    var registrosMantenimiento = unitOfWork.RegistroMantenimiento
+                        .GetAll(r => r.VehiculoId == vehiculo.Id, includeProperties: "OperadorMantenimientos.CatalogoMantenimiento")
+                        .ToList();
+
+                    var cambiosDeAceite = registrosMantenimiento
+                        .Where(r => r.OperadorMantenimientos
+                            .Any(om => om.CatalogoMantenimiento.Nombre == "Cambio de aceite"))
+                        .OrderByDescending(r => r.Fecha)
+                        .ToList();
+
+                    var ultimoCambio = cambiosDeAceite.FirstOrDefault();
+
+                    if (ultimoCambio != null)
+                    {
+                        var proximoCambio = ultimoCambio.Fecha.AddMonths(3);
+
+                        //SOLO SI HOY es exactamente la fecha esperada del próximo cambio
+                        if (hoy == proximoCambio)
+                        {
+                            if (!YaExisteNotificacionCambioAceite(vehiculo.Id, proximoCambio, unitOfWork))
+                            {
+                                CrearNotificacionCambioAceite(vehiculo.Id, vehiculo.Placa, hoy, unitOfWork);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Nunca se ha hecho cambio de aceite
+                        // Verifica si ya se generó una notificación relacionada
+                        var yaExiste = unitOfWork.Notificacion.GetAll()
+                            .Any(n =>
+                                n.VehiculoId == vehiculo.Id &&
+                                n.Titulo == "Cambio de aceite" &&
+                                n.Descripcion.Contains("no tiene ningún cambio de aceite registrado"));
+
+                        if (!yaExiste)
+                        {
+                            var noti = new Notificacion
+                            {
+                                Titulo = "Cambio de aceite",
+                                Descripcion = $"El vehículo con placa/serie {vehiculo.Placa} no tiene ningún cambio de aceite registrado. Es necesario registrar el último cuanto antes.",
+                                Fecha = hoy,
+                                VehiculoId = vehiculo.Id,
+                                Leida = false
+                            };
+
+                            unitOfWork.Notificacion.Add(noti);
+                        }
+                    }
+                }
+
+                unitOfWork.Save(); // Guardar las notificaciones de aceite también
+
             }
 
             _logger.LogInformation("Tarea completada.");
@@ -73,4 +134,31 @@ public class NotificacionBackgroundService : BackgroundService
             await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
         }
     }
+
+    //Método que permite buscar si ya se generó una notificacion para ese cambio de aceite
+    private bool YaExisteNotificacionCambioAceite(int vehiculoId, DateOnly fechaEsperada, IUnitOfWork unitOfWork)
+    {
+        return unitOfWork.Notificacion.GetAll()
+            .Any(n =>
+                n.VehiculoId == vehiculoId &&
+                n.Titulo == "Cambio de aceite" &&
+                n.Fecha == fechaEsperada
+            );
+    }
+
+    //Se utiliza en caso de necesitar generar una notificacion de cambio de aceite
+    private void CrearNotificacionCambioAceite(int vehiculoId, string placa, DateOnly hoy, IUnitOfWork unitOfWork)
+    {
+        var noti = new Notificacion
+        {
+            Titulo = "Cambio de aceite",
+            Descripcion = $"El vehículo con placa/serie {placa} requiere cambio de aceite. Han pasado más de 3 meses desde el último mantenimiento.",
+            Fecha = hoy,
+            VehiculoId = vehiculoId,
+            Leida = false
+        };
+
+        unitOfWork.Notificacion.Add(noti);
+    }
+
 }

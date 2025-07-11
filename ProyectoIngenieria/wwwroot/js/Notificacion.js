@@ -26,7 +26,7 @@ $(document).ready(function () {
                 $(row).find('td:eq(1)').html(`<strong><i class="bi bi-dot text-danger me-1"></i> ${data.titulo}</strong>`);
             }
         },
-        order: [[2, "desc"]],
+        order: [[3, "desc"]],
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         }
