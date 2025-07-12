@@ -46,7 +46,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     marca = m.Vehiculo.Marca.NombreMarca,
                     placa = m.Vehiculo.Placa,
                     m.Descripcion,
-                    Fecha = m.Fecha.ToString("dd/MM/yyyy"),
+                    Fecha = m.Fecha.ToString("yyyy-MM-dd"),
                     Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
                 }).ToList();
 

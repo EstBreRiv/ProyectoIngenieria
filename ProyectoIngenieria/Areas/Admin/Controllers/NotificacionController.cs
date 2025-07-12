@@ -38,7 +38,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     n.Id,
                     n.Titulo,
                     n.Descripcion,
-                    Fecha = n.Fecha.ToString("dd/MM/yyyy"),
+                    Fecha = n.Fecha.ToString("yyyy-MM-dd"),
                     Placa = n.Vehiculo.Placa,
                     Modelo = n.Vehiculo.Modelo,
                     Leida = n.Leida
