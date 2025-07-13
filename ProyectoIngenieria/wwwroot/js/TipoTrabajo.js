@@ -41,7 +41,7 @@ function loadDataTable() {
 function Eliminar(url) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "Este repuesto será eliminado permanentemente",
+        text: "Este tipo de trabajo será eliminado permanentemente",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',

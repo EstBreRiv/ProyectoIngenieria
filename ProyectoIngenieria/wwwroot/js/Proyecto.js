@@ -39,16 +39,10 @@ function loadDataTable() {
     });
 }
 
-/*
-<button onclick="Delete(${data})" class="btn btn-sm btn-danger" title="Eliminar">
-    <i class="bi bi-trash"></i> 
-</button>
-*/
-
 function Eliminar(url) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "Este repuesto será eliminado permanentemente",
+        text: "Este proyecto será eliminado permanentemente",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',

@@ -6,7 +6,7 @@ $(document).ready(function () {
 });
 
 function loadDataTable() {
-    const cedula = $('#operadorCedula').val(); // obtén el valor del hidden input
+    const cedula = $('#operadorCedula').val();
 
     dataTable = $('#taskTable').DataTable({
         ajax: {

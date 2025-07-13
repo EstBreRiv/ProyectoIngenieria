@@ -33,7 +33,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             //Obtiene todas las empresas desde el repositorio y las devuelve en formato JSON
-            var marcas = _unitOfWork.Marca.GetAll();
+            var marcas = _unitOfWork.Marca.GetAll().Where(m => m.NombreMarca != "Eliminado");
             return Json(new { data = marcas });
         }
 
@@ -98,6 +98,19 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             return View(marcaVM);
         }
 
+        [HttpDelete]
+        public IActionResult Eliminar(int id)
+        {
+            var marca = _unitOfWork.Marca.Get(u => u.Id == id);
+            if (marca == null)
+                return NotFound();
 
+            // Actualiza la descripción a "Eliminado" en lugar de eliminarlo físicamente
+            marca.NombreMarca = "Eliminado";
+            _unitOfWork.Marca.Update(marca);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Marca eliminada correctamente." });
+
+        }
     }
 }
