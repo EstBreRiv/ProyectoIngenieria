@@ -16,6 +16,16 @@
             </a>
         </div>
 
+        <div class="mb-3">
+            <label for="estadoFiltro" class="form-label fw-semibold">Filtrar por estado</label>
+            <select id="estadoFiltro" class="form-select w-25">
+                <option value="">Todos</option>
+                <option value="No iniciado">No iniciado</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Finalizado">Finalizado</option>
+            </select>
+        </div>
+
         <div class="table-responsive">
             <table id="taskTable" class="table table-bordered table-hover table-sm align-middle text-center">
                 <thead class="table-success text-dark ">
@@ -24,6 +34,7 @@
                         <th class="text-center">CLIENTE</th>
                         <th class="text-center">FECHA DE INICIO</th>
                         <th class="text-center">FECHA DE CIERRE</th>
+                        <th class="text-center">ESTADO</th>
                         <th class="text-center">EDITAR</th>
                     </tr>
                 </thead>
