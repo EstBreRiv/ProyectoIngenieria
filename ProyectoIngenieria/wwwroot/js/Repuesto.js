@@ -26,6 +26,10 @@ function loadDataTable() {
                         <a href="/Admin/Repuesto/Upsert?id=${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+
+                        <button onclick="Eliminar('/Admin/Repuesto/Eliminar/${data}')" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                         <i class="bi bi-trash"></i>
+                        </button>
                        
                         `;
                 },
@@ -58,7 +62,7 @@ function Eliminar(url) {
                         dataTable.ajax.reload();
                         toastr.success(data.message);
                     } else {
-                        toastr.error(data.message);
+                        toastr.error(data.message || "Ocurrio un error al eliminar");
                     }
                 }
             });

@@ -59,7 +59,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         {
             var viewModel = new RegistroMantenimientoVM
             {
-                ListaRepuestos = _unitOfWork.Repuesto.GetAll().Select(r => new SelectListItem
+                ListaRepuestos = _unitOfWork.Repuesto.GetAll().Where(x => x.Descripcion != "Eliminado").Select(r => new SelectListItem
                 {
                     Text = r.Nombre,
                     Value = r.Id.ToString()
@@ -75,7 +75,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     Text = v.Modelo + " - " + v.Placa,
                     Value = v.Id.ToString()
                 }),
-                ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+                ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Where(x => x.Descripcion != "Eliminado").Select(c => new SelectListItem
                 {
                     Text = c.Nombre,
                     Value = c.Id.ToString()
@@ -140,13 +140,13 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     Value = v.Id.ToString()
                 });
 
-                viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+                viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Where(x => x.Descripcion != "Eliminado").Select(c => new SelectListItem
                 {
                     Text = c.Nombre,
                     Value = c.Id.ToString()
                 });
 
-                viewModel.ListaRepuestos = _unitOfWork.Repuesto.GetAll().Select(r => new SelectListItem
+                viewModel.ListaRepuestos = _unitOfWork.Repuesto.GetAll().Where(x => x.Descripcion != "Eliminado").Select(r => new SelectListItem
                 {
                     Text = r.Nombre,
                     Value = r.Id.ToString()

@@ -25,7 +25,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var lista = _unitOfWork.Repuesto.GetAll();
+            var lista = _unitOfWork.Repuesto.GetAll().Where(x => x.Descripcion != "Eliminado");
             return Json(new { data = lista });
         }
 
@@ -62,6 +62,24 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
 
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
+        }
+
+        //Metodo que recibe el id del repuesto a eliminar y actualiza su descripcion con "Eliminado"
+        [HttpDelete]
+        public IActionResult Eliminar(int id)
+        {
+            var repuesto = _unitOfWork.Repuesto.Get(r => r.Id == id);
+            if (repuesto == null)
+            {
+                TempData["error"] = "Error al eliminar el repuesto.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            repuesto.Descripcion = "Eliminado";
+            _unitOfWork.Repuesto.Update(repuesto);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Repuesto eliminado correctamente." });
+
         }
 
         #region API
