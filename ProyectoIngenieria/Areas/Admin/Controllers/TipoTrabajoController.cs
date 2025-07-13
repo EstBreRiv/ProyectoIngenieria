@@ -36,7 +36,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             // Obtiene todos los tipos de trabajo desde el repositorio
-            var TiposTrabajo = _unitOfWork.TipoTrabajo.GetAll();
+            var TiposTrabajo = _unitOfWork.TipoTrabajo.GetAll().Where(x => x.Descripcion != "Eliminado");
             // Retorna los tipos de trabajo en formato JSON
             return Json(new { data = TiposTrabajo });
         }
@@ -51,7 +51,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             TipoTrabajoVM tipoTrabajoVM = new()
             {
                 tipoTrabajo = new Models.TipoTrabajo(),
-                TiposTrabajoList = _unitOfWork.TipoTrabajo.GetAll().Select(i => new SelectListItem
+                TiposTrabajoList = _unitOfWork.TipoTrabajo.GetAll().Where(x => x.Descripcion != "Eliminado").Select(i => new SelectListItem
                 {
                     Text = i.Nombre,
                     Value = i.Id.ToString()
@@ -106,6 +106,29 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             }
             // Si el modelo no es válido, retorna la vista con el modelo actual
             return View(tipoTrabajoVM);
+        }
+
+
+        // Delete: Elimina un tipo de trabajo por su id
+        [HttpDelete]
+        public IActionResult Eliminar(int id)
+        {
+            // Obtiene el tipo de trabajo por id desde el repositorio
+            var tipoTrabajo = _unitOfWork.TipoTrabajo.Get(u => u.Id == id);
+            if (tipoTrabajo == null)
+            {
+                // Si no se encuentra el tipo de trabajo, retorna NotFound
+                return NotFound();
+            }
+
+            //Actualiza su descripcion como eliminado
+            tipoTrabajo.Descripcion = "Eliminado";
+            // Actualiza el tipo de trabajo en el repositorio
+            _unitOfWork.TipoTrabajo.Update(tipoTrabajo);
+            // Guarda los cambios en el repositorio
+            _unitOfWork.Save();
+            // Retorna una respuesta exitosa
+            return Json(new { success = true, message = "Tipo de trabajo eliminado correctamente." });
         }
     }
 }

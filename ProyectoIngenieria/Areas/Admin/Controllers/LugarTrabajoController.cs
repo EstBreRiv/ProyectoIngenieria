@@ -35,7 +35,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             // Obtiene todos los lugares de trabajo desde el repositorio
-            var LugaresTrabajo = _unitOfWork.LugarTrabajo.GetAll();
+            var LugaresTrabajo = _unitOfWork.LugarTrabajo.GetAll().Where(x => x.Canton != "Eliminado");
             return Json(new { data = LugaresTrabajo });
         }
 
@@ -102,6 +102,29 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             }
             return View(lugarTrabajoVM);
         }
+
+        // Delete: Elimina un lugar de trabajo por su id
+        [HttpDelete]
+        public IActionResult Eliminar(int id)
+        {
+            // Obtiene el lugar de trabajo por su id
+            var lugarTrabajo = _unitOfWork.LugarTrabajo.Get(u => u.Id == id);
+            if (lugarTrabajo == null)
+            {
+                // Si no se encuentra, retorna NotFound
+                return Json(new { success = false, message = "No se encontró el registro." });
+            }
+
+
+            //Actualiza el canton como eliminado
+            lugarTrabajo.Canton = "Eliminado";
+
+            // Guarda los cambios en el unit of work
+            _unitOfWork.Save();
+            // Retorna una respuesta exitosa
+            return Json(new { success = true, message = "Lugar de trabajo eliminado exitosamente." });
+        }
+
 
     }
 }

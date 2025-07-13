@@ -36,7 +36,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             // Obtiene todos los proyectos desde el repositorio y los retiorna como JSON
-            var proyectos = _unitOfWork.Proyecto.GetAll();
+            var proyectos = _unitOfWork.Proyecto.GetAll().Where(x=>x.Cliente != "Eliminado");
             return Json(new { data = proyectos });
         }
 
@@ -112,7 +112,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
 
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public IActionResult Eliminar(int id)
         {
             var proyectos = _unitOfWork.Proyecto.Get(h => h.Id == id);
             if (proyectos == null)
@@ -120,7 +120,11 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                 return Json(new { success = false, message = "No se encontró el proyecto." });
             }
 
-            _unitOfWork.Proyecto.Remove(proyectos);
+            //Actualiza el nombre del cliente a Eliminado
+            proyectos.Cliente = "Eliminado";
+
+            _unitOfWork.Proyecto.Update(proyectos);
+
             _unitOfWork.Save();
             return Json(new { success = true, message = "Proyecto eliminado exitosamente." });
         }

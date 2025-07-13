@@ -12,8 +12,8 @@ function loadDataTable() {
         },
         "columns": [
 
-            { "data": "nombreProyecto", "width": "30%" },
-            { "data": "cliente", "width": "30%" },
+            { "data": "nombreProyecto", "width": "20%" },
+            { "data": "cliente", "width": "20%" },
             { "data": "fechaInicio", "width": "20%" },
             { "data": "fechaFin", "width": "20%" },
 
@@ -24,6 +24,10 @@ function loadDataTable() {
                         <a href="/Admin/Proyecto/Upsert?id=${data}&vehiculoId=${row.id}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+
+                        <button onclick="Eliminar('/Admin/Proyecto/Eliminar/${data}')" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                        </button>
                     `;
                 },
                 "width": "20%"
@@ -41,30 +45,28 @@ function loadDataTable() {
 </button>
 */
 
-function Delete(id) {
+function Eliminar(url) {
     Swal.fire({
-        title: "¿Estás seguro?",
-        text: "Este proyecto será eliminado definitivamente.",
-        icon: "warning",
+        title: '¿Estás seguro?',
+        text: "Este repuesto será eliminado permanentemente",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminar"
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/Admin/Proyecto/Delete/${id}`,
+                url: url,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
                         toastr.success(data.message);
                     } else {
-                        toastr.error(data.message);
+                        toastr.error(data.message || "Ocurrio un error al eliminar");
                     }
-                },
-                error: function () {
-                    toastr.error("Error al procesar la solicitud");
                 }
             });
         }

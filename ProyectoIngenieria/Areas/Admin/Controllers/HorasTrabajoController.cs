@@ -80,17 +80,17 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                 HorasTrabajo = horasTrabajo,
 
 
-                LugarTrabajoList = _unitOfWork.LugarTrabajo.GetAll().Select(l => new SelectListItem
+                LugarTrabajoList = _unitOfWork.LugarTrabajo.GetAll().Where(x => x.Canton != "Eliminado").Select(l => new SelectListItem
                 {
                     Text = l.Nombre,
                     Value = l.Id.ToString()
                 }),
-                TipoTrabajoList = _unitOfWork.TipoTrabajo.GetAll().Select(t => new SelectListItem
+                TipoTrabajoList = _unitOfWork.TipoTrabajo.GetAll().Where(x => x.Descripcion != "Eliminado").Select(t => new SelectListItem
                 {
                     Text = t.Nombre,
                     Value = t.Id.ToString()
                 }),
-                ProyectoList = _unitOfWork.Proyecto.GetAll().Select(p => new SelectListItem
+                ProyectoList = _unitOfWork.Proyecto.GetAll().Where(x=>x.Cliente != "Eliminado").Select(p => new SelectListItem
                 {
                     Text = p.NombreProyecto,
                     Value = p.Id.ToString()
@@ -175,25 +175,25 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
 
-                horasVM.LugarTrabajoList = _unitOfWork.LugarTrabajo.GetAll().Select(l => new SelectListItem
+                horasVM.LugarTrabajoList = _unitOfWork.LugarTrabajo.GetAll().Where(x => x.Canton != "Eliminado").Select(l => new SelectListItem
                 {
                     Text = l.Nombre,
                     Value = l.Id.ToString()
                 });
 
-                horasVM.TipoTrabajoList = _unitOfWork.TipoTrabajo.GetAll().Select(t => new SelectListItem
+                horasVM.TipoTrabajoList = _unitOfWork.TipoTrabajo.GetAll().Where(x=> x.Descripcion != "Eliminado").Select(t => new SelectListItem
                 {
                     Text = t.Nombre,
                     Value = t.Id.ToString()
                 });
 
-                horasVM.ProyectoList = _unitOfWork.Proyecto.GetAll().Select(p => new SelectListItem
+                horasVM.ProyectoList = _unitOfWork.Proyecto.GetAll().Where(x => x.Cliente != "Eliminado").Select(p => new SelectListItem
                 {
                     Text = p.NombreProyecto,
                     Value = p.Id.ToString()
                 });
 
-                horasVM.VehiculoList = _unitOfWork.Vehiculo.GetAll().Select(v => new SelectListItem
+                horasVM.VehiculoList = _unitOfWork.Vehiculo.GetAll().Where(x=>x.TipoVehiculoId != 2).Select(v => new SelectListItem
                 {
                     Text = v.Modelo + " - " + v.Placa,
                     Value = v.Id.ToString()
