@@ -36,8 +36,8 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             var data = registros.Select(r => new
             {
                 r.Id,
-                fechaInicio = r.FechaInicio.ToString("dd/MM/yyyy"),
-                fechaFin = r.FechaFin != DateTime.MinValue ? r.FechaFin.ToString("dd/MM/yyyy") : "",
+                fechaInicio = r.FechaInicio.ToString("yyyy-MM-dd"),
+                fechaFin = r.FechaFin != DateTime.MinValue ? r.FechaFin.ToString("yyyy-MM-dd") : "",
                 marca = r.Vehiculo.Marca.NombreMarca,
                 modelo = r.Vehiculo.Modelo,
                 placa = r.Vehiculo.Placa,

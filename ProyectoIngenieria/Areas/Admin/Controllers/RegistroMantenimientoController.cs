@@ -21,6 +21,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         }
 
         // Vista principal
+        [HttpGet]
         public IActionResult Index(int id)
         {
             ViewBag.VehiculoId = id; // Pasa el ID a la vista para que el JS lo use
@@ -46,7 +47,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     marca = m.Vehiculo.Marca.NombreMarca,
                     placa = m.Vehiculo.Placa,
                     m.Descripcion,
-                    Fecha = m.Fecha.ToString("dd/MM/yyyy"),
+                    Fecha = m.Fecha.ToString("yyyy-MM-dd"),
                     Precio = m.Precio.ToString("C2", new System.Globalization.CultureInfo("es-CR"))
                 }).ToList();
 
@@ -55,17 +56,32 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
 
 
         // Crear / Editar
-        public IActionResult Upsert(int? id)
+        public IActionResult Upsert(int? id, int? vehiculoId)
         {
+            var registro = new RegistroMantenimiento
+            {
+                Fecha = DateOnly.FromDateTime(DateTime.Today),
+                VehiculoId = vehiculoId ?? 0
+            };
+
+            if (id != null && id != 0)
+            {
+                registro = _unitOfWork.RegistroMantenimiento.Get(r => r.Id == id);
+                if (registro == null)
+                    return NotFound();
+            }
+
             var viewModel = new RegistroMantenimientoVM
             {
-                ListaRepuestos = _unitOfWork.Repuesto.GetAll().Select(r => new SelectListItem
+                RegistroMantenimiento = registro,
+
+                ListaRepuestos = _unitOfWork.Repuesto.GetAll().Where(x => x.Descripcion != "Eliminado").Select(r => new SelectListItem
                 {
                     Text = r.Nombre,
                     Value = r.Id.ToString()
                 }),
 
-                RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
+                //RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
 
                 //Solo permite utilizar los vehiculos activos y que no sean de tipo "Automovil"
                 ListaVehiculos = _unitOfWork.Vehiculo
@@ -75,7 +91,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     Text = v.Modelo + " - " + v.Placa,
                     Value = v.Id.ToString()
                 }),
-                ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+                ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Where(x => x.Descripcion != "Eliminado").Select(c => new SelectListItem
                 {
                     Text = c.Nombre,
                     Value = c.Id.ToString()
@@ -140,13 +156,13 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                     Value = v.Id.ToString()
                 });
 
-                viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Select(c => new SelectListItem
+                viewModel.ListaCatalogoMantenimiento = _unitOfWork.CatalogoMantenimiento.GetAll().Where(x => x.Descripcion != "Eliminado").Select(c => new SelectListItem
                 {
                     Text = c.Nombre,
                     Value = c.Id.ToString()
                 });
 
-                viewModel.ListaRepuestos = _unitOfWork.Repuesto.GetAll().Select(r => new SelectListItem
+                viewModel.ListaRepuestos = _unitOfWork.Repuesto.GetAll().Where(x => x.Descripcion != "Eliminado").Select(r => new SelectListItem
                 {
                     Text = r.Nombre,
                     Value = r.Id.ToString()
@@ -178,7 +194,8 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
 
             registroOperadorMantenimiento(viewModel);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = viewModel.RegistroMantenimiento.VehiculoId });
+
         }
 
         //Metodo que permite guardar los repuestos seleccionados en el mantenimiento

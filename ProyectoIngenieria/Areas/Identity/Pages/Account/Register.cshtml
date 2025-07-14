@@ -4,69 +4,44 @@
     ViewData["Title"] = "Registrarse";
 }
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="row shadow rounded-4 p-4 bg-white w-100" style="max-width: 900px;">
-
-        <div class="col-md-6 border-end pe-4">
-            <h1 class="h3 text-success fw-bold">Crear cuenta nueva</h1>
+<div class="fondo-login d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row shadow rounded-4 p-4 bg-white w-100" style="max-width: 450px;">
+        <h1 class="h3 text-success fw-bold text-center">Crear cuenta nueva</h1>
 
 
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="correo@ejemplo.com" />
-                    <label asp-for="Input.Email">Correo electrónico</label>
-                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
-                </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="correo@ejemplo.com" />
+                <label asp-for="Input.Email">Correo electrónico</label>
+                <span asp-validation-for="Input.Email" class="text-danger small"></span>
+            </div>
 
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Contraseña" />
-                    <label asp-for="Input.Password">Contraseña</label>
-                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
-                </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Contraseña" />
+                <label asp-for="Input.Password">Contraseña</label>
+                <span asp-validation-for="Input.Password" class="text-danger small"></span>
+            </div>
 
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Confirmar contraseña" />
-                    <label asp-for="Input.ConfirmPassword">Confirmar contraseña</label>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
-                </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Confirmar contraseña" />
+                <label asp-for="Input.ConfirmPassword">Confirmar contraseña</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+            </div>
 
-                <button id="registerSubmit" type="submit" class="btn btn-success w-100 mb-3">Registrarse</button>
+            <button id="registerSubmit" type="submit" class="btn btn-success w-50 mb-3 d-block mx-auto">Registrarse</button>
 
-                <div class="text-center">
-                    <a asp-page="./Login" class="text-decoration-none">¿Ya tienes cuenta? Inicia sesión</a>
-                </div>
-            </form>
-        </div>
-
-        <!-- Servicios externos -->
-        <div class="col-md-6 ps-4">
-            <h4 class="text-secondary mb-3">Registrarse con otro servicio:</h4>
-            <hr />
-
-            @if ((Model.ExternalLogins?.Count ?? 0) == 0)
-            {
-                <p class="text-muted">
-                    No hay servicios externos configurados.
-                    <a href="https://go.microsoft.com/fwlink/?LinkID=532715">Aprende cómo configurarlos.</a>
-                </p>
-            }
-            else
-            {
-                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <div class="d-grid gap-2">
-                        @foreach (var provider in Model.ExternalLogins!)
-                        {
-                            <button type="submit" class="btn btn-outline-dark" name="provider" value="@provider.Name">
-                                <i class="bi bi-box-arrow-in-right me-2"></i> Registrarse con @provider.DisplayName
-                            </button>
-                        }
-                    </div>
-                </form>
-            }
-        </div>
+            <div class="text-center">
+                <a asp-page="./Login" class="text-decoration-none">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </form>
     </div>
+    <a asp-area="Admin" asp-controller="Home" asp-action="Index"
+       class="btn btn-outline-success rounded-circle shadow p-3"
+       style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+        <i class="bi bi-arrow-left"></i>
+    </a>
 </div>
 
 @section Scripts {

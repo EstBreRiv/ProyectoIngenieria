@@ -66,37 +66,3 @@ function inicializarTabla(vehiculoId) {
         }
     });
 }
-
-/*
-<a onClick=Delete("/RegistroCombustible/Delete/${data}") class="btn btn-danger btn-sm mx-2" title="Eliminar">
-    <i class="bi bi-trash"></i>
-</a>
-*/
-
-function Delete(url) {
-    Swal.fire({
-        title: '¿Está seguro?',
-        text: "¡No podrá recuperar el registro eliminado!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                success: function (data) {
-                    if (data.success) {
-                        toastr.success(data.message);
-                        dataTable.ajax.reload();
-                    } else {
-                        toastr.error(data.message);
-                    }
-                }
-            });
-        }
-    });
-}

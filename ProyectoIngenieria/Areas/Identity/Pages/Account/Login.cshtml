@@ -5,10 +5,10 @@
     ViewData["Title"] = "Iniciar Sesión";
 }
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="row shadow rounded-4 p-4 bg-white w-100" style="max-width: 900px;">
-        <div class="col-md-6 border-end pe-4">
-            <h1 class="h3 text-success fw-bold">Bienvenido</h1>
+<body class="fondo-login">
+    <div class="fondo-login d-flex justify-content-center align-items-center min-vh-100">
+        <div class="row shadow rounded-4 p-4 bg-white w-100" style="max-width: 450px;">
+            <h1 class="h3 text-success fw-bold text-center">Bienvenido</h1>
 
             <form id="account" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
@@ -32,43 +32,11 @@
                     </label>
                 </div>
 
-                <button id="login-submit" type="submit" class="btn btn-success w-100 mb-3">Iniciar Sesión</button>
-
-                <div class="text-center">
-                    <a asp-page="./ForgotPassword" class="text-decoration-none">¿Olvidaste tu contraseña?</a><br />
-                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">Registrarse</a><br />
-                    <a asp-page="./ResendEmailConfirmation" class="text-decoration-none">Reenviar confirmación de correo</a>
-                </div>
+                <button id="login-submit" type="submit" class="btn btn-success w-50 mb-3 d-block mx-auto">Iniciar Sesión</button>
             </form>
         </div>
-
-        <div class="col-md-6 ps-4">
-            <h4 class="text-secondary mb-3">También puedes ingresar con:</h4>
-            <hr />
-
-            @if ((Model.ExternalLogins?.Count ?? 0) == 0)
-            {
-                <p class="text-muted">
-                    No hay servicios externos configurados.
-                    <a href="https://go.microsoft.com/fwlink/?LinkID=532715">Aprende cómo configurarlos.</a>
-                </p>
-            }
-            else
-            {
-                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <div class="d-grid gap-2">
-                        @foreach (var provider in Model.ExternalLogins!)
-                        {
-                            <button type="submit" class="btn btn-outline-dark" name="provider" value="@provider.Name">
-                                <i class="bi bi-box-arrow-in-right me-2"></i> Ingresar con @provider.DisplayName
-                            </button>
-                        }
-                    </div>
-                </form>
-            }
-        </div>
     </div>
-</div>
+</body>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

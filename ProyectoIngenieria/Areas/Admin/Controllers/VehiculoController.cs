@@ -66,15 +66,15 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult Upsert(int? id)
         {
             // Cargar empresas para el dropdown
-            var empresas = _unitOfWork.Empresa.GetAll();
+            var empresas = _unitOfWork.Empresa.GetAll().Where(e => e.Nombre != "Eliminado");
             ViewBag.EmpresaList = new SelectList(empresas, "Id", "Nombre");
 
             // Cargar tipos de vehículos para el dropdown
-            var tiposVehiculo = _unitOfWork.TipoVehiculo.GetAll();
+            var tiposVehiculo = _unitOfWork.TipoVehiculo.GetAll().Where(x => x.Descripcion != "Eliminado");
             ViewBag.TipoVehiculoList = new SelectList(tiposVehiculo, "Id", "Tipo");
 
             //Faltan cargas las marcas y los tipos de vehiculos
-            var marcas = _unitOfWork.Marca.GetAll();
+            var marcas = _unitOfWork.Marca.GetAll().Where(m => m.NombreMarca != "Eliminado");
             ViewBag.MarcaList = new SelectList(marcas, "Id", "NombreMarca");
 
             // Crear una instancia del ViewModel VehiculoVM

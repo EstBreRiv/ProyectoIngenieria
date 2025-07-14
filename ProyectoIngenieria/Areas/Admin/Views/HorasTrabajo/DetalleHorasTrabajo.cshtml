@@ -45,19 +45,19 @@
                         </dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Horómetro inicial</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroInicial.ToString("N2")</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroInicial.ToString("N1")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Horómetro final</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroFinal.ToString("N2")</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.HorometroFinal.ToString("N1")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Total de horas</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalHoras.ToString("N2")</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalHoras.ToString("N1")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Precio por hora</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.PrecioHora.ToString("N2")</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.PrecioHora.ToString("N0")</dd>
 
                         <dt class="col-12 col-sm-4 text-sm-end">Ganancia total</dt>
-                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalGanancia.ToString("N2")</dd>
+                        <dd class="col-12 col-sm-6 text-sm-start">@Model.HorasTrabajo.TotalGanancia.ToString("N0")</dd>
                     </dl>
 
                     <div class="mt-4 d-flex justify-content-center">
@@ -70,7 +70,7 @@
 
             @if (Model.HorasTrabajo.Id != 0)
             {
-                <a asp-controller="HorasTrabajo" asp-action="Index"
+                <a asp-controller="HorasTrabajo" asp-action="Index" asp-route-id="@Model.HorasTrabajo.VehiculoId"
                    class="btn btn-outline-success rounded-circle shadow p-3"
                    style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
                     <i class="bi bi-arrow-left"></i>

@@ -15,6 +15,10 @@ $(document).ready(function () {
                         <a href="/Admin/CatalogoMantenimiento/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+
+                        <button onclick="Eliminar('/Admin/CatalogoMantenimiento/Eliminar/${data}')" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
                         `;
                 },
                 width: '20%'
@@ -26,18 +30,30 @@ $(document).ready(function () {
     });
 });
 
-function eliminar(url) {
-    if (confirm('¿Deseas eliminar este mantenimiento del catálogo?')) {
-        $.ajax({
-            url: url,
-            type: 'DELETE',
-            success: function (data) {
-                if (data.success) {
-                    dataTable.ajax.reload();
-                } else {
-                    alert(data.message);
+function Eliminar(url) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Este mantenimiento será eliminado permanentemente del catálogo",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                success: function (data) {
+                    if (data.success) {
+                        dataTable.ajax.reload();
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message || "Ocurrio un error al eliminar");
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
+    });
 }

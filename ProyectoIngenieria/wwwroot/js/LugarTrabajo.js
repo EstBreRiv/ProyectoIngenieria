@@ -12,9 +12,9 @@ function loadDataTable() {
         },
         "columns": [
 
-            { "data": "nombre", "width": "40%" },
-            { "data": "provincia", "width": "30%" },
-            { "data": "canton", "width": "30%" },
+            { "data": "nombre", "width": "20%" },
+            { "data": "provincia", "width": "20%" },
+            { "data": "canton", "width": "20%" },
 
             {
                 "data": "id",
@@ -23,9 +23,13 @@ function loadDataTable() {
                           <a href="/Admin/LugarTrabajo/Upsert/${data}" class="btn btn-success btn-sm mx-2" title="Editar">
                             <i class="bi bi-pencil-square"></i> 
                         </a>
+
+                        <button onclick="Eliminar('/Admin/LugarTrabajo/Eliminar/${data}')" class="btn btn-danger btn-sm mx-2" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                        </button>
                     `;
                 },
-                "width": "50%"
+                "width": "20%"
             }
         ],
         language: {
@@ -33,3 +37,33 @@ function loadDataTable() {
         }
     });
 }
+
+
+function Eliminar(url) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Este lugar de trabajo será eliminado permanentemente",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                success: function (data) {
+                    if (data.success) {
+                        dataTable.ajax.reload();
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message || "Ocurrio un error al eliminar");
+                    }
+                }
+            });
+        }
+    });
+}
+

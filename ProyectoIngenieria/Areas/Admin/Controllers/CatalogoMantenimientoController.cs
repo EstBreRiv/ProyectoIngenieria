@@ -45,11 +45,27 @@ public class CatalogoMantenimientoController : Controller
         return View(mantenimiento);
     }
 
+    //Delete: obtiene el id del mantenimiento y actualiza su descripcion a "Eliminado"
+    [HttpDelete]
+    public IActionResult Eliminar(int id)
+    {
+        var mantenimiento = _unitOfWork.CatalogoMantenimiento.Get(u => u.Id == id);
+        if (mantenimiento == null)
+            return NotFound();
+
+        // Actualiza la descripción a "Eliminado" en lugar de eliminarlo físicamente
+        mantenimiento.Descripcion = "Eliminado";
+        _unitOfWork.CatalogoMantenimiento.Update(mantenimiento);
+        _unitOfWork.Save();
+        return Json(new { success = true, message = "Mantenimiento eliminado correctamente." });
+
+    }
+
     #region API
     [HttpGet]
     public IActionResult GetAll()
     {
-        var data = _unitOfWork.CatalogoMantenimiento.GetAll();
+        var data = _unitOfWork.CatalogoMantenimiento.GetAll().Where(x => x.Descripcion != "Eliminado");
         return Json(new { data });
     }
 

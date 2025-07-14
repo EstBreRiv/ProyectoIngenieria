@@ -30,7 +30,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             //Obtiene todas las empresas desde el repositorio y las devuelve en formato JSON
-            var tiposVehiculos = _unitOfWork.TipoVehiculo.GetAll();
+            var tiposVehiculos = _unitOfWork.TipoVehiculo.GetAll().Where(x=>x.Descripcion!="Eliminado");
             return Json(new { data = tiposVehiculos });
         }
 
@@ -93,6 +93,29 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return View(tipoVehiculoVM);
+        }
+
+        //Delete: Elimina una empresa por su id
+        [HttpDelete]
+        public IActionResult Eliminar(int id)
+        {
+            // Obtiene la empresa por id desde el repositorio
+            var tipoVehiculo = _unitOfWork.TipoVehiculo.Get(u => u.Id == id);
+            if (tipoVehiculo == null)
+            {
+                // Si no se encuentra la empresa, retorna NotFound
+                return Json(new { success = false, message = "No se encontró el tipo de vehiculo." });
+            }
+            //actualiza la descripcion como eliminado
+            tipoVehiculo.Descripcion = "Eliminado";
+
+            // Actualiza la empresa en el repositorio
+            _unitOfWork.TipoVehiculo.Update(tipoVehiculo);
+
+            // Guarda los cambios en el unit of work
+            _unitOfWork.Save();
+            // Retorna una respuesta exitosa
+            return Json(new { success = true, message = "Se elimino el tipo de vehiculo correctamente." });
         }
     }
 }

@@ -31,15 +31,16 @@
                                         <span asp-validation-for="RegistroOperador.VehiculoId" class="text-danger"></span>
                                     </div>
 
+                            <!-- Fecha -->
                             <div class="col-md-6">
-                                <label asp-for="RegistroOperador.FechaInicio" class="form-label fw-semibold">Fecha de Inicio</label>
-                                        <input asp-for="RegistroOperador.FechaInicio" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
-                                        <span asp-validation-for="RegistroOperador.FechaInicio" class="text-danger"></span>
-                                    </div>
+                                <label asp-for="RegistroOperador.FechaInicio" class="form-label fw-semibold">Fecha del trabajo</label>
+                                <input asp-for="RegistroOperador.FechaInicio" type="text" class="form-control" id="fechaTrabajo" />
+                                <span asp-validation-for="RegistroOperador.FechaInicio" class="text-danger small"></span>
+                            </div>
 
                             <div class="col-md-6">
-                                <label asp-for="RegistroOperador.FechaFin" class="form-label fw-semibold">Fecha de Fin (opcional)</label>
-                                        <input asp-for="RegistroOperador.FechaFin" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                <label asp-for="RegistroOperador.FechaFin" class="form-label fw-semibold">Fecha de Fin</label>
+                                <input asp-for="RegistroOperador.FechaFin" type="text" class="form-control" id="fechaTrabajo" />
                                         <span asp-validation-for="RegistroOperador.FechaFin" class="text-danger"></span>
                                     </div>
 
@@ -60,5 +61,22 @@
 </div>
 
 @section Scripts {
+
+    <!-- Flatpickr JS + idioma español -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+        <script>
+        flatpickr("#fechaTrabajo", {
+            locale: "es",
+            dateFormat: "Y-m-d",
+            defaultDate: "@Model.RegistroOperador.FechaInicio.ToString("yyyy-MM-dd")"
+        });
+        </script>
+
+
     <partial name="_ValidationScriptsPartial" />
 }

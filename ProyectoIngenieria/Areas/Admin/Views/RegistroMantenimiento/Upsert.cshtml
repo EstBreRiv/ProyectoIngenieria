@@ -25,7 +25,25 @@
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Vehículo</label>
-                        <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                        @if (Model.RegistroMantenimiento.Id == 0 && Model.RegistroMantenimiento.VehiculoId == 0)
+                        {
+                            <select asp-for="RegistroMantenimiento.VehiculoId"
+                                    asp-items="Model.ListaVehiculos"
+                                    class="form-select"
+                                    data-val="true"
+                                    data-val-required="Debe seleccionar un vehículo.">
+                                <option value="">-- Seleccione un vehículo --</option>
+                            </select>
+                            <span asp-validation-for="RegistroMantenimiento.VehiculoId" class="text-danger small"></span>
+                        }
+                        else
+                        {
+                            <input type="text"
+                                   class="form-control"
+                                   value="@Model.ListaVehiculos.FirstOrDefault(v => v.Value == Model.RegistroMantenimiento.VehiculoId.ToString())?.Text"
+                                   disabled />
+                            <input type="hidden" asp-for="RegistroMantenimiento.VehiculoId" />
+                        }
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Fecha</label>
@@ -40,8 +58,9 @@
 
                 <!-- Descripción -->
                 <div class="mb-4">
-                    <label class="form-label fw-semibold">Descripción (opcional)</label>
+                    <label class="form-label fw-semibold">Descripción</label>
                     <textarea asp-for="RegistroMantenimiento.Descripcion" class="form-control" rows="2" placeholder="Ingrese una descripción detallada..."></textarea>
+                    <span asp-validation-for="RegistroMantenimiento.Descripcion" class="text-danger small"></span>
                 </div>
 
                 <!-- Cuerpo dividido en dos columnas -->
