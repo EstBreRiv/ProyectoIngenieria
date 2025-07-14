@@ -16,8 +16,8 @@ $(document).ready(function () {
             },
             { data: "titulo" },
             { data: "descripcion" },
-            { data: "fecha" },
-            { data: "placa" },
+            { data: "fecha", "width": "8%" },
+            { data: "placa", "width": "8%" },
             { data: "modelo" }
         ],
         rowCallback: function (row, data) {
