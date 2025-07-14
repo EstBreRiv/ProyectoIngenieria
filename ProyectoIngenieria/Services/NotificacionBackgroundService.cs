@@ -54,7 +54,7 @@ public class NotificacionBackgroundService : BackgroundService
                         var notificacion = new Notificacion
                         {
                             Titulo = "Inspección vehicular próxima",
-                            Descripcion = $"El vehículo con placa {vehiculo.Placa} debe realizar su inspección técnica este mes ({hoy:MMMM yyyy}).",
+                            Descripcion = $"El vehículo con placa {vehiculo.Placa} debe realizar su inspección técnica este mes ({hoy.ToString("MMMM yyyy", new CultureInfo("es-ES"))}).",
                             Fecha = hoy, // fecha en la que se genera
                             VehiculoId = vehiculo.Id,
                             Leida = false
