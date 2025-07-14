@@ -19,6 +19,7 @@ public partial class RegistroMantenimiento
     [Required(ErrorMessage = "Se debe proporcionar la fecha del mantenimiento.")]
     public DateOnly Fecha { get; set; }
 
+    [Required(ErrorMessage = "Se debe seleccionar un vehículo.")]
     public int VehiculoId { get; set; }
 
     public virtual ICollection<OperadorMantenimiento> OperadorMantenimientos { get; set; } = new List<OperadorMantenimiento>();

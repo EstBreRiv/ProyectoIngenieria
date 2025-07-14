@@ -10,8 +10,6 @@
         <div class="container py-5">
 
 
-            
-
             <form method="post">
                 <input asp-for="RegistroCombustible.Id" type="hidden" />
 
@@ -26,9 +24,28 @@
                                     @ViewData["Title"]
                                 </h2>
                             </div>
+
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Vehículo</label>
-                                <select asp-for="RegistroCombustible.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                                @if (Model.RegistroCombustible.Id == 0 && Model.RegistroCombustible.VehiculoId == 0)
+                                {
+                                    <select asp-for="RegistroCombustible.VehiculoId"
+                                            asp-items="Model.ListaVehiculos"
+                                            class="form-select"
+                                            data-val="true"
+                                            data-val-required="Debe seleccionar un vehículo.">
+                                        <option value="">-- Seleccione un vehículo --</option>
+                                    </select>
+                                    <span asp-validation-for="RegistroCombustible.VehiculoId" class="text-danger small"></span>
+                                }
+                                else
+                                {
+                                    <input type="text"
+                                           class="form-control"
+                                           value="@Model.ListaVehiculos.FirstOrDefault(v => v.Value == Model.RegistroCombustible.VehiculoId.ToString())?.Text"
+                                           disabled />
+                                    <input type="hidden" asp-for="RegistroCombustible.VehiculoId" />
+                                }
                             </div>
 
                             <div class="col-md-6">
