@@ -20,5 +20,7 @@ namespace ProyectoIngenieria.Models.ViewModels
 
         public IEnumerable<SelectListItem> VehiculoList { get; set; } = new List<SelectListItem>();
 
+        [ValidateNever]
+        public int? LugarSeleccionado { get; set; }
     }
 }

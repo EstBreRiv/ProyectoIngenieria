@@ -2,18 +2,20 @@
 
 @{
     ViewData["Title"] = Model.HorasTrabajo.Id == 0 ? "AGREGAR HORAS DE TRABAJO" : "EDITAR HORAS DE TRABAJO";
+    var lugaresTrabajo = Model.LugarTrabajoList ?? new List<SelectListItem>();
 }
 
 
 <div class="row justify-content-center">
     <div class="col-md-10">
         <div class="container py-5">
-            
+
 
             <form asp-action="Upsert" method="post">
                 @Html.AntiForgeryToken()
 
                 <input type="hidden" asp-for="HorasTrabajo.Id" />
+                <input type="hidden" id="LugarSeleccionado" name="LugarSeleccionado" value="" />
 
                 <div class="card shadow-sm">
                     <div class="card-body">
@@ -56,7 +58,7 @@
                                 <input asp-for="HorasTrabajo.Fecha" type="text" class="form-control" id="fechaTrabajo" />
                                 <span asp-validation-for="HorasTrabajo.Fecha" class="text-danger small"></span>
                             </div>
-                            
+
                             <!-- Proyecto -->
                             <div class="col-md-6">
                                 <label asp-for="HorasTrabajo.ProyectoId" class="form-label fw-semibold">Proyecto</label>
@@ -85,15 +87,57 @@
 
                             <!-- Lugar de trabajo -->
                             <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.LugarTrabajoId" class="form-label fw-semibold">Lugar de Trabajo</label>
-                                <select asp-for="HorasTrabajo.LugarTrabajoId"
-                                        asp-items="Model.LugarTrabajoList"
-                                        class="form-select"
-                                        data-val="true"
-                                        data-val-required="Debe seleccionar un lugar de trabajo.">
-                                    <option value="">-- Seleccione un lugar --</option>
-                                </select>
-                                <span asp-validation-for="HorasTrabajo.LugarTrabajoId" class="text-danger small"></span>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Lugar de trabajo</label>
+                                    <br />
+                                    <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="abrirModal()"> <i class="bi bi-plus-circle me-1"></i>LUGAR DE TRABAJO</button>
+                                    @Html.ValidationMessage("LugarSeleccionado", "", new { @class = "text-danger" })
+
+                                    <div class="border rounded" style="max-height: 200px; overflow-y: auto;">
+                                        <table class="table table-sm table-bordered mb-0" id="tablaSeleccionados">
+                                            <thead class="table-light position-sticky top-0" style="z-index: 1;">
+                                                <tr>
+                                                    <th style="background-color:white">NOMBRE</th>
+                                                    <th style="background-color:white">ACCIÓN</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="modalLugares" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5>SELECCIONAR LUGAR DE TRABAJO</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-bordered display" id="tablaLugares">
+                                                    <thead>
+                                                        <tr><th style="width: 15px;">Seleccionar</th><th>Nombre</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var lugar in Model.LugarTrabajoList)
+                                                        {
+                                                            var partes = lugar.Text.Split('|');
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <input type="radio" name="radioLugar" value="@lugar.Value" data-nombre="@partes[0]" />
+                                                                </td>
+                                                                <td>@partes[0]</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" onclick="guardarSeleccion()">SELECCIONAR</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Precio por hora -->
@@ -124,7 +168,7 @@
                             </div>
                         </div>
 
-                       
+
 
                         <div class="d-flex justify-content-end gap-2 pt-4">
                             <button type="submit" class="btn btn-success w-25">
@@ -157,6 +201,9 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <!-- Flatpickr JS + idioma español -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -192,5 +239,85 @@
 
         // Cálculo inicial al cargar la vista
         window.addEventListener("DOMContentLoaded", calcularIngreso);
+
+
+        let seleccionados = [];
+
+        function abrirModal() {
+            const modal = new bootstrap.Modal(document.getElementById("modalLugares"));
+            modal.show();
+        }
+
+
+                function guardarSeleccion() {
+            const radio = document.querySelector("#tablaLugares input[name='radioLugar']:checked");
+            if (!radio) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Seleccione un lugar',
+                    text: 'Debe seleccionar un lugar de trabajo.'
+                });
+                return;
+            }
+
+            const id = radio.value;
+            const nombre = radio.dataset.nombre;
+
+            // Actualiza el input oculto con el valor seleccionado
+            document.getElementById("LugarSeleccionado").value = id;
+
+            const tabla = document.querySelector("#tablaSeleccionados tbody");
+            tabla.innerHTML = "";
+
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${nombre}</td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarLugar()">Eliminar</button></td>
+            `;
+            tabla.appendChild(fila);
+
+            bootstrap.Modal.getInstance(document.getElementById("modalLugares")).hide();
+        }
+
+        function eliminarLugar() {
+            document.getElementById("LugarSeleccionado").value = "";
+            document.querySelector("#tablaSeleccionados tbody").innerHTML = "";
+        }
+
+
+
+                $(document).ready(function () {
+            // Inicializa DataTable para la tabla de lugares
+            $('#tablaLugares').DataTable({
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ lugares",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ lugares",
+                    paginate: {
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    zeroRecords: "No se encontraron lugares"
+                },
+                pageLength: 5,
+                lengthChange: false,
+                autoWidth: false
+            });
+
+            // Al enviar el formulario validar que haya al menos un lugar seleccionado
+            $('form').on('submit', function (e) {
+                const filasLugares = document.querySelectorAll("#tablaSeleccionados tbody tr");
+                if (!filasLugares || filasLugares.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Lugares requeridos',
+                        text: 'Debe seleccionar un lugar antes de continuar.'
+                    });
+                    e.preventDefault(); // Evita que se envíe el formulario
+                    return;
+                }
+            });
+        });
+
     </script>
 }

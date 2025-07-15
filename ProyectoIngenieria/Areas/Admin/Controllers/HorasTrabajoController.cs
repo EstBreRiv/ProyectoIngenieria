@@ -112,6 +112,12 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(HorasTrabajoVM horasVM)
         {
+
+            if (horasVM.LugarSeleccionado != null)
+            {
+                horasVM.HorasTrabajo.LugarTrabajoId = horasVM.LugarSeleccionado.Value;
+            }
+
             if (horasVM.HorasTrabajo.VehiculoId <= 0)
                 ModelState.AddModelError("HorasTrabajo.VehiculoId", "Vehículo inválido.");
 
@@ -249,5 +255,35 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             _unitOfWork.Save();
             return Json(new { success = true, message = "Registro eliminado exitosamente." });
         }
+
+        /*
+        [HttpPost]
+        public IActionResult registroProductos(HorasTrabajoVM viewModel)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (viewModel.LugarSeleccionado == 0)
+                {
+                    return Json(new { success = false, message = "Debe seleccionar un lugar." });
+                }
+
+                var ultimoRegistro = _unitOfWork.HorasTrabajo.
+                    GetAll().OrderByDescending(h => h.Id).FirstOrDefault();
+
+
+
+                    var lugar = new LugarTrabajo
+                    {
+                        Id = viewModel.LugarSeleccionado,
+                        Nombre = viewModel.LugarTrabajoList.FirstOrDefault(l => l.Value == viewModel.LugarSeleccionado.ToString())?.Text
+                    };
+                    _unitOfWork.LugarTrabajo.Add(lugar);
+                
+                _unitOfWork.Save();
+            }
+
+            return Json(new { success = true, message = "Se guardaron correctamente la lista de productos" });
+        }*/
     }
 }
