@@ -87,7 +87,43 @@
                                             <th style="background-color:white">ACCIÓN</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        @{
+                                            var index = 0;
+                                        }
+                                        @foreach (var detalle in Model.DetallesOperadores ?? new List<OperadorMantenimiento>())
+                                        {
+                                            var actividad = Model.ListaCatalogoMantenimiento.FirstOrDefault(a => a.Value == detalle.CatalogoMantenimientoId.ToString());
+                                            var operador = Model.ListaOperadores.FirstOrDefault(o => o.Value == detalle.OperadorCedula.ToString());
+                                            if (actividad != null && operador != null)
+                                            {
+                                                <tr id="actividad-@detalle.CatalogoMantenimientoId-@index">
+                                                    <td>
+                                                        @actividad.Text
+                                                        <input type="hidden" name="DetallesOperadores[@index].CatalogoMantenimientoId" value="@detalle.CatalogoMantenimientoId" />
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-select form-select-sm" name="DetallesOperadores[@index].OperadorCedula">
+                                                            @foreach (var op in Model.ListaOperadores)
+                                                            {
+                                                                <option value="@op.Value" selected="@(op.Value == detalle.OperadorCedula.ToString() ? "selected" : null)">
+                                                                    @op.Text
+                                                                </option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="DetallesOperadores[@index].HorasTrabajo" value="@detalle.HorasTrabajo" class="form-control form-control-sm" step="0.1" min="0" />
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                                index++;
+                                            }
+                                        }
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -143,7 +179,25 @@
                                             <th style="background-color:white">ACCIÓN</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        @foreach (var repuestoId in Model.RepuestosSeleccionados ?? new List<int>())
+                                        {
+                                            var repuesto = Model.ListaRepuestos.FirstOrDefault(r => r.Value == repuestoId.ToString());
+                                            if (repuesto != null)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @repuesto.Text
+                                                        <input type="hidden" name="RepuestosSeleccionados" value="@repuesto.Value" />
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRepuesto(@repuesto.Value, this)">Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
