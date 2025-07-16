@@ -17,7 +17,7 @@ $(document).ready(function () {
                         </a>
 
                         <button onclick="Eliminar('/Admin/CatalogoMantenimiento/Eliminar/${data}')" class="btn btn-danger btn-sm mx-2" title="Eliminar">
-                         <i class="bi bi-trash"></i>
+                            <i class="bi bi-trash"></i>
                         </button>
                         `;
                 },
@@ -33,7 +33,7 @@ $(document).ready(function () {
 function Eliminar(url) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "Este repuesto será eliminado permanentemente",
+        text: "Este mantenimiento será eliminado permanentemente del catálogo",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',

@@ -297,3 +297,11 @@ table.dataTable {
     .card-header-principal * {
         color: white !important;
     }
+
+.fondo-login {
+    background-image: url('/images/fondo1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+}

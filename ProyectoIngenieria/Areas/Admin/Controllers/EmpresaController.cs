@@ -35,7 +35,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             //Obtiene todas las empresas desde el repositorio y las devuelve en formato JSON
-            var empresas = _unitOfWork.Empresa.GetAll();
+            var empresas = _unitOfWork.Empresa.GetAll().Where(e => e.Nombre != "Eliminado");
             return Json(new { data = empresas });
         }
 
@@ -98,6 +98,21 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return View(empresaVM);
+        }
+
+        [HttpDelete]
+        public IActionResult Eliminar(int id)
+        {
+            var empresa = _unitOfWork.Empresa.Get(u => u.Id == id);
+            if (empresa == null)
+                return NotFound();
+
+            // Actualiza la descripción a "Eliminado" en lugar de eliminarlo físicamente
+            empresa.Nombre = "Eliminado";
+            _unitOfWork.Empresa.update(empresa);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Empresa eliminada correctamente." });
+
         }
 
     }

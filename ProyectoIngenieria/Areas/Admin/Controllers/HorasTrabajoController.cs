@@ -137,10 +137,14 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             if (horasVM.HorasTrabajo.ProyectoId == 0)
                 ModelState.AddModelError("HorasTrabajo.ProyectoId", "Debe seleccionar un proyecto.");
 
+            var registroIdActual = horasVM.HorasTrabajo.Id;
+
             // Consulta por las fechas anteriores a la fecha ingresada, las ordena de forma descendiente
             // y obtiene el último registro anterior a la fecha ingresada.
             var registroAnterior = _unitOfWork.HorasTrabajo
-                .GetAll(h => h.VehiculoId == horasVM.HorasTrabajo.VehiculoId && h.Fecha < horasVM.HorasTrabajo.Fecha)
+                .GetAll(h => h.VehiculoId == horasVM.HorasTrabajo.VehiculoId &&
+                             h.Fecha < horasVM.HorasTrabajo.Fecha &&
+                             h.Id != registroIdActual)
                 .OrderByDescending(h => h.Fecha)
                 .FirstOrDefault();
 
@@ -157,7 +161,9 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             // Consulta por las fechas posteriores a la fecha ingresada, las ordena de forma ascendente
             // y obtiene el primer registro posterior a la fecha ingresada.
             var registroPosterior = _unitOfWork.HorasTrabajo
-                .GetAll(h => h.VehiculoId == horasVM.HorasTrabajo.VehiculoId && h.Fecha > horasVM.HorasTrabajo.Fecha)
+                .GetAll(h => h.VehiculoId == horasVM.HorasTrabajo.VehiculoId &&
+                             h.Fecha > horasVM.HorasTrabajo.Fecha &&
+                             h.Id != registroIdActual)
                 .OrderBy(h => h.Fecha)
                 .FirstOrDefault();
 

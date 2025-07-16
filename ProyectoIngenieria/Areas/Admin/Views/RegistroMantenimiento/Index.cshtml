@@ -18,7 +18,10 @@
             <h1 class="h3 text-success fw-bold">HISTORIAL DE MANTENIMIENTOS</h1>
 
             <div class="d-flex flex-wrap gap-2">
-                <a asp-controller="RegistroMantenimiento" asp-action="Upsert" class="btn btn-success">
+                <a asp-controller="RegistroMantenimiento"
+                   asp-action="Upsert"
+                   asp-route-vehiculoId="@ViewBag.VehiculoId"
+                   class="btn btn-success">
                     <i class="bi bi-plus-circle me-1"></i> NUEVO REGISTRO
                 </a>
                 <a asp-controller="Repuesto" asp-action="Index" class="btn btn-success">

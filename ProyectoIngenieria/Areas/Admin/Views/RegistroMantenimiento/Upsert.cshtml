@@ -25,7 +25,25 @@
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Vehículo</label>
-                        <select asp-for="RegistroMantenimiento.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                        @if (Model.RegistroMantenimiento.Id == 0 && Model.RegistroMantenimiento.VehiculoId == 0)
+                        {
+                            <select asp-for="RegistroMantenimiento.VehiculoId"
+                                    asp-items="Model.ListaVehiculos"
+                                    class="form-select select2"
+                                    data-val="true"
+                                    data-val-required="Debe seleccionar un vehículo.">
+                                <option value="">-- Seleccione un vehículo --</option>
+                            </select>
+                            <span asp-validation-for="RegistroMantenimiento.VehiculoId" class="text-danger small"></span>
+                        }
+                        else
+                        {
+                            <input type="text"
+                                   class="form-control"
+                                   value="@Model.ListaVehiculos.FirstOrDefault(v => v.Value == Model.RegistroMantenimiento.VehiculoId.ToString())?.Text"
+                                   disabled />
+                            <input type="hidden" asp-for="RegistroMantenimiento.VehiculoId" />
+                        }
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Fecha</label>
@@ -40,8 +58,9 @@
 
                 <!-- Descripción -->
                 <div class="mb-4">
-                    <label class="form-label fw-semibold">Descripción (opcional)</label>
+                    <label class="form-label fw-semibold">Descripción</label>
                     <textarea asp-for="RegistroMantenimiento.Descripcion" class="form-control" rows="2" placeholder="Ingrese una descripción detallada..."></textarea>
+                    <span asp-validation-for="RegistroMantenimiento.Descripcion" class="text-danger small"></span>
                 </div>
 
                 <!-- Cuerpo dividido en dos columnas -->
@@ -68,7 +87,43 @@
                                             <th style="background-color:white">ACCIÓN</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        @{
+                                            var index = 0;
+                                        }
+                                        @foreach (var detalle in Model.DetallesOperadores ?? new List<OperadorMantenimiento>())
+                                        {
+                                            var actividad = Model.ListaCatalogoMantenimiento.FirstOrDefault(a => a.Value == detalle.CatalogoMantenimientoId.ToString());
+                                            var operador = Model.ListaOperadores.FirstOrDefault(o => o.Value == detalle.OperadorCedula.ToString());
+                                            if (actividad != null && operador != null)
+                                            {
+                                                <tr id="actividad-@detalle.CatalogoMantenimientoId-@index">
+                                                    <td>
+                                                        @actividad.Text
+                                                        <input type="hidden" name="DetallesOperadores[@index].CatalogoMantenimientoId" value="@detalle.CatalogoMantenimientoId" />
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-select form-select-sm" name="DetallesOperadores[@index].OperadorCedula">
+                                                            @foreach (var op in Model.ListaOperadores)
+                                                            {
+                                                                <option value="@op.Value" selected="@(op.Value == detalle.OperadorCedula.ToString() ? "selected" : null)">
+                                                                    @op.Text
+                                                                </option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="DetallesOperadores[@index].HorasTrabajo" value="@detalle.HorasTrabajo" class="form-control form-control-sm" step="0.1" min="0" />
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                                index++;
+                                            }
+                                        }
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -124,7 +179,25 @@
                                             <th style="background-color:white">ACCIÓN</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        @foreach (var repuestoId in Model.RepuestosSeleccionados ?? new List<int>())
+                                        {
+                                            var repuesto = Model.ListaRepuestos.FirstOrDefault(r => r.Value == repuestoId.ToString());
+                                            if (repuesto != null)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @repuesto.Text
+                                                        <input type="hidden" name="RepuestosSeleccionados" value="@repuesto.Value" />
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRepuesto(@repuesto.Value, this)">Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -203,6 +276,13 @@ else
 
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
     <script>
         let seleccionados = [];
@@ -460,6 +540,13 @@ else
             });
 
 
+        });
+
+        $('.select2').select2({
+            width: '100%',
+            placeholder: '-- Seleccione una opción --',
+            allowClear: true,
+            language: "es"
         });
 
 

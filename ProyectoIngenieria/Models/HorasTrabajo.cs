@@ -10,12 +10,15 @@ namespace ProyectoIngenieria.Models
         [Required(ErrorMessage = "La fecha es obligatoria.")]
         public DateOnly Fecha { get; set; }
 
-        [Range(0.01, double.MaxValue, ErrorMessage = "El horómetro inicial debe ser mayor que 0.")]
+        [Required(ErrorMessage = "Se debe ingresar el horómetro inicial.")]
+        [Range(0, double.MaxValue, ErrorMessage = "El horómetro inicial debe ser positivo")]
         public decimal HorometroInicial { get; set; }
 
-        [Range(0.01, double.MaxValue, ErrorMessage = "El horómetro final debe ser mayor que 0.")]
+        [Required(ErrorMessage = "Se debe ingresar el horómetro final.")]
+        [Range(0, double.MaxValue, ErrorMessage = "El horómetro final debe ser mayor que 0")]
         public decimal HorometroFinal { get; set; }
 
+        [Required(ErrorMessage = "Se debe ingresar el precio por hora.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio por hora debe ser mayor que 0.")]
         public decimal PrecioHora { get; set; }
 

@@ -21,6 +21,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         }
 
         // Vista principal
+        [HttpGet]
         public IActionResult Index(int id)
         {
             ViewBag.VehiculoId = id; // Pasa el ID a la vista para que el JS lo use
@@ -55,17 +56,53 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
 
 
         // Crear / Editar
-        public IActionResult Upsert(int? id)
+        public IActionResult Upsert(int? id, int? vehiculoId)
         {
+            var registro = new RegistroMantenimiento
+            {
+                Fecha = DateOnly.FromDateTime(DateTime.Today),
+                VehiculoId = vehiculoId ?? 0
+            };
+
+            List<int> repuestosSeleccionados = new();
+            List<OperadorMantenimiento> detallesOperadores = new();
+
+            if (id != null && id != 0)
+            {
+                registro = _unitOfWork.RegistroMantenimiento.Get(r => r.Id == id);
+                if (registro == null)
+                    return NotFound();
+
+
+                repuestosSeleccionados = _unitOfWork.RepuestosMantenimiento
+                    .GetAll(rm => rm.RegistroMantenimientoId == id)
+                    .Select(rm => rm.CatalogoRepuestoId)
+                    .ToList();
+
+                detallesOperadores = _unitOfWork.OperadorMantenimiento
+                   .GetAll(o => o.RegistroMantenimientoId == id)
+                   .Select(o => new OperadorMantenimiento
+                       {
+                       Id = o.Id,   
+                       OperadorCedula = o.OperadorCedula,
+                           HorasTrabajo = o.HorasTrabajo,
+                           CatalogoMantenimientoId = o.CatalogoMantenimientoId
+                       }).ToList();
+                    }
+
             var viewModel = new RegistroMantenimientoVM
             {
+                RegistroMantenimiento = registro,
+                RepuestosSeleccionados = repuestosSeleccionados,
+                DetallesOperadores = detallesOperadores,
+
                 ListaRepuestos = _unitOfWork.Repuesto.GetAll().Where(x => x.Descripcion != "Eliminado").Select(r => new SelectListItem
                 {
                     Text = r.Nombre,
                     Value = r.Id.ToString()
                 }),
 
-                RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
+                //RegistroMantenimiento = id == null ? new RegistroMantenimiento() : _unitOfWork.RegistroMantenimiento.Get(m => m.Id == id),
 
                 //Solo permite utilizar los vehiculos activos y que no sean de tipo "Automovil"
                 ListaVehiculos = _unitOfWork.Vehiculo
@@ -164,21 +201,63 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
             if (viewModel.RegistroMantenimiento.Id == 0)
             {
                 _unitOfWork.RegistroMantenimiento.Add(viewModel.RegistroMantenimiento);
+                _unitOfWork.Save();
+
+                // Reutiliza los métodos existentes para guardar relaciones
+                registroProductos(viewModel);
+                registroOperadorMantenimiento(viewModel);
+
                 TempData["success"] = "Mantenimiento creado exitosamente";
             }
             else
             {
                 _unitOfWork.RegistroMantenimiento.Update(viewModel.RegistroMantenimiento);
+                _unitOfWork.Save();
+
+                // Eliminar registros anteriores y registrar nuevos
+                var mantenimientoId = viewModel.RegistroMantenimiento.Id;
+
+                var repuestosAntiguos = _unitOfWork.RepuestosMantenimiento
+                    .GetAll(r => r.RegistroMantenimientoId == mantenimientoId).ToList();
+
+                foreach (var r in repuestosAntiguos)
+                    _unitOfWork.RepuestosMantenimiento.Remove(r);
+
+                var operadoresAntiguos = _unitOfWork.OperadorMantenimiento
+                    .GetAll(o => o.RegistroMantenimientoId == mantenimientoId).ToList();
+
+                foreach (var o in operadoresAntiguos)
+                    _unitOfWork.OperadorMantenimiento.Remove(o);
+
+                _unitOfWork.Save();
+
+                // Guardar nuevos
+                foreach (var repuestoId in viewModel.RepuestosSeleccionados)
+                {
+                    _unitOfWork.RepuestosMantenimiento.Add(new RepuestosMantenimiento
+                    {
+                        CatalogoRepuestoId = repuestoId,
+                        RegistroMantenimientoId = mantenimientoId
+                    });
+                }
+
+                foreach (var detalle in viewModel.DetallesOperadores)
+                {
+                    _unitOfWork.OperadorMantenimiento.Add(new OperadorMantenimiento
+                    {
+                        HorasTrabajo = detalle.HorasTrabajo,
+                        OperadorCedula = detalle.OperadorCedula,
+                        CatalogoMantenimientoId = detalle.CatalogoMantenimientoId,
+                        RegistroMantenimientoId = mantenimientoId
+                    });
+                }
+
+                _unitOfWork.Save();
+
                 TempData["success"] = "Mantenimiento actualizado exitosamente";
             }
 
-            _unitOfWork.Save();
-
-            registroProductos(viewModel);
-
-            registroOperadorMantenimiento(viewModel);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = viewModel.RegistroMantenimiento.VehiculoId });
         }
 
         //Metodo que permite guardar los repuestos seleccionados en el mantenimiento
