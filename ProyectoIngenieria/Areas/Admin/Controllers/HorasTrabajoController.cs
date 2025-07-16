@@ -113,11 +113,6 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
         public IActionResult Upsert(HorasTrabajoVM horasVM)
         {
 
-            if (horasVM.LugarSeleccionado != null)
-            {
-                horasVM.HorasTrabajo.LugarTrabajoId = horasVM.LugarSeleccionado.Value;
-            }
-
             if (horasVM.HorasTrabajo.VehiculoId <= 0)
                 ModelState.AddModelError("HorasTrabajo.VehiculoId", "Vehículo inválido.");
 
