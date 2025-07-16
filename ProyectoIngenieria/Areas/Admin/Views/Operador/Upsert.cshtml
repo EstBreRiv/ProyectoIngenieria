@@ -15,7 +15,7 @@
 
                             <div class="border-bottom pb-3 mb-4">
                                 <h2 class="titulo-formulario">
-                                    @(Model.Operador.Cedula == 0 ? "AGREGAR" : "ACTUALIZAR") OPERADOR
+                                    @(Model.Operador.Cedula == 0 ? "AGREGAR" : "ACTUALIZAR") COLABORADOR
                                 </h2>
                             </div>
 
@@ -23,7 +23,7 @@
                             {
                                 <div class="col-md-6">
                                     <label asp-for="Operador.Cedula" class="form-label fw-semibold">Cédula</label>
-                                    <input asp-for="Operador.Cedula" type="number" class="form-control" placeholder="Ingrese la cédula del operador" />
+                                    <input asp-for="Operador.Cedula" type="number" class="form-control" placeholder="Ingrese la cédula del colaborador" />
                                     <span asp-validation-for="Operador.Cedula" class="form-text text-danger"></span>
                                 </div>
                             }
@@ -34,7 +34,7 @@
 
                             <div class="col-md-6">
                                 <label asp-for="Operador.Nombre" class="form-label fw-semibold"></label>
-                                <input asp-for="Operador.Nombre" type="text" class="form-control" placeholder="Ingrese el nombre del operador" />
+                                <input asp-for="Operador.Nombre" type="text" class="form-control" placeholder="Ingrese el nombre del colaborador" />
                                 <span asp-validation-for="Operador.Nombre" class="form-text text-danger"></span>
                             </div>
                             
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Operador.TipoColaborador" class="form-label fw-semibold">Tipo de operador</label>
+                                <label asp-for="Operador.TipoColaborador" class="form-label fw-semibold">Tipo de colaborador</label>
                                 <select asp-for="Operador.TipoColaborador" class="form-select">
                                     <option value="">Seleccione el tipo de colaborador</option>
                                     <option value="Interno">Interno</option>
