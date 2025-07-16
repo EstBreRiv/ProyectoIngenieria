@@ -33,7 +33,7 @@
                                 {
                                     <select asp-for="HorasTrabajo.VehiculoId"
                                             asp-items="Model.VehiculoList"
-                                            class="form-select"
+                                            class="form-select select2"
                                             data-val="true"
                                             data-val-required="Debe seleccionar un vehículo.">
                                         <option value="">-- Seleccione un vehículo --</option>
@@ -56,19 +56,33 @@
                                 <input asp-for="HorasTrabajo.Fecha" type="text" class="form-control" id="fechaTrabajo" />
                                 <span asp-validation-for="HorasTrabajo.Fecha" class="text-danger small"></span>
                             </div>
-                            
+
                             <!-- Proyecto -->
                             <div class="col-md-6">
                                 <label asp-for="HorasTrabajo.ProyectoId" class="form-label fw-semibold">Proyecto</label>
                                 <select asp-for="HorasTrabajo.ProyectoId"
                                         asp-items="Model.ProyectoList"
-                                        class="form-select"
+                                        class="form-select select2"
                                         data-val="true"
                                         data-val-required="Debe seleccionar un proyecto.">
                                     <option value="">-- Seleccione un proyecto --</option>
                                 </select>
                                 <span asp-validation-for="HorasTrabajo.ProyectoId" class="text-danger small"></span>
                             </div>
+
+                            <!-- Lugar de trabajo -->
+                            <div class="col-md-6">
+                                <label asp-for="HorasTrabajo.LugarTrabajoId" class="form-label fw-semibold">Lugar de Trabajo</label>
+                                <select asp-for="HorasTrabajo.LugarTrabajoId"
+                                        asp-items="Model.LugarTrabajoList"
+                                        class="form-select select2"
+                                        data-val="true"
+                                        data-val-required="Debe seleccionar un lugar de trabajo.">
+                                    <option value="">-- Seleccione un lugar --</option>
+                                </select>
+                                <span asp-validation-for="HorasTrabajo.LugarTrabajoId" class="text-danger small"></span>
+                            </div>
+
 
                             <!-- Tipo de trabajo -->
                             <div class="col-md-6">
@@ -81,19 +95,6 @@
                                     <option value="">-- Seleccione un tipo --</option>
                                 </select>
                                 <span asp-validation-for="HorasTrabajo.TipoTrabajoId" class="text-danger small"></span>
-                            </div>
-
-                            <!-- Lugar de trabajo -->
-                            <div class="col-md-6">
-                                <label asp-for="HorasTrabajo.LugarTrabajoId" class="form-label fw-semibold">Lugar de Trabajo</label>
-                                <select asp-for="HorasTrabajo.LugarTrabajoId"
-                                        asp-items="Model.LugarTrabajoList"
-                                        class="form-select"
-                                        data-val="true"
-                                        data-val-required="Debe seleccionar un lugar de trabajo.">
-                                    <option value="">-- Seleccione un lugar --</option>
-                                </select>
-                                <span asp-validation-for="HorasTrabajo.LugarTrabajoId" class="text-danger small"></span>
                             </div>
 
                             <!-- Precio por hora -->
@@ -165,7 +166,24 @@
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
     <script>
+
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%',
+                placeholder: '-- Seleccione una opción --',
+                allowClear: true,
+                language: "es"
+            });
+        });
+
         flatpickr("#fechaTrabajo", {
             locale: "es",
             dateFormat: "Y-m-d",
