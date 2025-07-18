@@ -88,7 +88,7 @@ namespace ProyectoIngenieria.Areas.Admin.Controllers
 
             var listaOperadores = new List<SelectListItem>
     {
-        new SelectListItem { Text = "Seleccione un operador", Value = "" }
+        new SelectListItem { Text = "Seleccione un colaborador", Value = "" }
     };
             listaOperadores.AddRange(operadores.Select(o => new SelectListItem
             {

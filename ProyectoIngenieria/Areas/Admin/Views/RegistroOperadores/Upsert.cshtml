@@ -16,39 +16,47 @@
                         <div class="row g-4">
 
                             <div class="border-bottom pb-3 mb-4">
-                               <h2 class="titulo-formulario">@ViewData["Title"]</h2>
+                                <h2 class="titulo-formulario">@ViewData["Title"]</h2>
                             </div>
 
                             <div class="col-md-6">
                                 <label asp-for="RegistroOperador.OperadorCedula" class="form-label fw-semibold">Colaborador</label>
-                                        <select asp-for="RegistroOperador.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select"></select>
-                                        <span asp-validation-for="RegistroOperador.OperadorCedula" class="text-danger"></span>
-                                    </div>
+                                <select asp-for="RegistroOperador.OperadorCedula" asp-items="Model.ListaOperadores" class="form-select"></select>
+                                <span asp-validation-for="RegistroOperador.OperadorCedula" class="text-danger"></span>
+                            </div>
 
-                                    <div class="col-md-6">
+                            <div class="col-md-6">
                                 <label asp-for="RegistroOperador.VehiculoId" class="form-label fw-semibold">Vehículo</label>
-                                        <select asp-for="RegistroOperador.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
-                                        <span asp-validation-for="RegistroOperador.VehiculoId" class="text-danger"></span>
-                                    </div>
+                                <select asp-for="RegistroOperador.VehiculoId" asp-items="Model.ListaVehiculos" class="form-select"></select>
+                                <span asp-validation-for="RegistroOperador.VehiculoId" class="text-danger"></span>
+                            </div>
 
                             <!-- Fecha -->
                             <div class="col-md-6">
-                                <label asp-for="RegistroOperador.FechaInicio" class="form-label fw-semibold">Fecha del trabajo</label>
-                                <input asp-for="RegistroOperador.FechaInicio" type="text" class="form-control" id="fechaTrabajo" />
+                                <label asp-for="RegistroOperador.FechaInicio" class="form-label fw-semibold">Indique la fecha de inicio</label>
+                                <input name="RegistroOperador.FechaInicio"
+                                       id="fechaInicio"
+                                       class="form-control"
+                                       type="text"
+                                       value="@(Model.RegistroOperador.FechaInicio != DateTime.MinValue ? Model.RegistroOperador.FechaInicio.ToString("yyyy-MM-dd") : "")" />
                                 <span asp-validation-for="RegistroOperador.FechaInicio" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="RegistroOperador.FechaFin" class="form-label fw-semibold">Fecha de Fin</label>
-                                <input asp-for="RegistroOperador.FechaFin" type="text" class="form-control" id="fechaTrabajo" />
-                                        <span asp-validation-for="RegistroOperador.FechaFin" class="text-danger"></span>
-                                    </div>
+                                <label asp-for="RegistroOperador.FechaFin" class="form-label fw-semibold">Indique la fecha de fin</label>
+                                <input name="RegistroOperador.FechaFin"
+                                       id="fechaFin"
+                                       class="form-control"
+                                       type="text"
+                                       value="@(Model.RegistroOperador.FechaFin != DateTime.MinValue ? Model.RegistroOperador.FechaFin.ToString("yyyy-MM-dd") : "")" />
+                                <span asp-validation-for="RegistroOperador.FechaFin" class="text-danger small"></span>
+                            </div>
 
                             <div class="d-flex justify-content-end gap-2 pt-4">
-                                        <button type="submit" class="btn btn-success">GUARDAR</button>
-                             </div>
+                                <button type="submit" class="btn btn-success">GUARDAR</button>
+                            </div>
+                        </div>
                     </div>
-				</div>
 
             </form>
         </div>
@@ -69,13 +77,17 @@
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
-        <script>
-        flatpickr("#fechaTrabajo", {
+    <script>
+        flatpickr("#fechaInicio", {
             locale: "es",
-            dateFormat: "Y-m-d",
-            defaultDate: "@Model.RegistroOperador.FechaInicio.ToString("yyyy-MM-dd")"
+            dateFormat: "Y-m-d"
         });
-        </script>
+
+        flatpickr("#fechaFin", {
+            locale: "es",
+            dateFormat: "Y-m-d"
+        });
+    </script>
 
 
     <partial name="_ValidationScriptsPartial" />
